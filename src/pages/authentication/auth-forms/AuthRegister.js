@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 // material-ui
 import {
@@ -25,15 +25,20 @@ import { Formik } from 'formik';
 // project import
 import AnimateButton from 'components/@extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
+import { ToastContainer, toast } from 'react-toastify';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-
+import usePost from 'hooks/usePost';
 // ============================|| FIREBASE - REGISTER ||============================ //
 
 const AuthRegister = () => {
+  const { mutateAsync: registerUser } = usePost();
+  const navigate = useNavigate();
+
   const [level, setLevel] = useState();
   const [showPassword, setShowPassword] = useState(false);
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -51,81 +56,61 @@ const AuthRegister = () => {
     changePassword('');
   }, []);
 
+  const handleSubmit = (values, { setErrors, setStatus, setSubmitting }) => {
+    setSubmitting(true);
+    const { company, email, number, password } = values;
+
+    registerUser({
+      url: 'http://192.168.29.229:3004/api/users/company',
+      type: 'details',
+      payload: {
+        name: company,
+        email,
+        password,
+        mobileNumber: number,
+        role: 2
+      },
+      token: false
+    })
+      .then((response) => {
+        console.log(response, 'response');
+        toast.success('Registration successful', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        navigate('/');
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error('Server Error 500!', {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
+  };
   return (
     <>
+      <ToastContainer />
+
       <Formik
         initialValues={{
-          firstname: '',
-          lastname: '',
+          number: '',
           email: '',
           company: '',
           password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          firstname: Yup.string().max(255).required('First Name is required'),
-          lastname: Yup.string().max(255).required('Last Name is required'),
+          number: Yup.string().max(255).required('Number is required'),
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            setStatus({ success: false });
-            setSubmitting(false);
-          } catch (err) {
-            console.error(err);
-            setStatus({ success: false });
-            setErrors({ submit: err.message });
-            setSubmitting(false);
-          }
-        }}
+        onSubmit={handleSubmit}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="firstname-signup">First Name*</InputLabel>
-                  <OutlinedInput
-                    id="firstname-login"
-                    type="firstname"
-                    value={values.firstname}
-                    name="firstname"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="John"
-                    fullWidth
-                    error={Boolean(touched.firstname && errors.firstname)}
-                  />
-                  {touched.firstname && errors.firstname && (
-                    <FormHelperText error id="helper-text-firstname-signup">
-                      {errors.firstname}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="lastname-signup">Last Name*</InputLabel>
-                  <OutlinedInput
-                    fullWidth
-                    error={Boolean(touched.lastname && errors.lastname)}
-                    id="lastname-signup"
-                    type="lastname"
-                    value={values.lastname}
-                    name="lastname"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="Doe"
-                    inputProps={{}}
-                  />
-                  {touched.lastname && errors.lastname && (
-                    <FormHelperText error id="helper-text-lastname-signup">
-                      {errors.lastname}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="company-signup">Company</InputLabel>
@@ -165,6 +150,28 @@ const AuthRegister = () => {
                   {touched.email && errors.email && (
                     <FormHelperText error id="helper-text-email-signup">
                       {errors.email}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Grid>
+              <Grid item xs={12}>
+                <Stack spacing={1}>
+                  <InputLabel htmlFor="email-signup">Phone Number*</InputLabel>
+                  <OutlinedInput
+                    fullWidth
+                    error={Boolean(touched.number && errors.number)}
+                    id="email-login"
+                    type="number"
+                    value={values.number}
+                    name="number"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder="demo@company.com"
+                    inputProps={{}}
+                  />
+                  {touched.number && errors.number && (
+                    <FormHelperText error id="helper-text-email-signup">
+                      {errors.number}
                     </FormHelperText>
                   )}
                 </Stack>
@@ -238,10 +245,20 @@ const AuthRegister = () => {
               )}
               <Grid item xs={12}>
                 <AnimateButton>
+                  {/* <Link component={RouterLink} to="/"> */}
                   <Button fullWidth size="large" type="submit" variant="contained" sx={{ backgroundColor: 'success.dark' }} color="success">
                     Create Account
                   </Button>
+                  {/* </Link> */}
                 </AnimateButton>
+              </Grid>
+              <Grid item xs={12} sx={{ mt: 0 }}>
+                <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                  Already have an accout &nbsp;
+                  <Link component={RouterLink} to="/">
+                    Login ?
+                  </Link>
+                </Stack>
               </Grid>
             </Grid>
           </form>
