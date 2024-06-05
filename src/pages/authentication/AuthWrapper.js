@@ -1,20 +1,37 @@
 import PropTypes from 'prop-types';
-
-// material-ui
-import { Box, Grid } from '@mui/material';
-
-// project import
+import { Box, Grid, Link } from '@mui/material';
 import AuthCard from './AuthCard';
-import Logo from 'components/Logo';
-import AuthFooter from 'components/cards/AuthFooter';
-
-// assets
 import AuthBackground from 'assets/images/auth/AuthBackground';
-
-// ==============================|| AUTHENTICATION - WRAPPER ||============================== //
-
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import logoimage from '../../assets/images/download.png';
 const AuthWrapper = ({ children }) => (
   <Box sx={{ minHeight: '100vh' }}>
+    <div
+      style={{
+        width: '100%',
+        height: '65px',
+        backgroundColor: '#003E6B',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '25px' }}>
+        <img src={logoimage} style={{ height: '45px', width: '95px', borderRadius: '50px' }} />
+      </div>
+      <div style={{ display: 'flex', gap: '20px', marginRight: '25px' }}>
+        <button style={{ height: '40px', width: '95px', borderRadius: '25px', border: 'none', color: 'white' }}>
+          <Link component={RouterLink} to="/login" style={{ textDecoration: 'none' }}>
+            Login
+          </Link>
+        </button>
+        <button style={{ height: '40px', width: '95px', borderRadius: '25px', border: 'none', color: 'white' }}>
+          <Link component={RouterLink} to="/register" style={{ textDecoration: 'none' }}>
+            Register
+          </Link>
+        </button>
+      </div>
+    </div>
     <AuthBackground />
     <Grid
       container
@@ -24,9 +41,6 @@ const AuthWrapper = ({ children }) => (
         minHeight: '100vh'
       }}
     >
-      <Grid item xs={12} sx={{ ml: 3, mt: 3 }}>
-        <Logo />
-      </Grid>
       <Grid item xs={12}>
         <Grid
           item
@@ -40,9 +54,6 @@ const AuthWrapper = ({ children }) => (
             <AuthCard>{children}</AuthCard>
           </Grid>
         </Grid>
-      </Grid>
-      <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-        <AuthFooter />
       </Grid>
     </Grid>
   </Box>

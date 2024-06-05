@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-
-// material-ui
 import {
   Box,
   Button,
@@ -17,20 +15,13 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-
-// third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
-// project import
 import AnimateButton from 'components/@extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import { ToastContainer, toast } from 'react-toastify';
-
-// assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import usePost from 'hooks/usePost';
-// ============================|| FIREBASE - REGISTER ||============================ //
 
 const AuthRegister = () => {
   const { mutateAsync: registerUser } = usePost();

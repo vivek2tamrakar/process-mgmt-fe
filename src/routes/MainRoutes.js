@@ -1,6 +1,8 @@
 import { lazy } from 'react';
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
+import { element } from 'prop-types';
+import AuthWrapper from 'pages/authentication/AuthWrapper';
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const Typography = Loadable(lazy(() => import('pages/components-overview/Typography')));
 const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
@@ -10,9 +12,13 @@ const MainRoutes = {
   element: <MainLayout />,
   children: [
     {
-      path: '/dashboard',
+      path: '/',
       element: <DashboardDefault />
     },
+    // {
+    //   path: '*',
+    //   element: <AuthWrapper />
+    // },
     {
       path: '*',
       element: <DashboardDefault />

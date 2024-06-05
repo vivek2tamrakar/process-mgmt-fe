@@ -61,7 +61,6 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    // logout
     localStorage.clear();
     navigate('/');
   };
