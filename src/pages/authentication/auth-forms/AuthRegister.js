@@ -52,7 +52,7 @@ const AuthRegister = () => {
     const { company, email, number, password } = values;
 
     registerUser({
-      url: 'http://192.168.29.229:3004/api/users/company',
+      url: 'http://103.186.184.179:3019/api/users/company',
       type: 'details',
       payload: {
         name: company,
