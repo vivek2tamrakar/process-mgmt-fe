@@ -74,7 +74,7 @@ const MainDrawer = () => {
     <>
       <Container>
         <div>
-          {userList?.group.map((i) => (
+          {userList?.group?.map((i) => (
             <div>{i?.name}</div>
           ))}
         </div>
