@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PlusSvg from 'assets/svg/PlusSvg';
 import { Container, AddTaskContainer, Arrowdiv, Arrow, ArrowBox } from './Styled';
 import Box from '@mui/material/Box';
@@ -27,6 +27,9 @@ const MainDrawer = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { mutateAsync: AddGroup } = usePost();
+  const { mutateAsync: UserListGet } = useGet();
+  const [userList, setUserList] = useState([]);
+
   const handleSubmit = () => {
     const payload = {
       name: groupName
@@ -49,26 +52,50 @@ const MainDrawer = () => {
         console.error('Error:', error);
       });
   };
+  const fetchData = () => {
+    UserListGet({
+      url: `http://192.168.29.229:3004/api/group/list`,
+      type: 'details',
+      token: true
+    })
+      .then((res) => {
+        setUserList(res);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+  console.log(userList?.group, 'userList');
   return (
     <>
       <Container>
-        <AddTaskContainer onClick={() => setOption(!option)}>
-          <div>
-            <PlusSvg />
-          </div>
-          <div>
-            <p>ADD NEW TASK</p>
-          </div>
-        </AddTaskContainer>
-        <ArrowBox show={option}>
-          <Arrow></Arrow>
-          <Arrowdiv>
-            <button onClick={handleOpen}>New Group</button>
-            <button>New Folder</button>
-            <button>New Process</button>
-          </Arrowdiv>
-        </ArrowBox>
+        <div>
+          {userList?.group.map((i) => (
+            <div>{i?.name}</div>
+          ))}
+        </div>
+        <div>
+          <AddTaskContainer onClick={() => setOption(!option)}>
+            <div>
+              <PlusSvg />
+            </div>
+            <div>
+              <p>ADD NEW TASK</p>
+            </div>
+          </AddTaskContainer>
+          <ArrowBox show={option}>
+            <Arrow></Arrow>
+            <Arrowdiv>
+              <button onClick={handleOpen}>New Group</button>
+              <button>New Folder</button>
+              <button>New Process</button>
+            </Arrowdiv>
+          </ArrowBox>
+        </div>
         <div>
           <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
             <Box sx={style}>

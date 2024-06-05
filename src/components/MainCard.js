@@ -103,9 +103,9 @@ const MainCard = forwardRef(
           </>
         )}
 
-        {content && <CardContent sx={contentSX}>{children}</CardContent>}
+        {content ? <CardContent sx={contentSX}>{children}</CardContent> : children}
 
-        {!content && children}
+        {/* {!content && children} */}
 
         {codeHighlight && (
           <>
