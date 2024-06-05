@@ -83,8 +83,8 @@ const AuthLogin = () => {
       <ToastContainer />
       <Formik
         initialValues={{
-          username: 'admin123@gmail.com',
-          password: 'admin123',
+          username: '',
+          password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({

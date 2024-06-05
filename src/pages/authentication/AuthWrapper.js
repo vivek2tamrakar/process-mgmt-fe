@@ -10,14 +10,14 @@ const AuthWrapper = ({ children }) => (
       style={{
         width: '100%',
         height: '65px',
-        backgroundColor: '#003E6B',
+        backgroundColor: '#000',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '25px' }}>
-        <img src={logoimage} style={{ height: '45px', width: '95px', borderRadius: '50px' }} />
+        <b style={{color:'#fff'}}>Project Management</b>
       </div>
       <div style={{ display: 'flex', gap: '20px', marginRight: '25px' }}>
         <button style={{ height: '40px', width: '95px', borderRadius: '25px', border: 'none', color: 'white' }}>
