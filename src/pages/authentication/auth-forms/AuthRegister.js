@@ -22,6 +22,7 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import { ToastContainer, toast } from 'react-toastify';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import usePost from 'hooks/usePost';
+import { Register } from 'constants/api';
 
 const AuthRegister = () => {
   const { mutateAsync: registerUser } = usePost();
@@ -52,7 +53,7 @@ const AuthRegister = () => {
     const { company, email, number, password } = values;
 
     registerUser({
-      url: 'http://103.186.184.179:3019/api/users/company',
+      url: Register,
       type: 'details',
       payload: {
         name: company,
@@ -64,14 +65,12 @@ const AuthRegister = () => {
       token: false
     })
       .then((response) => {
-        console.log(response, 'response');
         toast.success('Registration successful', {
           position: toast.POSITION.BOTTOM_RIGHT
         });
         navigate('/');
       })
       .catch((err) => {
-        console.log(err);
         toast.error('Server Error 500!', {
           position: toast.POSITION.TOP_RIGHT
         });
