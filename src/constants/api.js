@@ -4,24 +4,26 @@ export const LOGINAPI = '/auth/login';
 export const Register = '/users/company';
 export const ForgotPassword = '/admin/forget-password';
 export const ChangePassword = '/admin/update-password';
-// *************************** user-data*****************
+// *********************admin login and password*******************
 
-export const UserUpdate = '/users/';
-export const Userget = '/users/info-id';
-export const AllUserlist = '/users/list';
-export const ExcelSheetupload = 'users/upload-excel';
+// *********************Profile api*******************
+export const Userget = '/users/info-id'; //old
+// *********************Profile api*******************
 
-// ***************** bookinglist
-export const BookingListUrl = 'booking/list';
-export const BookingStatus = 'booking';
+// *********************company login then Add groups and get groups*******************
+export const AddGroupData = '/group';
+export const GetGroupList = '/group/list';
+// *********************company login then Add groups and get groups*******************
 
-// *****************************
-export const UserAllDeatils = '/users/user-details/';
-export const PlanActive = '/user-active-plan';
-export const MembershipPlan = '/subscription-plan/list';
-export const AddMembershipPlan = '/subscription-plan/';
+// *********************Get all Company members*******************
+export const GetCompanyMemberbyID = '/users/list';
+// *********************Get all Company members*******************
 
-//*****************Recipe***************
-export const GetRecipe = 'recipe/list';
-// ******************* notification***********
-export const SendNotification = 'users/send-notification';
+// *********************invite members and get in user list*******************
+export const InviteUsers = '/users';
+// *********************invite members and get in user list*******************
+
+// *********************Add and Get assign members in groups*******************
+export const AddMemberInGroup = '/assign';
+export const GetAssignMembers = '/group/id';
+// *********************Get assign members in groups*******************
