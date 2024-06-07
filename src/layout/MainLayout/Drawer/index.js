@@ -7,6 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 import useGet from 'hooks/useGet';
 import { getGroupList } from 'store/reducers/group';
 import { useDispatch } from 'react-redux';
+import { AddGroupData, GetGroupList } from '../../../constants/api';
 
 const MainDrawer = () => {
   const [option, setOption] = useState(false);
@@ -22,7 +23,7 @@ const MainDrawer = () => {
   const handleSubmit = () => {
     const payload = { name: groupName };
     AddGroup({
-      url: 'http://192.168.29.229:3004/api/group',
+      url: AddGroupData,
       type: 'details',
       payload: payload,
       token: true,
@@ -40,7 +41,7 @@ const MainDrawer = () => {
 
   const fetchData = () => {
     UserListGet({
-      url: `http://192.168.29.229:3004/api/group/list`,
+      url: GetGroupList,
       type: 'details',
       token: true
     })

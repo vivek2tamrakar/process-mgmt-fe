@@ -4,6 +4,8 @@ import { Container, Groups, Header, GroupContainer } from '../dashboard/Dashboar
 import AddMemberModal from './AddMemberModal';
 import { getGroupList } from 'store/reducers/group';
 import { useDispatch, useSelector } from 'react-redux';
+import { GetGroupList } from '../../constants/api';
+
 const DashboardDefault = () => {
   const { mutateAsync: UserListGet } = useGet();
   const { groupList } = useSelector((state) => state.group);
@@ -19,7 +21,7 @@ const DashboardDefault = () => {
 
   const fetchData = () => {
     UserListGet({
-      url: `http://192.168.29.229:3004/api/group/list`,
+      url: GetGroupList,
       type: 'details',
       token: true
     })

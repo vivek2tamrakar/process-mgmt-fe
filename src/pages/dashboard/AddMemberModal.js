@@ -6,7 +6,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import usePost from 'hooks/usePost';
 import useGet from 'hooks/useGet';
 import { Select, MenuItem } from '@mui/material';
-
+import { GetAssignMembers, AddMemberInGroup, GetCompanyMemberbyID } from '../../constants/api';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -33,7 +33,7 @@ const AddMemberModal = ({ open, handleClose, group }) => {
   const handleSubmit = () => {
     const payload = { userId: companyData?.id, assignUserId: selectedUserId, groupId: group?.id };
     AddMember({
-      url: 'http://192.168.29.229:3004/api/assign',
+      url: AddMemberInGroup,
       type: 'details',
       payload: payload,
       token: true,
@@ -51,7 +51,7 @@ const AddMemberModal = ({ open, handleClose, group }) => {
 
   const fetchData = () => {
     UserListGet({
-      url: `http://192.168.29.229:3004/api/users/list/${CompanyId.id}`,
+      url: `${GetCompanyMemberbyID}/${CompanyId.id}`,
       type: 'details',
       token: true
     })
@@ -69,7 +69,7 @@ const AddMemberModal = ({ open, handleClose, group }) => {
 
   const fetchAssignedMembers = () => {
     AssignedMembers({
-      url: `http://192.168.29.229:3004/api/group/id/${group?.id}`,
+      url: `${GetAssignMembers}/${group?.id}`,
       type: 'details',
       token: true
     })

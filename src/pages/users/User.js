@@ -6,6 +6,7 @@ import { Link, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 import useGet from 'hooks/useGet';
 import { Link as RouterLink } from 'react-router-dom';
 import Dot from 'components/@extended/Dot';
+import { GetCompanyMemberbyID } from '../../constants/api';
 
 function OrderTableHead({ order, orderBy }) {
   return (
@@ -37,7 +38,7 @@ const User = () => {
   const CompanyId = JSON.parse(localStorage.getItem('user'));
   const fetchData = () => {
     UserListGet({
-      url: `http://192.168.29.229:3004/api/users/list/${CompanyId?.id}`,
+      url: `${GetCompanyMemberbyID}/${CompanyId?.id}`,
       type: 'details',
       token: true
     })

@@ -4,7 +4,7 @@ import Modal from '@mui/material/Modal';
 import { Header, Footer, Content } from '../../pages/AddTaskModal/styled';
 import { CloseOutlined } from '@ant-design/icons';
 import usePost from 'hooks/usePost';
-
+import { InviteUsers } from '../../constants/api';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -25,7 +25,7 @@ const InviteuserModal = ({ open, handleClose, fetchData }) => {
   const handleSubmit = () => {
     const payload = { email, role };
     AddGroup({
-      url: 'http://192.168.29.229:3004/api/users',
+      url: InviteUsers,
       type: 'details',
       payload: payload,
       token: true,
