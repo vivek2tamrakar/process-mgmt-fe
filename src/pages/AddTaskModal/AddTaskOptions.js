@@ -2,7 +2,7 @@ import React from 'react';
 import { AddTaskContainer, Arrowdiv, Arrow, ArrowBox } from '../../../src/layout/MainLayout/Drawer/Styled';
 import PlusSvg from '../../assets/svg/PlusSvg';
 
-const AddTaskOptions = ({ setOption, option, handleOpen }) => {
+const AddTaskOptions = ({ setOption, option, handleOpen, handleOpenFolder, handleOpenProcess }) => {
   return (
     <>
       <AddTaskContainer onClick={() => setOption(!option)}>
@@ -17,8 +17,8 @@ const AddTaskOptions = ({ setOption, option, handleOpen }) => {
         <Arrow></Arrow>
         <Arrowdiv>
           <button onClick={handleOpen}>New Group</button>
-          <button>New Folder</button>
-          <button>New Process</button>
+          <button onClick={handleOpenFolder}>New Folder</button>
+          <button onClick={handleOpenProcess}>New Process</button>
         </Arrowdiv>
       </ArrowBox>
     </>

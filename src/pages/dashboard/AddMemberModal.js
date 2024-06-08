@@ -84,7 +84,6 @@ const AddMemberModal = ({ open, handleClose, group }) => {
   useEffect(() => {
     fetchAssignedMembers();
   }, [group?.id]);
-  console.log(assignMemberList, 'group?.id');
 
   return (
     <Modal open={open} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
