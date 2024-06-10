@@ -79,41 +79,29 @@ export const Container = styled.div`
   height: 100vh;
   width: 324px;
   background-color: #000000;
-  // display: flex;
-  // justify-content: center;
 `;
 
 export const AddTaskContainer = styled.div`
+  padding: 15px;
   cursor: pointer;
-  height: 120px;
-  width: 130px;
-  background-color: #003e6b;
+  height: 40px;
+  width: 140px;
+  background-color: white;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  position: fixed;
-  bottom: 80px;
-  border-radius: 20px;
+  gap: 10px;
+  border-radius: 6px;
   box-shadow: 0px 4px 14px 1px #003e6b;
   p {
-    color: white;
-  }
-  div {
-    width: 140px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: black;
   }
 `;
 
 export const ArrowBox = styled.div`
+  width: 120px;
+  height: 82px;
+  margin-left: 90px;
   box-shadow: 0px 4px 14px 1px gray;
-  height: 110px;
-  width: 130px;
-  position: relative;
-  // top: -60px;
-  left: 145px;
   border-radius: 4px;
   opacity: ${({ show }) => (show ? 1 : 0)};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
@@ -141,9 +129,11 @@ export const Arrowdiv = styled.div`
   border-radius: 4px;
   padding: 10px;
   button {
-    width: 110px;
-    height: 26px;
-    margin-top: 4px;
+    width: 95px;
+    height: 23px;
+    margin-top: 0px;
+    border: none;
+    background-color: transparent;
   }
 `;
 export const LogoContainer = styled.div`
@@ -159,8 +149,9 @@ export const LogoContainer = styled.div`
   }
 `;
 export const RoutesContainer = styled.div`
-  height: calc(100vh - 250px);
+  height: calc(100vh - 110px);
   width: 100%;
+  margin-top: -72px;
   a {
     text-decoration: none;
   }
@@ -179,13 +170,15 @@ export const SelectedRoute = styled.div`
   }
 `;
 export const Route = styled.div`
-  background-color: ${({ isSelected }) => (isSelected ? '#003e6b' : 'transparent')};
-  color: ${({ isSelected }) => (isSelected ? 'white' : 'gray')};
+  background-color: ${({ isselected }) => (isselected ? '#003e6b' : 'transparent')};
+  color: ${({ isselected }) => (isselected ? 'white' : 'gray')};
   width: 100%;
   height: 45px;
   display: flex;
+  gap: 5px;
   align-items: center;
   justify-content: center;
+  // margin-left: 80px;
   cursor: pointer;
   p {
     font-size: 16px;
@@ -193,5 +186,8 @@ export const Route = styled.div`
   }
 `;
 export const AddTaskBox = styled.div`
-  margin-left: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `;
