@@ -3,7 +3,7 @@ import useGet from 'hooks/useGet';
 import AddMemberModal from './AddMemberModal';
 import { Container, Groups, Header, GroupContainer } from '../dashboard/DashboardStyle';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetGroupList } from '../../constants/api';
+import { GetGroupListApi } from '../../constants/api';
 import { getGroupList, getFolderList, getProcessList } from 'store/reducers/group';
 import AddFolderProcess from './AddFolderProcess';
 
@@ -34,7 +34,7 @@ const DashboardDefault = () => {
 
   const fetchData = () => {
     UserListGet({
-      url: GetGroupList,
+      url: GetGroupListApi,
       type: 'details',
       token: true
     })

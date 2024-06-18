@@ -174,11 +174,11 @@ export const Route = styled.div`
   color: ${({ isselected }) => (isselected ? 'white' : 'gray')};
   width: 100%;
   height: 45px;
-  display: flex;
   gap: 5px;
   align-items: center;
-  justify-content: center;
-  // margin-left: 80px;
+  display: flex;
+  justify-content: left;
+  padding: 0 0 0 75px;
   cursor: pointer;
   p {
     font-size: 16px;
@@ -190,4 +190,26 @@ export const AddTaskBox = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+`;
+export const ContextMenuOptios = styled.div`
+  position: absolute;
+  top: 175px;
+  left: 167px;
+  background-color: white;
+  border: 1px solid rgb(204, 204, 204);
+  z-index: 1000;
+  border-top-left-radius: 30px;
+  width: 160px;
+  height: auto;
+  ul {
+    list-style: none;
+    list-style: none;
+    padding: 0 0 0 30px;
+    button {
+      height: 33px;
+      width: 100px;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+  }
 `;
