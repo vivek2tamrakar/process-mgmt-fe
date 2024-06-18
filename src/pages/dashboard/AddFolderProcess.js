@@ -61,7 +61,7 @@ const AddFolderProcess = ({ open, handleClose, folder }) => {
   useEffect(() => {
     fetchFolderProcess();
   }, [folder?.id]);
-  console.log(processList?.process, 'processList');
+
   return (
     <Modal open={open} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
       <Box sx={style}>

@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { Header, Footer, Content } from './styled';
 import { CloseOutlined } from '@ant-design/icons';
-import { AddFolderData, GetGroupList } from '../../constants/api';
+import { AddFolderData, GetGroupListApi } from '../../constants/api';
 import { getFolderList } from 'store/reducers/group';
 import { useDispatch } from 'react-redux';
 import usePost from 'hooks/usePost';
@@ -20,7 +20,7 @@ const style = {
   borderRadius: '10px'
 };
 
-const AddFolderModal = ({ open, handleClose }) => {
+const AddFolderModal = ({ open, handleClose, groupId }) => {
   const [folderName, setFolderName] = useState(''); //state for set Folder name value
   const { mutateAsync: AddFolder } = usePost();
   const dispatch = useDispatch();
@@ -29,6 +29,9 @@ const AddFolderModal = ({ open, handleClose }) => {
   // function for add Folders
   const handleFolderSubmit = () => {
     const payload = { name: folderName };
+    if (groupId) {
+      payload.groupId = groupId;
+    }
     AddFolder({
       url: AddFolderData,
       type: 'details',
@@ -46,7 +49,7 @@ const AddFolderModal = ({ open, handleClose }) => {
   };
   const fetchData = () => {
     UserListGet({
-      url: GetGroupList,
+      url: GetGroupListApi,
       type: 'details',
       token: true
     })
@@ -57,6 +60,8 @@ const AddFolderModal = ({ open, handleClose }) => {
         console.error('Error fetching data:', error);
       });
   };
+  console.log(groupId, 'from folder');
+
   return (
     <>
       <Modal open={open} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">

@@ -10,7 +10,7 @@ export const Userget = '/users/info-id'; //old
 
 // *********************company login then Add groups and get groups*******************
 export const AddGroupData = '/group';
-export const GetGroupList = '/group/list';
+export const GetGroupListApi = '/group/list';
 
 // *********************company login then Add Folder*******************
 export const AddFolderData = '/folder';
@@ -27,3 +27,6 @@ export const InviteUsers = '/users';
 // *********************Add and Get assign members in groups*******************
 export const AddMemberInGroup = '/assign';
 export const GetAssignMembers = '/group/id';
+
+// *********************Delete groups*******************
+export const DeleteGroupById = '/group';
