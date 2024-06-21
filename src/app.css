@@ -1,81 +1,38 @@
-.profile-card .MuiPaper-root {
-  position: relative;
+.App {
+  text-align: center;
 }
 
-.profile-card .MuiPaper-root:after {
-  content: '';
-  position: absolute;
-  background: linear-gradient(104deg, #27963c, #80cc28);
-  height: 109px;
-  z-index: 0;
-  background-size: 15px;
-  background-position: 0;
-  width: 100%;
-  filter: grayscale(1);
-  right: 0;
-  left: 0;
-  top: 0;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
-td {
-  text-transform: capitalize;
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
-table {
-  border: 1px solid #ddd;
-  margin-top: 20px;
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
-.date-range-select input {
-  padding: 10px 15px;
-  box-shadow: none;
-  height: 39px;
-  border: 1px solid #d9d9d9;
-  border-radius: 5px;
-  width: 100%;
-  outline: none;
+
+.App-link {
+  color: #61dafb;
 }
-.date-range-select .react-datepicker-wrapper {
-  width: 100%;
-}
-nav.MuiBox-root,
-.MuiPaper-root.MuiPaper-elevation.MuiDrawer-paper.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft,
-header.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation0.MuiAppBar-root.MuiAppBar-colorInherit.MuiAppBar-positionFixed {
-  z-index: 100 !important;
-}
-.membership-card {
-  position: relative;
-  background: linear-gradient(90deg, #ffd370, #e16f7c);
-  /* background: linear-gradient(195deg, rgba(184,249,118,1) 0%, rgba(104,232,157,1) 100%); */
-  box-shadow:
-    3px 3px 5px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 12px 0px rgba(0, 0, 0, 0.14),
-    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-}
-.membership-card .activesatus {
-  background: #27963c;
-  color: #fff;
-  text-align: center;
-  transform: rotate(-45deg);
-  position: absolute;
-  left: -62px;
-  width: 200px;
-  top: 20px;
-}
-.membership-Includes {
-  overflow: auto;
-  max-height: 200px;
-  padding-right: 5px;
-}
-::-webkit-scrollbar-thumb {
-  background-color: #83cd2d;
-}
-::-webkit-scrollbar {
-  width: 1px;
-  height: 1px;
-}
-::-webkit-scrollbar-track {
-  width: 1px;
-  height: 1px;
-  background-color: #eee;
-}
-.MuiFormControl-root .MuiFormLabel-root {
-  line-height: 1em !important;
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

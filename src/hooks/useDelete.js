@@ -1,5 +1,5 @@
 import { useMutation } from "react-query";
-import { determineInstance, IInstanceType } from "utils/helper";
+import { determineInstance, IInstanceType } from "../utils/helper";
 
 const deleteMutation = async ({
   url,
@@ -26,7 +26,7 @@ const deleteMutation = async ({
     })
     .catch((e) => {
       console.dir(e, { depth: null });
- 
+
       throw e.response;
     });
   return data;

@@ -1,15 +1,13 @@
-// third-party
-import { configureStore } from '@reduxjs/toolkit';
-
-// project import
-import reducers from './reducers';
-
-// ==============================|| REDUX TOOLKIT - MAIN STORE ||============================== //
-
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "../../src/features/auth/authSlice";
+import groupReducer from "../../src/features/Group/groupslice";
+import userReducer from "../../src/features/User/userslice";
 const store = configureStore({
-  reducer: reducers
+  reducer: {
+    auth: authReducer,
+    group: groupReducer,
+    user: userReducer,
+  },
 });
 
-const { dispatch } = store;
-
-export { store, dispatch };
+export default store;

@@ -1,83 +1,86 @@
-// material-ui
-import { Grid,Stack, Typography,Box,Link } from '@mui/material';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import AuthCard from './AuthCard';
-// project import
-import AuthLogin from './auth-forms/AuthLogin';
-// import AuthWrapper from './AuthWrapper';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../../src/features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import {
+  LeftBanner,
+  LoginContainer,
+  LoginBox,
+  InputBox,
+  BoxInput,
+  ForgotPasswordLink,
+  GotoRegister,
+} from "./styles";
+import Image from "../../assets/images/loginpageimage.jpg";
+import { Link } from "react-router-dom";
+import { Input, Button } from "antd";
 
-// ================================|| LOGIN ||================================ //
+const Login = ({ setIsLoggedIn }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.auth);
 
-const Login = ({ children }) => (
-  <Box sx={{ minHeight: '100vh' }}>
-  <div
-    style={{
-      width: '100%',
-      height: '65px',
-      backgroundColor: '#000',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between'
-    }}
-  >
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '25px' }}>
-      <b style={{color:'#fff'}}>Project Management</b>
-    </div>
-    <div style={{ display: 'flex', gap: '20px', marginRight: '25px' }}>
-      <button style={{ height: '40px', width: '95px', borderRadius: '25px', border: 'none', color: 'white' }}>
-        <Link component={RouterLink} to="/login" style={{ textDecoration: 'none' }}>
-          Login
-        </Link>
-      </button>
-      <button style={{ height: '40px', width: '95px', borderRadius: '25px', border: 'none', color: 'white' }}>
-        <Link component={RouterLink} to="/register" style={{ textDecoration: 'none' }}>
-          Register
-        </Link>
-      </button>
-    </div>
-  </div>
-  <div style={{marginTop:'30px'}}>
-  <Grid container justify="space-around" style={{ gap: 8 }}>
-    <Grid item xs={7}>
-      <img src='https://i.postimg.cc/Sx8PcxDP/6310507.jpg'></img>
-    </Grid>
-    <Grid item xs={4}>
-    <div style={{marginTop:'30px'}}>
-        <Stack direction="row" alignItems="baseline" sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
-          <Typography variant="h3">Login</Typography>
-        </Stack>
-      
-        <AuthLogin />
-        </div>
-    </Grid>
-  </Grid>
-  </div>
-  <Grid
-    container
-    direction="column"
-    justifyContent="flex-end"
-    sx={{
-      minHeight: '100vh'
-    }}
-  >
-    <Grid item xs={12}>
-      <Grid
-        item
-        xs={12}
-        container
-        justifyContent="center"
-        alignItems="center"
-        sx={{ minHeight: { xs: 'calc(100vh - 134px)', md: 'calc(100vh - 200px)' } }}
-      >
-        <Grid item>
-          <AuthCard>{children}</AuthCard>
-        </Grid>
-      </Grid>
-    </Grid>
-  </Grid>
-</Box>
- 
-  // </AuthWrapper>
-);
+  const handleLogin = () => {
+    dispatch(login({ username, password })).then((result) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        setIsLoggedIn(true);
+        navigate("/");
+      }
+    });
+  };
+
+  return (
+    <LoginContainer>
+      <LeftBanner>
+        <img src={Image} alt="Login Banner" />
+      </LeftBanner>
+      <LoginBox>
+        <InputBox>
+          <p className="logintext">Login</p>
+          <form>
+            <BoxInput>
+              <label>Email Address</label>
+              <Input
+                size="large"
+                type="email"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter email address"
+              />
+            </BoxInput>
+            <BoxInput>
+              <label>Password</label>
+              <Input
+                size="large"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter Password"
+              />
+              <ForgotPasswordLink>
+                <Link to="/">Forgot Password?</Link>
+              </ForgotPasswordLink>
+              <Button
+                onClick={handleLogin}
+                type="primary"
+                size="large"
+                loading={loading}
+              >
+                Login
+              </Button>
+            </BoxInput>
+          </form>
+          <GotoRegister>
+            <p>
+              Don't have an account? <Link to="/register">Register?</Link>
+            </p>
+          </GotoRegister>
+        </InputBox>
+      </LoginBox>
+    </LoginContainer>
+  );
+};
 
 export default Login;
