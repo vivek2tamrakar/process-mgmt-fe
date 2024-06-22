@@ -1,11 +1,10 @@
-import { authInstance, detailsInstance } from 'service/axiosinstance';
-// import { RefreshTokenPayload } from 'views/Dashboard/Connections/CandidateList/interfaces'
+import { authInstance, detailsInstance } from "../../src/service/axiosinstance";
 
 export const determineInstance = (type) => {
   switch (type) {
-    case 'auth':
+    case "auth":
       return authInstance;
-    case 'details':
+    case "details":
       return detailsInstance;
     default:
       return detailsInstance;
@@ -20,4 +19,4 @@ export const blobToBase64 = (blob) => {
   });
 };
 
-export const issuerName = ['SynchroServe', 'Synchroserve'];
+export const issuerName = ["SynchroServe", "Synchroserve"];
