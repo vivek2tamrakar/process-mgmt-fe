@@ -16,7 +16,7 @@ const LoginRoutes = {
     },
     {
       path: '/',
-      element: <AuthWrapper />
+      element: <AuthLogin />
     },
     {
       path: 'register',

@@ -23,6 +23,7 @@ import PlusSvg from '../../../assets/svg/PlusSvg';
 import { FolderOpenOutlined, GroupOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom'; // Add this import
 import useDelete from 'hooks/useDelete';
+import logo from '../../../assets/images/logo.jpg'
 
 const MainDrawer = () => {
   const { pathname } = useLocation(); // Hook to get the current route
@@ -195,8 +196,8 @@ const MainDrawer = () => {
   return (
     <>
       <Container>
-        <LogoContainer>
-          <p>Project Management</p>
+        <LogoContainer style={{background: '#fff'}}>
+          <p style={{textAlign: 'center',margin:'0px'}}><img src={logo} style={{width: '46%'}} /></p>
         </LogoContainer>
 
         <AddTaskBox>

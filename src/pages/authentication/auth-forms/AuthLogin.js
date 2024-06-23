@@ -179,7 +179,7 @@ const AuthLogin = () => {
               )}
               <Grid item xs={12}>
                 <AnimateButton>
-                  <Button fullWidth size="large" type="submit" variant="contained" sx={{ backgroundColor: 'success.dark' }} color="success">
+                  <Button fullWidth size="large" type="submit" variant="contained" sx={{background:'#003E6B' }} color="success">
                     Login
                   </Button>
                 </AnimateButton>

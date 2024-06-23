@@ -3,6 +3,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import AuthCard from './AuthCard';
 import FirebaseRegister from './auth-forms/AuthRegister';
 import AuthWrapper from './AuthWrapper';
+import logo from '../../assets/images/logo.jpg'
 
 const Register = ({ children }) => (
   // <AuthWrapper>
@@ -10,24 +11,25 @@ const Register = ({ children }) => (
   <div
     style={{
       width: '100%',
-      height: '65px',
-      backgroundColor: '#000',
+      height: '90px',
+      // backgroundColor: '#000',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      background:'#fff !important'
     }}
   >
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '25px' }}>
-      <b style={{color:'#fff'}}>Project Management</b>
+      <b style={{color:'#fff'}}><img src={logo} style={{width: '20%',padding: '38px'}} /></b>
     </div>
     <div style={{ display: 'flex', gap: '20px', marginRight: '25px' }}>
-      <button style={{ height: '40px', width: '95px', borderRadius: '25px', border: 'none', color: 'white' }}>
-        <Link component={RouterLink} to="/login" style={{ textDecoration: 'none' }}>
+    <button style={{ height: '40px', width: '95px', borderRadius: '25px', border: 'none', color: 'white', background:'#003E6B' }}>
+        <Link component={RouterLink} to="/login" style={{ textDecoration: 'none', color:'#fff' }}>
           Login
         </Link>
       </button>
-      <button style={{ height: '40px', width: '95px', borderRadius: '25px', border: 'none', color: 'white' }}>
-        <Link component={RouterLink} to="/register" style={{ textDecoration: 'none' }}>
+      <button style={{ height: '40px', width: '95px', borderRadius: '25px', border: 'none', color: 'white',background:'#003E6B' }}>
+        <Link component={RouterLink} to="/register" style={{ textDecoration: 'none',color:'#fff' }}>
           Register
         </Link>
       </button>

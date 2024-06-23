@@ -1,9 +1,10 @@
 // material-ui
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery,Link } from '@mui/material';
 
 // project import
 import Profile from './Profile';
 import MobileSection from './MobileSection';
+import { alignments } from 'C:/Users/lenovo/AppData/Local/Microsoft/TypeScript/5.4/node_modules/@floating-ui/utils/dist/floating-ui.utils';
 
 // ==============================|| HEADER - CONTENT ||============================== //
 
@@ -12,9 +13,22 @@ const HeaderContent = () => {
 
   return (
     <>
+    <div style={{textAlign:'center',width:'100%',display:'flex',columnGap:'12%',marginLeft:'2%'}}>
+          <Link style={{ textDecoration: 'none', color:'#000' }}>
+              Home
+            </Link>
+            <Link  style={{ textDecoration: 'none', color:'#000' }}>
+              Inbox
+            </Link>
+            <Link  style={{ textDecoration: 'none', color:'#000' }}>
+              Task Manager
+            </Link>
+        </div>
       {matchesXs && <Box sx={{ width: '100%', ml: 'auto' }} />}
 
-      <Box sx={{ ml: 'auto' }}> </Box>
+      <Box sx={{ ml: 'auto' }}>
+        
+       </Box>
       {!matchesXs && <Profile />}
       {matchesXs && <MobileSection />}
     </>

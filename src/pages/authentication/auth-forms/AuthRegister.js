@@ -236,7 +236,7 @@ const AuthRegister = () => {
               <Grid item xs={12}>
                 <AnimateButton>
                   {/* <Link component={RouterLink} to="/"> */}
-                  <Button fullWidth size="large" type="submit" variant="contained" sx={{ backgroundColor: 'success.dark' }} color="success">
+                  <Button fullWidth size="large" type="submit" variant="contained" sx={{ background:'#003E6B' }} color="success">
                     Create Account
                   </Button>
                   {/* </Link> */}
