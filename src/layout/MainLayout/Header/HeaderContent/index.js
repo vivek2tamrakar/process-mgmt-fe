@@ -4,8 +4,6 @@ import { Box, useMediaQuery,Link } from '@mui/material';
 // project import
 import Profile from './Profile';
 import MobileSection from './MobileSection';
-import { alignments } from 'C:/Users/lenovo/AppData/Local/Microsoft/TypeScript/5.4/node_modules/@floating-ui/utils/dist/floating-ui.utils';
-
 // ==============================|| HEADER - CONTENT ||============================== //
 
 const HeaderContent = () => {
