@@ -18,6 +18,7 @@ const CommonModal = ({
   folderId,
   groupName,
   groupAssignUsers,
+  folderName,
 }) => {
   const { mutateAsync: CommonAdd } = usePost();
   const { mutateAsync: CommonDelete } = useDelete();
@@ -140,6 +141,21 @@ const CommonModal = ({
       });
   };
 
+  const handleFolderDelete = () => {
+    CommonDelete({
+      url: `folder/${folderId}`,
+      type: "details",
+      token: true,
+    })
+      .then((res) => {
+        fetchData();
+        handleCancel();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const handleChange = (value) => {
     console.log(`Selected: ${value}`);
     setAssignUserId(value);
@@ -167,12 +183,12 @@ const CommonModal = ({
     setAllUsers(userList);
   }, [userList]);
 
-  const userOptions = allUsers.map((user) => ({
+  const userOptions = allUsers?.map((user) => ({
     label: user.email,
     value: user.id,
   }));
 
-  const defaultUserOptions = groupAssignUsers.map((i) => ({
+  const defaultUserOptions = groupAssignUsers?.map((i) => ({
     label: i?.user?.email,
     value: i?.user.id,
   }));
@@ -224,26 +240,19 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
-
       {title === "EditMember" && (
         <Modal
-          title="Add Group"
+          title={`Edit Members > ${groupName}`}
           open={isModalOpen}
           onOk={AssignUser}
           onCancel={handleCancel}
         >
           <BoxInput>
-            <label>Group Name</label>
-            <Input size="large" value={groupName} />
-          </BoxInput>
-
-          <BoxInput>
-            <label>Assign User To New Group</label>
+            <label>Assign Users</label>
             <Select
               mode="tags"
               size="large"
               placeholder="Please select"
-              // defaultValue={defaultUserOptions}
               onChange={(value) => setAssignUserId(value)}
               style={{
                 width: "100%",
@@ -253,7 +262,6 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
-
       {title === "Folder" && (
         <Modal
           title="Add Folder"
@@ -273,7 +281,6 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
-
       {title === "Process" && (
         <Modal
           title="Add Process"
@@ -293,7 +300,6 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
-
       {title === "Users" && (
         <Modal
           title="Invite Users"
@@ -313,7 +319,6 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
-
       {title === "Delete" && (
         <Modal
           title="Delete Group"
@@ -323,6 +328,19 @@ const CommonModal = ({
         >
           <p>
             Are You Sure To Delete <b>{groupName}</b>
+          </p>
+        </Modal>
+      )}
+
+      {title === "Folder Delete" && (
+        <Modal
+          title="Delete Folder"
+          open={isModalOpen}
+          onOk={handleFolderDelete}
+          onCancel={handleCancel}
+        >
+          <p>
+            Are You Sure To Delete <b>{folderName}</b>
           </p>
         </Modal>
       )}

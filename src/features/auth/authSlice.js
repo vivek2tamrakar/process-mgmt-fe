@@ -21,6 +21,8 @@ export const login = createAsyncThunk(
       );
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("companyId", response.data.id);
+      localStorage.setItem("LoggedInName", response.data.name);
+      console.log(response, "response");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -49,6 +51,9 @@ export const register = createAsyncThunk(
 
 export const logout = createAsyncThunk("auth/logout", async () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("companyId");
+  localStorage.removeItem("LoggedInData");
+
   return null;
 });
 

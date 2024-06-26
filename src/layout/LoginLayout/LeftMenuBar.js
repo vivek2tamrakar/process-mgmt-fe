@@ -30,7 +30,7 @@ import {
   NodeExpandOutlined,
   UngroupOutlined,
 } from "@ant-design/icons";
-
+import logo from "../../assets/images/logo.34ac6a4edb0bef53937e.jpg";
 const LeftMenuBar = () => {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,6 +42,7 @@ const LeftMenuBar = () => {
   const [popoverVisibleFolder, setPopoverVisibleFolder] = useState(false); //right click on folder
   const [selectedFolder, setSelectedFolder] = useState(null); //right click on folder
   const [folderId, setFolderId] = useState(""); //right click on folder
+  const [folderName, setFolderName] = useState("");
   const { mutateAsync: GroupListGet } = useGet();
   const { groupList, folderList, processList } = useSelector(
     (state) => state.group
@@ -54,6 +55,7 @@ const LeftMenuBar = () => {
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState(null);
   const [groupAssignUsers, setGroupAssignUsers] = useState([]);
+
   const fetchData = () => {
     GroupListGet({
       url: "group/list",
@@ -86,6 +88,7 @@ const LeftMenuBar = () => {
     setFolderId(selectedFolder?.id);
     seGroupIName(selectedGroup?.name);
     setGroupAssignUsers(selectedGroup?.assign);
+    setFolderName(selectedFolder?.name);
   };
 
   const handleOpenChange = (newOpen) => {
@@ -114,7 +117,7 @@ const LeftMenuBar = () => {
     <>
       <LeftSideBar>
         <SideBarHeader>
-          <p>Project Management</p>
+          <img src={logo} alt="noimage" />
         </SideBarHeader>
         <SideBarOptions>
           <Popover
@@ -125,9 +128,12 @@ const LeftMenuBar = () => {
                   <Button onClick={() => showModal("Folder")}>
                     New Folder
                   </Button>
-                  <Button onClick={() => showModal("Process")}>
+                  {/* <Button onClick={() => showModal("Process")}>
                     New Process
-                  </Button>
+                  </Button> */}
+                  <Link to="/add-process" style={{ textDecoration: "none" }}>
+                    <Button>New Process</Button>
+                  </Link>
                 </PopoverContainer>
               </>
             }
@@ -136,8 +142,8 @@ const LeftMenuBar = () => {
             onOpenChange={handleOpenChange}
             placement="rightTop"
           >
-            <Button type="primary">
-              <PlusOutlined /> New
+            <Button type="primary" style={{ backgroundColor: "#003e6b" }}>
+              <PlusOutlined style={{ color: "#ffffff" }} /> New
             </Button>
           </Popover>
         </SideBarOptions>
@@ -170,6 +176,9 @@ const LeftMenuBar = () => {
                       <PopoverContainer>
                         <Button onClick={() => showModal("EditMember")}>
                           Edit Members
+                        </Button>
+                        <Button onClick={() => showModal("EditMember")}>
+                          Rename
                         </Button>
                         <Button onClick={() => showModal("Folder")}>
                           New Folder
@@ -244,6 +253,9 @@ const LeftMenuBar = () => {
                       <Button onClick={() => showModal("Process")}>
                         New Process
                       </Button>
+                      <Button onClick={() => showModal("Folder Delete")}>
+                        Delete
+                      </Button>
                     </PopoverContainer>
                   }
                   trigger="contextMenu"
@@ -272,18 +284,6 @@ const LeftMenuBar = () => {
                   </Link>
                 </Popover>
               ))}
-
-              {/* this is all processes */}
-              {allProcess?.map((i) => (
-                <Link key={i.id} to={`/process/${i.id}`}>
-                  <SidebarGroupRoute
-                    isselected={pathname === `/process/${i.id}`}
-                  >
-                    <NodeExpandOutlined />
-                    {i?.name}
-                  </SidebarGroupRoute>
-                </Link>
-              ))}
             </>
           )}
 
@@ -304,6 +304,7 @@ const LeftMenuBar = () => {
         folderId={folderId}
         groupName={groupName}
         groupAssignUsers={groupAssignUsers}
+        folderName={folderName}
       />
     </>
   );
