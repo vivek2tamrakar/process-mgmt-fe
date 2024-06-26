@@ -1,30 +1,55 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { GroupContainer, Header } from "./Styled";
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { AddProcessLink, HeaderMessage, HeaderTableHeader, HomeContainer, HomeContent, HomeHeader, TableData } from './Styled';
+import { BookOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const Group = () => {
   const { groupId } = useParams();
-  const group = useSelector((state) =>
-    state.group.groupList.find((g) => g.id.toString() === groupId)
-  );
-  console.log(group, "sdfghj");
+  const group = useSelector((state) => state.group.groupList.find((g) => g.id.toString() === groupId));
+  console.log(group, 'group?.proces?');
   return (
     <>
-      <GroupContainer>
-        <Header>
-          <p>Process</p>
-        </Header>
-        {group?.proces?.map((item) => (
-          <>{item.name}</>
-        ))}
-        <Header>
-          <p>Users</p>
-        </Header>
-        {group?.assign?.map((item) => (
-          <p>{item?.user?.email}</p>
-        ))}
-      </GroupContainer>
+      <HomeContainer>
+        <HomeHeader>
+          <HeaderMessage>
+            <span>
+              Home {' > '} {group?.name}
+            </span>
+          </HeaderMessage>
+          <HeaderTableHeader>
+            <div>Date Created</div>
+            <div>Last Update</div>
+            <div>Last Review</div>
+          </HeaderTableHeader>
+        </HomeHeader>
+        <HomeContent>
+          <TableData>
+            <table>
+              {group?.proces?.map((i) => (
+                <tr>
+                  <td className="Processname">
+                    <div>
+                      <BookOutlined />
+                      <span>{i?.name}</span>
+                    </div>
+                  </td>
+                  {/* <td className="DateCreated">{formatDate(i?.createdAt)}</td> */}
+                  <td className="DateCreated">01-Aug-2023</td>
+                  <td className="LastUpdated">01-Aug-2023</td>
+                  <td className="LastReview">01-Aug-2023</td>
+                </tr>
+              ))}
+            </table>
+          </TableData>
+          <AddProcessLink>
+            <span>
+              Create a new process <Link to="/add-process">here</Link>
+            </span>
+          </AddProcessLink>
+        </HomeContent>
+      </HomeContainer>
     </>
   );
 };

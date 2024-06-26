@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const MainContainer = styled.div``;
 export const Header = styled.div`
-  background-color: #003e6b;
+  background-color: #ffffff;
   height: 65px;
   width: 100%;
   display: flex;
@@ -13,6 +13,10 @@ export const Header = styled.div`
 export const LogoContainer = styled.div`
   color: white;
   padding: 30px;
+  img {
+    width: 120px;
+    height: 75px;
+  }
   p {
     font-size: 18px;
     font-weight: 700;
@@ -25,15 +29,16 @@ export const ButtonContainer = styled.div`
   button {
     height: 35px;
     width: 85px;
-    color: #003e6b;
+    color: #ffffff;
     border-radius: 10px;
     font-size: 15px;
     font-weight: 700;
     border: none;
     cursor: pointer;
+    background-color: #003e6b;
   }
   button:hover {
-    box-shadow: 0px 0px 12px 0px white;
+    box-shadow: 0px 0px 12px 0px #003e6b;
     transition: 0.3s;
   }
 `;

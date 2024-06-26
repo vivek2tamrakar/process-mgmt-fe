@@ -49,6 +49,7 @@ export const ForgotPasswordLink = styled.div`
   padding: 2px 6px 3px 0px;
   a {
     text-decoration: none;
+    color: #003e6b;
   }
 `;
 export const GotoRegister = styled.div`
@@ -56,6 +57,7 @@ export const GotoRegister = styled.div`
   margin-top: -15px;
   a {
     text-decoration: none;
+    color: #003e6b;
   }
 `;
 // Register Style
@@ -80,5 +82,6 @@ export const BySigningUpText = styled.div`
   padding: 10px 0px 10px 0px;
   a {
     text-decoration: none;
+    color: #003e6b;
   }
 `;

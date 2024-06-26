@@ -2,7 +2,7 @@ import React from "react";
 const Process = () => {
   return (
     <>
-      <div>this is process component</div>
+      <div> this is process comoponent</div>
     </>
   );
 };

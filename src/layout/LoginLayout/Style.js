@@ -9,11 +9,17 @@ export const LeftSideBar = styled.div`
   background-color: #000000;
 `;
 export const SideBarHeader = styled.div`
-  color: white;
-  height: 55px;
+  background-color: white;
+  /* height: 55px; */
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 23px;
+  img {
+    width: 120px;
+    height: 55px;
+    /* object-fit: cover; */
+  }
   p {
     font-size: 18px;
     font-weight: 600;
@@ -28,9 +34,10 @@ export const Header = styled.div`
   height: 55px;
   display: flex;
   align-items: center;
-  justify-content: end;
-  padding: 0 20px 0 0;
+  justify-content: space-between;
+  padding: 0 20px 0 30px;
 `;
+
 export const SideBarOptions = styled.div`
   display: flex;
   align-items: center;
@@ -95,8 +102,20 @@ export const SidebarFolderRoute = styled.div`
   gap: 10px;
   margin-top: 5px;
 `;
-// export const LoginLayoutContainer = styled.div``;
-// export const LoginLayoutContainer = styled.div``;
+export const HomeRoutes = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+  a {
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 21px;
+    font-weight: 600;
+    color: black;
+  }
+`;
+export const ProfileContainer = styled.div``;
 // export const LoginLayoutContainer = styled.div``;
 // export const LoginLayoutContainer = styled.div``;
 // export const LoginLayoutContainer = styled.div``;
