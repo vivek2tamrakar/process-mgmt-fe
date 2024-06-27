@@ -41,6 +41,7 @@ export const HomeContent = styled.div`
         position: relative;
         left: 22px;
         font-size: 16px;
+        cursor: pointer;
       }
       .DateCreated {
         width: 135px;
