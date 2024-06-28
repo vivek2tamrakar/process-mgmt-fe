@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   LeftSideBar,
   PopoverContainer,
@@ -7,19 +7,15 @@ import {
   SidebarFolderRoute,
   SidebarGroupRoute,
   SidebarRoute,
-  SidebarRoutesContainer,
-} from "./Style";
-import { Button, Popover } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import CommonModal from "../../components/CommonModal/CommonModal";
-import useGet from "../../hooks/useGet";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getGroupList,
-  getFolderList,
-  getProcessList,
-} from "../../features/Group/groupslice";
-import { Link, useLocation } from "react-router-dom";
+  SidebarRoutesContainer
+} from './Style';
+import { Button, Popover } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import CommonModal from '../../components/CommonModal/CommonModal';
+import useGet from '../../hooks/useGet';
+import { useDispatch, useSelector } from 'react-redux';
+import { getGroupList, getFolderList, getProcessList } from '../../features/Group/groupslice';
+import { Link, useLocation } from 'react-router-dom';
 import {
   DashboardOutlined,
   HomeOutlined,
@@ -28,25 +24,23 @@ import {
   FolderOpenOutlined,
   FolderOutlined,
   NodeExpandOutlined,
-  UngroupOutlined,
-} from "@ant-design/icons";
-import logo from "../../assets/images/logo.34ac6a4edb0bef53937e.jpg";
+  UngroupOutlined
+} from '@ant-design/icons';
+import logo from '../../assets/images/logo.34ac6a4edb0bef53937e.jpg';
 const LeftMenuBar = () => {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
+  const [modalTitle, setModalTitle] = useState('');
   const [popoverVisible, setPopoverVisible] = useState(false); //right click on group
   const [selectedGroup, setSelectedGroup] = useState(null); //right click on group
-  const [groupId, seGroupId] = useState(""); //right click on group
-  const [groupName, seGroupIName] = useState(""); //right click on group
+  const [groupId, seGroupId] = useState(''); //right click on group
+  const [groupName, seGroupIName] = useState(''); //right click on group
   const [popoverVisibleFolder, setPopoverVisibleFolder] = useState(false); //right click on folder
   const [selectedFolder, setSelectedFolder] = useState(null); //right click on folder
-  const [folderId, setFolderId] = useState(""); //right click on folder
-  const [folderName, setFolderName] = useState("");
+  const [folderId, setFolderId] = useState(''); //right click on folder
+  const [folderName, setFolderName] = useState('');
   const { mutateAsync: GroupListGet } = useGet();
-  const { groupList, folderList, processList } = useSelector(
-    (state) => state.group
-  );
+  const { groupList, folderList, processList } = useSelector((state) => state.group);
   const [allGroups, setGetAllGroups] = useState(groupList);
   const [allFolders, setGetAllFolders] = useState(folderList);
   const [allProcess, setGetAllProcess] = useState(processList);
@@ -58,9 +52,9 @@ const LeftMenuBar = () => {
 
   const fetchData = () => {
     GroupListGet({
-      url: "group/list",
-      type: "details",
-      token: true,
+      url: 'group/list',
+      type: 'details',
+      token: true
     })
       .then((res) => {
         dispatch(getGroupList({ groupList: res?.group }));
@@ -68,7 +62,7 @@ const LeftMenuBar = () => {
         dispatch(getProcessList({ processList: res?.process }));
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       });
   };
   useEffect(() => {
@@ -102,9 +96,7 @@ const LeftMenuBar = () => {
   };
 
   const handleGroupClick = (groupId) => {
-    setSelectedGroupId((prevGroupId) =>
-      prevGroupId === groupId ? null : groupId
-    );
+    setSelectedGroupId((prevGroupId) => (prevGroupId === groupId ? null : groupId));
   };
 
   const handleFolderRightClick = (e, folder) => {
@@ -124,16 +116,9 @@ const LeftMenuBar = () => {
             content={
               <>
                 <PopoverContainer>
-                  <Button onClick={() => showModal("Group")}>New Group</Button>
-                  <Button onClick={() => showModal("Folder")}>
-                    New Folder
-                  </Button>
-                  {/* <Button onClick={() => showModal("Process")}>
-                    New Process
-                  </Button> */}
-                  <Link to="/add-process" style={{ textDecoration: "none" }}>
-                    <Button>New Process</Button>
-                  </Link>
+                  <Button onClick={() => showModal('Group')}>New Group</Button>
+                  <Button onClick={() => showModal('Folder')}>New Folder</Button>
+                  <Button onClick={() => showModal('Process')}>New Process</Button>
                 </PopoverContainer>
               </>
             }
@@ -142,24 +127,21 @@ const LeftMenuBar = () => {
             onOpenChange={handleOpenChange}
             placement="rightTop"
           >
-            <Button type="primary" style={{ backgroundColor: "#003e6b" }}>
-              <PlusOutlined style={{ color: "#ffffff" }} /> New
+            <Button type="primary" style={{ backgroundColor: '#003e6b' }}>
+              <PlusOutlined style={{ color: '#ffffff' }} /> New
             </Button>
           </Popover>
         </SideBarOptions>
         <SidebarRoutesContainer className="SidebarRoutesContainer">
           <Link to="/">
-            <SidebarRoute isselected={pathname === "/"}>
+            <SidebarRoute isselected={pathname === '/'}>
               <DashboardOutlined />
               Dashboard
             </SidebarRoute>
           </Link>
 
           <Link to="/home">
-            <SidebarRoute
-              isselected={pathname === "/home"}
-              onClick={() => setShowSubMenu(!showSubMenu)}
-            >
+            <SidebarRoute isselected={pathname === '/home'} onClick={() => setShowSubMenu(!showSubMenu)}>
               <HomeOutlined />
               Home
             </SidebarRoute>
@@ -174,21 +156,11 @@ const LeftMenuBar = () => {
                   content={
                     <>
                       <PopoverContainer>
-                        <Button onClick={() => showModal("EditMember")}>
-                          Edit Members
-                        </Button>
-                        <Button onClick={() => showModal("EditMember")}>
-                          Rename
-                        </Button>
-                        <Button onClick={() => showModal("Folder")}>
-                          New Folder
-                        </Button>
-                        <Button onClick={() => showModal("Process")}>
-                          New Process
-                        </Button>
-                        <Button onClick={() => showModal("Delete")}>
-                          Delete
-                        </Button>
+                        <Button onClick={() => showModal('EditMember')}>Edit Members</Button>
+                        <Button onClick={() => showModal('EditMember')}>Rename</Button>
+                        <Button onClick={() => showModal('Folder')}>New Folder</Button>
+                        <Button onClick={() => showModal('Process')}>New Process</Button>
+                        <Button onClick={() => showModal('Delete')}>Delete</Button>
                       </PopoverContainer>
                     </>
                   }
@@ -197,19 +169,9 @@ const LeftMenuBar = () => {
                   onVisibleChange={(visible) => setPopoverVisible(visible)}
                   placement="rightTop"
                 >
-                  <Link
-                    to={`/group/${i.id}`}
-                    onContextMenu={(e) => handleRightClick(e, i)}
-                  >
-                    <SidebarGroupRoute
-                      isselected={pathname === `/group/${i.id}`}
-                      onClick={() => handleGroupClick(i.id)}
-                    >
-                      {pathname === `/group/${i.id}` ? (
-                        <UngroupOutlined />
-                      ) : (
-                        <GroupOutlined />
-                      )}
+                  <Link to={`/group/${i.id}`} onContextMenu={(e) => handleRightClick(e, i)}>
+                    <SidebarGroupRoute isselected={pathname === `/group/${i.id}`} onClick={() => handleGroupClick(i.id)}>
+                      {pathname === `/group/${i.id}` ? <UngroupOutlined /> : <GroupOutlined />}
                       {i?.name}
                     </SidebarGroupRoute>
                     {/* show folders here */}
@@ -217,22 +179,9 @@ const LeftMenuBar = () => {
                     {selectedGroupId === i.id && (
                       <div>
                         {i?.folder?.map((folder) => (
-                          <Link
-                            key={folder.id}
-                            to={`/group/${selectedGroupId}/folder/${folder?.id}`}
-                          >
-                            <SidebarFolderRoute
-                              isselected={
-                                pathname ===
-                                `/group/${selectedGroupId}/folder/${folder?.id}`
-                              }
-                            >
-                              {pathname ===
-                              `/group/${selectedGroupId}/folder/${folder?.id}` ? (
-                                <FolderOpenOutlined />
-                              ) : (
-                                <FolderOutlined />
-                              )}
+                          <Link key={folder.id} to={`/group/${selectedGroupId}/folder/${folder?.id}`}>
+                            <SidebarFolderRoute isselected={pathname === `/group/${selectedGroupId}/folder/${folder?.id}`}>
+                              {pathname === `/group/${selectedGroupId}/folder/${folder?.id}` ? <FolderOpenOutlined /> : <FolderOutlined />}
 
                               {folder.name}
                             </SidebarFolderRoute>
@@ -250,34 +199,18 @@ const LeftMenuBar = () => {
                   key={i.id}
                   content={
                     <PopoverContainer>
-                      <Button onClick={() => showModal("Process")}>
-                        New Process
-                      </Button>
-                      <Button onClick={() => showModal("Folder Delete")}>
-                        Delete
-                      </Button>
+                      <Button onClick={() => showModal('Process')}>New Process</Button>
+                      <Button onClick={() => showModal('Folder Delete')}>Delete</Button>
                     </PopoverContainer>
                   }
                   trigger="contextMenu"
                   visible={popoverVisibleFolder && selectedFolder?.id === i.id}
-                  onVisibleChange={(visible) =>
-                    setPopoverVisibleFolder(visible)
-                  }
+                  onVisibleChange={(visible) => setPopoverVisibleFolder(visible)}
                   placement="rightTop"
                 >
-                  <Link
-                    key={i.id}
-                    to={`/folder/${i.id}`}
-                    onContextMenu={(e) => handleFolderRightClick(e, i)}
-                  >
-                    <SidebarGroupRoute
-                      isselected={pathname === `/folder/${i.id}`}
-                    >
-                      {pathname === `/folder/${i.id}` ? (
-                        <FolderOpenOutlined />
-                      ) : (
-                        <FolderOutlined />
-                      )}
+                  <Link key={i.id} to={`/folder/${i.id}`} onContextMenu={(e) => handleFolderRightClick(e, i)}>
+                    <SidebarGroupRoute isselected={pathname === `/folder/${i.id}`}>
+                      {pathname === `/folder/${i.id}` ? <FolderOpenOutlined /> : <FolderOutlined />}
 
                       {i?.name}
                     </SidebarGroupRoute>
@@ -288,7 +221,7 @@ const LeftMenuBar = () => {
           )}
 
           <Link to="/users">
-            <SidebarRoute isselected={pathname === "/users"}>
+            <SidebarRoute isselected={pathname === '/users'}>
               <UserOutlined />
               Users
             </SidebarRoute>

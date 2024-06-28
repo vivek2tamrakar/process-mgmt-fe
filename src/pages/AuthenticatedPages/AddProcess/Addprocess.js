@@ -3,16 +3,22 @@ import { AddProcessContainer, BoxInput, CkEditorComtainer, AllInputsContainer, S
 import { Breadcrumb, Button, Input } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import Ckeditor from '../../../components/CKeditor/Ckeditor';
+import { useLocation } from 'react-router-dom';
 const { TextArea } = Input;
 const Addprocess = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get('id');
+  const name = queryParams.get('name');
+
   return (
     <>
       <AddProcessContainer>
         <StepsContainer>
           <Breadcrumb>
-            Home <RightOutlined /> Group Name <RightOutlined /> Folder Name
+            Home
             <RightOutlined />
-            Process Name
+            {name}
           </Breadcrumb>
           <AllInputsContainer className="okokokok">
             <BoxInput>
@@ -21,12 +27,7 @@ const Addprocess = () => {
             </BoxInput>
             <BoxInput>
               <label>Description:</label>
-              <TextArea
-                type="text"
-                rows={2}
-                placeholder="Enter Process Description"
-                //   maxLength={6}
-              />
+              <TextArea type="text" rows={2} placeholder="Enter Process Description" />
             </BoxInput>
             <BoxInput>
               <label>Tags:</label>
@@ -53,7 +54,7 @@ const Addprocess = () => {
           </AllInputsContainer>
         </StepsContainer>
         <CkEditorComtainer className="CkEditorComtainer">
-          <Ckeditor />
+          <Ckeditor id={id} />
         </CkEditorComtainer>
       </AddProcessContainer>
     </>
