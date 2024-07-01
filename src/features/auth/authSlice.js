@@ -1,64 +1,51 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
   user: null,
-  token: localStorage.getItem("token") || null,
+  token: localStorage.getItem('token') || null,
   loading: false,
-  error: null,
+  error: null
 };
 
-export const login = createAsyncThunk(
-  "auth/login",
-  async ({ username, password }, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_AUTH_URL}auth/login`,
-        {
-          username,
-          password,
-        }
-      );
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("companyId", response.data.id);
-      localStorage.setItem("LoggedInName", response.data.name);
-      console.log(response, "response");
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+export const login = createAsyncThunk('auth/login', async ({ username, password }, { rejectWithValue }) => {
+  try {
+    const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}auth/login`, {
+      username,
+      password
+    });
+    localStorage.setItem('token', response.data.token);
+    localStorage.setItem('companyId', response.data.id);
+    localStorage.setItem('LoggedInName', response.data.name);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
   }
-);
+});
 
-export const register = createAsyncThunk(
-  "users/company",
-  async ({ name, email, password }, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_AUTH_URL}users/company`,
-        {
-          name,
-          email,
-          password,
-        }
-      );
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+export const register = createAsyncThunk('users/company', async ({ name, email, password }, { rejectWithValue }) => {
+  try {
+    const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}users/company`, {
+      name,
+      email,
+      password
+    });
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
   }
-);
+});
 
-export const logout = createAsyncThunk("auth/logout", async () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("companyId");
-  localStorage.removeItem("LoggedInData");
+export const logout = createAsyncThunk('auth/logout', async () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('companyId');
+  localStorage.removeItem('LoggedInData');
 
   return null;
 });
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -80,7 +67,7 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
       });
-  },
+  }
 });
 
 export default authSlice.reducer;

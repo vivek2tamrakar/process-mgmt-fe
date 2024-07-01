@@ -3,13 +3,18 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from 'axios';
 import { Button } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import { setStepDescription } from '../../features/CKeditor/ckeditorslice';
+
 const { REACT_APP_DETAILS_URL } = process.env;
 
-const Ckeditor = ({ id }) => {
-  const [stepDescription, setStepDescription] = useState('');
+const Ckeditor = () => {
+  const dispatch = useDispatch();
   const [editorData, setEditorData] = useState('');
-  const token = localStorage.getItem('token');
-  console.log(token, 'token');
+
+  const isAddStepEnabled = useSelector((state) => state.features.isAddStepEnabled);
+  const stepDescription = useSelector((state) => state.stepDescription.stepDescription);
+  console.log(stepDescription, 'stepDescription');
   class MyUploadAdapter {
     constructor(loader) {
       this.loader = loader;
@@ -30,8 +35,7 @@ const Ckeditor = ({ id }) => {
               })
               .then((response) => {
                 const imageUrl = response?.data?.result?.url;
-                console.log('URL', response?.data?.result?.url);
-                console.log('response', response);
+
                 resolve({
                   default: imageUrl
                 });
@@ -58,50 +62,27 @@ const Ckeditor = ({ id }) => {
     extraPlugins: [MyCustomUploadAdapterPlugin]
   };
 
-  const submitForm = () => {
-    const payload = {
-      id,
-      stepDescription
-    };
-
-    console.log('Submitting form with payload:', payload);
-
-    axios
-      .patch(`${REACT_APP_DETAILS_URL}process`, payload, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then((res) => {
-        console.log('Response from API:', res);
-      })
-      .catch((error) => {
-        console.error('Error while submitting form:', error);
-      });
-  };
-
   return (
     <div>
-      <Button onClick={submitForm}>Add</Button>
+      {/* <Button onClick={submitForm}>Add</Button> */}
       <CKEditor
+        disabled={isAddStepEnabled}
         editor={ClassicEditor}
         config={editorConfiguration}
         data={editorData}
         onReady={(editor) => {
-          console.log('Editor is ready to use!', editor);
+          // console.log('Editor is ready to use!', editor);
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
-          console.log('Editor data:', data);
           setEditorData(data);
-          setStepDescription(data);
+          dispatch(setStepDescription(data));
         }}
         onBlur={(event, editor) => {
-          console.log('Editor blurred.', editor);
+          // console.log('Editor blurred.', editor);
         }}
         onFocus={(event, editor) => {
-          console.log('Editor focused.', editor);
+          // console.log('Editor focused.', editor);
         }}
       />
     </div>

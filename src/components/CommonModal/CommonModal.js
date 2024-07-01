@@ -156,7 +156,6 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
   };
 
   const handleChange = (value) => {
-    console.log(`Selected: ${value}`);
     setAssignUserId(value);
   };
 
@@ -191,7 +190,6 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
     label: i?.user?.email,
     value: i?.user.id
   }));
-  console.log(defaultUserOptions, 'defaultUserOptions');
 
   const AssignUser = () => {
     const payload = {

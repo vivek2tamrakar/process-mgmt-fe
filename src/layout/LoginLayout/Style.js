@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const LoginLayoutContainer = styled.div`
   display: flex;
@@ -62,43 +62,40 @@ export const SidebarRoutesContainer = styled.div`
 `;
 export const SidebarRoute = styled.div`
   height: 40px;
-  background-color: ${({ isselected }) =>
-    isselected ? "#003e6b" : "transparent"};
+  background-color: ${({ isselected }) => (isselected ? '#003e6b' : 'transparent')};
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: start;
   padding: 0px 0 0 30px;
   font-size: 18px;
-  font-weight: ${({ isselected }) => (isselected ? "600" : "400")};
+  font-weight: ${({ isselected }) => (isselected ? '600' : '400')};
   gap: 10px;
   margin-top: 5px;
 `;
 export const SidebarGroupRoute = styled.div`
   height: 40px;
-  background-color: ${({ isselected }) =>
-    isselected ? "#003e6b" : "transparent"};
+  background-color: ${({ isselected }) => (isselected ? '#003e6b' : 'transparent')};
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: start;
   padding: 0px 0 0 60px;
   font-size: 18px;
-  font-weight: ${({ isselected }) => (isselected ? "600" : "400")};
+  font-weight: ${({ isselected }) => (isselected ? '600' : '400')};
   gap: 10px;
   margin-top: 5px;
 `;
 export const SidebarFolderRoute = styled.div`
   height: 40px;
-  background-color: ${({ isselected }) =>
-    isselected ? "#003e6b" : "transparent"};
+  background-color: ${({ isselected }) => (isselected ? '#003e6b' : 'transparent')};
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: start;
   padding: 0px 0 0 90px;
   font-size: 18px;
-  font-weight: ${({ isselected }) => (isselected ? "600" : "400")};
+  font-weight: ${({ isselected }) => (isselected ? '600' : '400')};
   gap: 10px;
   margin-top: 5px;
 `;
@@ -116,7 +113,10 @@ export const HomeRoutes = styled.div`
   }
 `;
 export const ProfileContainer = styled.div``;
-// export const LoginLayoutContainer = styled.div``;
+export const ProcessStepButton = styled.div`
+  display: flex;
+  gap: 20px;
+`;
 // export const LoginLayoutContainer = styled.div``;
 // export const LoginLayoutContainer = styled.div``;
 // export const LoginLayoutContainer = styled.div``;
