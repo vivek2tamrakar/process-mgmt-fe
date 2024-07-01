@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProcessList } from '../../../features/Group/groupslice';
+import { setSelectedProcess } from '../../../features/process/processSlice';
 import {
   AddProcessLink,
   Header,
@@ -14,7 +15,7 @@ import {
 
 import { BookOutlined } from '@ant-design/icons';
 import useGet from '../../../hooks/useGet';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PopoverContainer } from 'layout/LoginLayout/Style';
 import { Button, Popover } from 'antd';
 
@@ -32,10 +33,11 @@ const Home = () => {
   const { mutateAsync: GroupListGet } = useGet();
   const { processList } = useSelector((state) => state.group);
   const [allProcess, setGetAllProcess] = useState(processList);
-  const [popoverVisible, setPopoverVisible] = useState(false); //right click on group
-  const [selectedGroup, setSelectedGroup] = useState(null); //right click on group
+  const [popoverVisible, setPopoverVisible] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState(null);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const LoggedInName = localStorage.getItem('LoggedInName');
 
@@ -52,6 +54,7 @@ const Home = () => {
         console.error('Error fetching data:', error);
       });
   };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -60,73 +63,71 @@ const Home = () => {
     setGetAllProcess(processList);
   }, [processList]);
 
-  const showModal = (title) => {
-    console.log(title);
-  };
+  const showModal = (title) => {};
   const handleRightClick = (e, group) => {
     e.preventDefault();
     setSelectedGroup(group);
     setPopoverVisible(true);
   };
 
+  const handleEditClick = (process) => {
+    console.log(process);
+    dispatch(setSelectedProcess(process));
+    navigate('/add-process');
+  };
+
   return (
-    <>
-      <HomeContainer>
-        <HomeHeader>
-          <HeaderMessage>
-            <span>Welcome, {LoggedInName}!</span>
-          </HeaderMessage>
-          <HeaderTableHeader>
-            <div>Date Created</div>
-            <div>Last Update</div>
-            <div>Last Review</div>
-          </HeaderTableHeader>
-        </HomeHeader>
-        <HomeContent>
-          <TableData>
-            <table>
-              {allProcess?.map((i) => (
-                <Popover
-                  key={i.id}
-                  content={
-                    <>
-                      <PopoverContainer>
-                        <Button onClick={() => showModal('EditMember')}>Open</Button>
-                        <Button onClick={() => showModal('Folder')}>
-                          <Link to={`/add-process?id=${i.id}&name=${i.name}`}>Edit</Link>
-                        </Button>
-                        <Button onClick={() => showModal('EditMember')}>Delete</Button>
-                      </PopoverContainer>
-                    </>
-                  }
-                  trigger="contextMenu"
-                  visible={popoverVisible && selectedGroup?.id === i.id}
-                  onVisibleChange={(visible) => setPopoverVisible(visible)}
-                  placement="rightTop"
-                >
-                  <tr>
-                    <td className="Processname" onContextMenu={(e) => handleRightClick(e, i)}>
-                      <div>
-                        <BookOutlined />
-                        <span>{i?.name}</span>
-                      </div>
-                    </td>
-                    <td className="DateCreated">{formatDate(i?.createdAt)}</td>
-                    <td className="LastUpdated">01-Aug-2023</td>
-                    <td className="LastReview">01-Aug-2023</td>
-                  </tr>
-                </Popover>
-              ))}
-            </table>
-          </TableData>
-          <AddProcessLink>
-            <span>
-              Create a new process <Link to="/add-process">here</Link>
-            </span>
-          </AddProcessLink>
-        </HomeContent>
-      </HomeContainer>
-    </>
+    <HomeContainer>
+      <HomeHeader>
+        <HeaderMessage>
+          <span>Welcome, {LoggedInName}!</span>
+        </HeaderMessage>
+        <HeaderTableHeader>
+          <div>Date Created</div>
+          <div>Last Update</div>
+          <div>Last Review</div>
+        </HeaderTableHeader>
+      </HomeHeader>
+      <HomeContent>
+        <TableData>
+          <table>
+            {allProcess?.map((i) => (
+              <Popover
+                key={i.id}
+                content={
+                  <PopoverContainer>
+                    <Button onClick={() => showModal('EditMember')}>Open</Button>
+                    <Button onClick={() => handleEditClick(i)}>Edit</Button>
+                    <Button onClick={() => showModal('EditMember')}>Delete</Button>
+                  </PopoverContainer>
+                }
+                trigger="contextMenu"
+                visible={popoverVisible && selectedGroup?.id === i.id}
+                onVisibleChange={(visible) => setPopoverVisible(visible)}
+                placement="rightTop"
+              >
+                <tr>
+                  <td className="Processname" onContextMenu={(e) => handleRightClick(e, i)}>
+                    <div>
+                      <BookOutlined />
+                      <span>{i?.name}</span>
+                    </div>
+                  </td>
+                  <td className="DateCreated">{formatDate(i?.createdAt)}</td>
+                  <td className="LastUpdated">01-Aug-2023</td>
+                  <td className="LastReview">01-Aug-2023</td>
+                </tr>
+              </Popover>
+            ))}
+          </table>
+        </TableData>
+        <AddProcessLink>
+          <span>
+            Create a new process <Link to="/add-process">here</Link>
+          </span>
+        </AddProcessLink>
+      </HomeContent>
+    </HomeContainer>
   );
 };
 

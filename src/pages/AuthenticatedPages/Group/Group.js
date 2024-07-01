@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 const Group = () => {
   const { groupId } = useParams();
   const group = useSelector((state) => state.group.groupList.find((g) => g.id.toString() === groupId));
-  console.log(group, 'group?.proces?');
   return (
     <>
       <HomeContainer>

@@ -158,6 +158,7 @@ const LeftMenuBar = () => {
                       <PopoverContainer>
                         <Button onClick={() => showModal('EditMember')}>Edit Members</Button>
                         <Button onClick={() => showModal('EditMember')}>Rename</Button>
+                        <Button onClick={() => showModal('TaskManager')}>Task Manager</Button>
                         <Button onClick={() => showModal('Folder')}>New Folder</Button>
                         <Button onClick={() => showModal('Process')}>New Process</Button>
                         <Button onClick={() => showModal('Delete')}>Delete</Button>
@@ -211,7 +212,6 @@ const LeftMenuBar = () => {
                   <Link key={i.id} to={`/folder/${i.id}`} onContextMenu={(e) => handleFolderRightClick(e, i)}>
                     <SidebarGroupRoute isselected={pathname === `/folder/${i.id}`}>
                       {pathname === `/folder/${i.id}` ? <FolderOpenOutlined /> : <FolderOutlined />}
-
                       {i?.name}
                     </SidebarGroupRoute>
                   </Link>
