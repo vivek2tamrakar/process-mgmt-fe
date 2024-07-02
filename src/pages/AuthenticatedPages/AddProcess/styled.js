@@ -41,6 +41,7 @@ export const BoxInput = styled.div`
   flex-direction: column;
   padding: 0 0 10px 20px;
   width: 60%;
+  gap: 4px;
   label {
     color: black;
     font-size: 14px;
@@ -50,7 +51,14 @@ export const AllInputsContainer = styled.div`
   height: 400px;
   overflow: auto;
 `;
-// export const AddProcessContainer = styled.div``;
+export const ProcessActionsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 0 10px 20px;
+  width: 60%;
+  gap: 3px;
+`;
 // export const AddProcessContainer = styled.div``;
 // export const AddProcessContainer = styled.div``;
 // export const AddProcessContainer = styled.div``;
