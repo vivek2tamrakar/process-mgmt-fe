@@ -1,9 +1,12 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 // Login Style
 export const LoginContainer = styled.div`
   display: flex;
   background-color: #f5f5f5;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 65px);
 `;
 export const LeftBanner = styled.div`
   width: 50%;

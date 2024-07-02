@@ -1,6 +1,6 @@
-import React from "react";
-import { Space, Table, Tag } from "antd";
-import { TableContainer } from "./Styled";
+import React from 'react';
+import { Space, Table, Tag } from 'antd';
+import { TableContainer } from './Styled';
 
 const CommonTable = ({ columns, data }) => {
   return (

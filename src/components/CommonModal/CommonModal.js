@@ -8,8 +8,23 @@ import useGet from '../../hooks/useGet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserList } from '../../features/User/userslice';
 import usePatch from '../../hooks/usePatch';
+import { toast } from 'react-hot-toast';
 
-const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, folderId, groupName, groupAssignUsers, folderName }) => {
+const CommonModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  title,
+  fetchData,
+  groupId,
+  setGroupId,
+  folderId,
+  groupName,
+  groupAssignUsers,
+  folderName,
+  processName,
+  processId,
+  userData
+}) => {
   const { mutateAsync: CommonAdd } = usePost();
   const { mutateAsync: CommonDelete } = useDelete();
   const { mutateAsync: CommonPatch } = usePatch();
@@ -28,8 +43,14 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
   const CompanyId = localStorage.getItem('companyId');
   const [assignUserId, setAssignUserId] = useState([]);
   //get users
+  //user edit
+  const [userName, setUserName] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [isActive, setIsActive] = useState('');
+  //user edit
   const handleCancel = () => {
     setIsModalOpen(false);
+    setName('');
   };
 
   const handleSubmitGroup = () => {
@@ -45,11 +66,16 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
     })
       .then((res) => {
         setName('');
+        toast.success('Group Created successfully!');
         fetchData();
         handleCancel();
       })
       .catch((error) => {
-        console.error('Error:', error);
+        if (error?.data?.message === 'GROUP_NAME_ALREADY_EXIST') {
+          toast.error('Group name already exist!');
+        } else {
+          toast.error('Server Error');
+        }
       });
   };
 
@@ -68,11 +94,16 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
     })
       .then((res) => {
         setName('');
+        toast.success('Folder Created successfully!');
         fetchData();
         handleCancel();
       })
       .catch((error) => {
-        console.error('Error:', error);
+        if (error?.data?.message === 'FOLDER_NAME_ALREADY_EXIST') {
+          toast.error('Folder name already exist!');
+        } else {
+          toast.error('Server Error!');
+        }
       });
   };
 
@@ -95,11 +126,16 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
         setName('');
         setTag('');
         setDescription('');
+        toast.success('Process Created successfully!');
         fetchData();
         handleCancel();
       })
       .catch((error) => {
-        console.error('Error:', error);
+        if (error?.data?.message === 'PROCESS_NAME_ALREADY_EXIST') {
+          toast.error('Process name already exist!');
+        } else {
+          toast.error('Server Error!');
+        }
       });
   };
 
@@ -132,10 +168,14 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
       token: true
     })
       .then((res) => {
+        setGroupId('');
+        toast.success('Group Deleted successfully!');
         fetchData();
         handleCancel();
       })
       .catch((err) => {
+        toast.error('Server Error!');
+
         console.error(err);
       });
   };
@@ -147,16 +187,48 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
       token: true
     })
       .then((res) => {
+        toast.success('Folder Deleted successfully!');
         fetchData();
         handleCancel();
       })
       .catch((err) => {
+        toast.success('Server error!');
         console.error(err);
       });
   };
 
-  const handleChange = (value) => {
-    setAssignUserId(value);
+  const handleProcessDelete = () => {
+    CommonDelete({
+      url: `process/${processId}`,
+      type: 'details',
+      token: true
+    })
+      .then((res) => {
+        toast.success('Process Deleted successfully!');
+        fetchData();
+        handleCancel();
+      })
+      .catch((err) => {
+        toast.error('Server error!');
+        console.error(err);
+      });
+  };
+
+  const handleUserDelete = () => {
+    CommonDelete({
+      url: `users/${userData?.id}`,
+      type: 'details',
+      token: true
+    })
+      .then((res) => {
+        toast.success('User Deleted successfully!');
+        fetchData();
+        handleCancel();
+      })
+      .catch((err) => {
+        toast.error('Server error!');
+        console.error(err);
+      });
   };
 
   const fetchUserData = () => {
@@ -216,6 +288,43 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
       });
   };
 
+  const EditUser = () => {
+    const payload = {
+      id: userData?.id,
+      name: userName || userData?.name,
+      mobileNumber: mobileNumber || userData?.mobileNumber,
+      isActive: isActive || userData?.isActive
+    };
+
+    CommonPatch({
+      url: 'users',
+      type: 'details',
+      payload: payload,
+      token: true,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+      .then((res) => {
+        toast.success('User Updated successfully!');
+        setUserName('');
+        fetchData();
+        handleCancel();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  console.log(userData, 'userData');
+  useEffect(() => {
+    if (userData) {
+      setUserName(userData.name || '');
+      setUserEmail(userData.email || '');
+      setMobileNumber(userData.mobileNumber || '');
+      setIsActive(userData.isActive || '');
+    }
+  }, [userData]);
+
   return (
     <>
       {title === 'Group' && (
@@ -226,6 +335,7 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
           </BoxInput>
         </Modal>
       )}
+
       {title === 'EditMember' && (
         <Modal title={`Edit Members > ${groupName}`} open={isModalOpen} onOk={AssignUser} onCancel={handleCancel}>
           <BoxInput>
@@ -243,6 +353,7 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
           </BoxInput>
         </Modal>
       )}
+
       {title === 'Folder' && (
         <Modal title="Add Folder" open={isModalOpen} onOk={handleSubmitFolder} onCancel={handleCancel}>
           <BoxInput>
@@ -251,6 +362,7 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
           </BoxInput>
         </Modal>
       )}
+
       {title === 'Process' && (
         <Modal title="Add Process" open={isModalOpen} onOk={handleSubmitProcess} onCancel={handleCancel}>
           <BoxInput>
@@ -273,6 +385,7 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
           </BoxInput>
         </Modal>
       )}
+
       {title === 'Users' && (
         <Modal title="Invite Users" open={isModalOpen} onOk={handleAddUser} onCancel={handleCancel}>
           <BoxInput>
@@ -287,7 +400,8 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
           </BoxInput>
         </Modal>
       )}
-      {title === 'Delete' && (
+
+      {title === 'DeleteGroup' && (
         <Modal title="Delete Group" open={isModalOpen} onOk={handleGroupDelete} onCancel={handleCancel}>
           <p>
             Are You Sure To Delete <b>{groupName}</b>
@@ -300,6 +414,52 @@ const CommonModal = ({ isModalOpen, setIsModalOpen, title, fetchData, groupId, f
           <p>
             Are You Sure To Delete <b>{folderName}</b>
           </p>
+        </Modal>
+      )}
+
+      {title === 'Process Delete' && (
+        <Modal title="Delete Process" open={isModalOpen} onOk={handleProcessDelete} onCancel={handleCancel}>
+          <p>
+            Are You Sure To Delete <b>{processName}</b>
+          </p>
+        </Modal>
+      )}
+
+      {title === 'UsersDelete' && (
+        <Modal title="Delete User" open={isModalOpen} onOk={handleUserDelete} onCancel={handleCancel}>
+          <p>
+            Are You Sure To Delete <b>{userData?.name}</b>
+          </p>
+        </Modal>
+      )}
+
+      {title === 'UsersEdit' && (
+        <Modal title="Edit User" open={isModalOpen} onOk={EditUser} onCancel={handleCancel}>
+          <BoxInput>
+            <label>Name</label>
+            <Input
+              size="large"
+              type="text"
+              defaultV
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder="Enter  Name"
+            />
+          </BoxInput>
+          <BoxInput>
+            <label>Email</label>
+            <Input size="large" value={userData?.email} />
+          </BoxInput>
+          <BoxInput>
+            <label>Number</label>
+            <Input
+              size="large"
+              type="text"
+              value={mobileNumber}
+              onChange={(e) => setMobileNumber(e.target.value)}
+              placeholder="Enter Description"
+            />
+          </BoxInput>
         </Modal>
       )}
     </>

@@ -1,25 +1,17 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../../src/features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
-import {
-  LeftBanner,
-  LoginContainer,
-  LoginBox,
-  InputBox,
-  BoxInput,
-  ForgotPasswordLink,
-  GotoRegister,
-} from "./styles";
-import Image from "../../assets/images/loginpageimage.jpg";
-import { Link } from "react-router-dom";
-import { Input, Button } from "antd";
-import { toast } from "react-hot-toast";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../../src/features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { LeftBanner, LoginContainer, LoginBox, InputBox, BoxInput, ForgotPasswordLink, GotoRegister } from './styles';
+import Image from '../../assets/images/loginpageimage.jpg';
+import { Link } from 'react-router-dom';
+import { Input, Button } from 'antd';
+import { toast } from 'react-hot-toast';
 
 const Login = ({ setIsLoggedIn }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({ username: "", password: "" });
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({ username: '', password: '' });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading } = useSelector((state) => state.auth);
@@ -33,18 +25,18 @@ const Login = ({ setIsLoggedIn }) => {
     e.preventDefault();
 
     let valid = true;
-    let errors = { username: "", password: "" };
+    let errors = { username: '', password: '' };
 
     if (!username) {
-      errors.username = "* Require";
+      errors.username = '* Require';
       valid = false;
     } else if (!validateEmail(username)) {
-      errors.username = "Invalid email format";
+      errors.username = 'Invalid email format';
       valid = false;
     }
 
     if (!password) {
-      errors.password = "* Require";
+      errors.password = '* Require';
       valid = false;
     }
 
@@ -52,33 +44,28 @@ const Login = ({ setIsLoggedIn }) => {
 
     if (valid) {
       dispatch(login({ username, password })).then((result) => {
-        if (result.meta.requestStatus === "fulfilled") {
+        if (result.meta.requestStatus === 'fulfilled') {
           setIsLoggedIn(true);
-          toast.success("Login successful!");
-          navigate("/");
+          toast.success('Login successful!');
+          navigate('/');
         } else {
-          toast.error("Login failed. Please check your credentials.");
+          toast.error('Login failed. Please check your credentials.');
         }
       });
     }
   };
 
   return (
-    <LoginContainer>
-      <LeftBanner>
+    <LoginContainer className="ppppllll">
+      {/* <LeftBanner>
         <img src={Image} alt="Login Banner" />
-      </LeftBanner>
+      </LeftBanner> */}
       <LoginBox>
         <InputBox>
           <p className="logintext">Login</p>
           <form onSubmit={handleLogin}>
             <BoxInput>
-              <label>
-                Email Address{" "}
-                {errors.username && (
-                  <span style={{ color: "red" }}>{errors.username}</span>
-                )}
-              </label>
+              <label>Email Address {errors.username && <span style={{ color: 'red' }}>{errors.username}</span>}</label>
               <Input
                 size="large"
                 type="email"
@@ -86,19 +73,14 @@ const Login = ({ setIsLoggedIn }) => {
                 onChange={(e) => {
                   setUsername(e.target.value);
                   if (e.target.value && errors.username) {
-                    setErrors((prev) => ({ ...prev, username: "" }));
+                    setErrors((prev) => ({ ...prev, username: '' }));
                   }
                 }}
                 placeholder="Enter email address"
               />
             </BoxInput>
             <BoxInput>
-              <label>
-                Password{" "}
-                {errors.password && (
-                  <span style={{ color: "red" }}>{errors.password}</span>
-                )}
-              </label>
+              <label>Password {errors.password && <span style={{ color: 'red' }}>{errors.password}</span>}</label>
               <Input
                 size="large"
                 type="password"
@@ -106,7 +88,7 @@ const Login = ({ setIsLoggedIn }) => {
                 onChange={(e) => {
                   setPassword(e.target.value);
                   if (e.target.value && errors.password) {
-                    setErrors((prev) => ({ ...prev, password: "" }));
+                    setErrors((prev) => ({ ...prev, password: '' }));
                   }
                 }}
                 placeholder="Enter Password"
@@ -120,7 +102,7 @@ const Login = ({ setIsLoggedIn }) => {
                 type="primary"
                 size="large"
                 loading={loading}
-                style={{ backgroundColor: "#003e6b" }}
+                style={{ backgroundColor: '#003e6b' }}
                 htmlType="submit"
               >
                 Login

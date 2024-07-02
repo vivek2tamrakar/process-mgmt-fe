@@ -40,6 +40,7 @@ export const HomeContent = styled.div`
         position: relative;
         left: 22px;
         font-size: 16px;
+        cursor: pointer;
       }
       .DateCreated {
         width: 135px;
@@ -69,4 +70,12 @@ export const TableData = styled.div`
 `;
 export const AddProcessLink = styled.div`
   padding: 0px 0px 0px 25px;
+  span {
+    a {
+      cursor: pointer;
+      cursor: pointer;
+      color: rgb(0, 62, 107);
+      font-weight: 600;
+    }
+  }
 `;
