@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getGroupList, getFolderList, getProcessList } from '../../../features/Group/groupslice';
 import { Content, FolderComtainer, GroupComtainer, Header, MainContainer, ProcessComtainer } from './Styled';
 import {
-  DashboardOutlined,
-  HomeOutlined,
-  UserOutlined,
+  NodeCollapseOutlined,
   GroupOutlined,
   FolderOpenOutlined,
   FolderOutlined,
@@ -68,7 +66,7 @@ const Dashboard = () => {
 
         <GroupComtainer>
           <Header>
-            {selectedView === 'groups' ? <FolderOutlined /> : <FolderOpenOutlined />}
+            {selectedView === 'folders' ? <FolderOpenOutlined /> : <FolderOutlined />}
 
             <span>Folders</span>
             {allFolders?.length}
@@ -78,7 +76,8 @@ const Dashboard = () => {
 
         <GroupComtainer>
           <Header>
-            <NodeExpandOutlined />
+            {selectedView === 'processes' ? <NodeExpandOutlined /> : <NodeCollapseOutlined />}
+
             <span>Process</span>
             {allProcess?.length}
           </Header>
