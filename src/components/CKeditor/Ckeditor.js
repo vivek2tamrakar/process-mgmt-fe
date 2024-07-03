@@ -8,11 +8,11 @@ import { setStepDescription } from '../../features/CKeditor/ckeditorslice';
 
 const { REACT_APP_DETAILS_URL } = process.env;
 
-const Ckeditor = () => {
+const Ckeditor = ({ data, onChange }) => {
   const dispatch = useDispatch();
 
   const isAddStepEnabled = useSelector((state) => state.features.isAddStepEnabled);
-  const stepDescription = useSelector((state) => state.stepDescription.stepDescription);
+  // const stepDescription = useSelector((state) => state.stepDescription.stepDescription);
   class MyUploadAdapter {
     constructor(loader) {
       this.loader = loader;
@@ -66,7 +66,7 @@ const Ckeditor = () => {
         disabled={isAddStepEnabled}
         editor={ClassicEditor}
         config={editorConfiguration}
-        data={stepDescription}
+        data={data}
         onReady={(editor) => {}}
         onChange={(event, editor) => {
           const data = editor.getData();
