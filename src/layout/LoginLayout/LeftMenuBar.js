@@ -15,6 +15,7 @@ import CommonModal from '../../components/CommonModal/CommonModal';
 import useGet from '../../hooks/useGet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGroupList, getFolderList, getProcessList } from '../../features/Group/groupslice';
+// import { selectedOptionList } from '../../features/SideBar/sideBarslice';
 import { Link, useLocation } from 'react-router-dom';
 import {
   DashboardOutlined,
@@ -33,7 +34,7 @@ const LeftMenuBar = () => {
   const [modalTitle, setModalTitle] = useState('');
   const [popoverVisible, setPopoverVisible] = useState(false); //right click on group
   const [selectedGroup, setSelectedGroup] = useState(null); //right click on group
-  const [groupId, seGroupId] = useState(''); //right click on group
+  const [groupId, setGroupId] = useState(''); //right click on group
   const [groupName, seGroupIName] = useState(''); //right click on group
   const [popoverVisibleFolder, setPopoverVisibleFolder] = useState(false); //right click on folder
   const [selectedFolder, setSelectedFolder] = useState(null); //right click on folder
@@ -76,9 +77,10 @@ const LeftMenuBar = () => {
   }, [groupList, folderList, processList]);
 
   const showModal = (title) => {
+    console.log('selectedGroup?.id', selectedGroup?.id);
     setModalTitle(title);
     setIsModalOpen(true);
-    seGroupId(selectedGroup?.id);
+    setGroupId(selectedGroup?.id);
     setFolderId(selectedFolder?.id);
     seGroupIName(selectedGroup?.name);
     setGroupAssignUsers(selectedGroup?.assign);
@@ -109,7 +111,9 @@ const LeftMenuBar = () => {
     <>
       <LeftSideBar>
         <SideBarHeader>
-          <img src={logo} alt="noimage" />
+          <Link to="/">
+            <img src={logo} alt="noimage" />
+          </Link>
         </SideBarHeader>
         <SideBarOptions>
           <Popover
@@ -141,7 +145,13 @@ const LeftMenuBar = () => {
           </Link>
 
           <Link to="/home">
-            <SidebarRoute isselected={pathname === '/home'} onClick={() => setShowSubMenu(!showSubMenu)}>
+            <SidebarRoute
+              isselected={pathname === '/home'}
+              onClick={() => {
+                setShowSubMenu(!showSubMenu);
+                // dispatch(selectedOptionList('process'));
+              }}
+            >
               <HomeOutlined />
               Home
             </SidebarRoute>
@@ -161,7 +171,7 @@ const LeftMenuBar = () => {
                         <Button onClick={() => showModal('TaskManager')}>Task Manager</Button>
                         <Button onClick={() => showModal('Folder')}>New Folder</Button>
                         <Button onClick={() => showModal('Process')}>New Process</Button>
-                        <Button onClick={() => showModal('Delete')}>Delete</Button>
+                        <Button onClick={() => showModal('DeleteGroup')}>Delete</Button>
                       </PopoverContainer>
                     </>
                   }
@@ -171,7 +181,13 @@ const LeftMenuBar = () => {
                   placement="rightTop"
                 >
                   <Link to={`/group/${i.id}`} onContextMenu={(e) => handleRightClick(e, i)}>
-                    <SidebarGroupRoute isselected={pathname === `/group/${i.id}`} onClick={() => handleGroupClick(i.id)}>
+                    <SidebarGroupRoute
+                      isselected={pathname === `/group/${i.id}`}
+                      onClick={() => {
+                        handleGroupClick(i.id);
+                        // dispatch(selectedOptionList('group'));
+                      }}
+                    >
                       {pathname === `/group/${i.id}` ? <UngroupOutlined /> : <GroupOutlined />}
                       {i?.name}
                     </SidebarGroupRoute>
@@ -234,6 +250,7 @@ const LeftMenuBar = () => {
         title={modalTitle}
         fetchData={fetchData}
         groupId={groupId}
+        setGroupId={setGroupId}
         folderId={folderId}
         groupName={groupName}
         groupAssignUsers={groupAssignUsers}

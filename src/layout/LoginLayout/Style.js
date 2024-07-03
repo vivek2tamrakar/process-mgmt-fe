@@ -107,7 +107,7 @@ export const HomeRoutes = styled.div`
   a {
     text-decoration: none;
     cursor: pointer;
-    font-size: 21px;
+    font-size: 16px;
     font-weight: 600;
     color: black;
   }

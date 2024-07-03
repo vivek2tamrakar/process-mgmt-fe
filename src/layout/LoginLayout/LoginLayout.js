@@ -8,6 +8,7 @@ import { Button } from 'antd';
 import axios from 'axios';
 import { getProcessList } from '../../features/Group/groupslice';
 import { setSelectedProcess } from '../../features/process/processSlice';
+
 import useGet from 'hooks/useGet';
 const { REACT_APP_DETAILS_URL } = process.env;
 
@@ -16,14 +17,11 @@ const LoginLayout = ({ setIsLoggedIn }) => {
   const isAddStepEnabled = useSelector((state) => state.features.isAddStepEnabled);
   const process = useSelector((state) => state.process.selectedProcess);
   const stepDescription = useSelector((state) => state.stepDescription.stepDescription);
+  // const { selectedOption } = useSelector((state) => state.sidebar);
   const token = localStorage.getItem('token');
   const location = useLocation();
   const { mutateAsync: GroupListGet } = useGet();
-  const { processList } = useSelector((state) => state.group);
-  const [allProcess, setGetAllProcess] = useState(processList);
-  const [popoverVisible, setPopoverVisible] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState(null);
-
+  // console.log('selectedMenuOption', selectedOption);
   const handleLogout = () => {
     setIsLoggedIn(false);
     dispatch(logout());
@@ -37,6 +35,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
       .then((res) => {
         dispatch(getProcessList({ processList: res?.process }));
         const updatedProcess = res?.process.find((p) => p.id === process?.id);
+        console.log(updatedProcess, ']]]]]]]]]]]]]]]]]]]]]]]]]]]]');
         dispatch(setSelectedProcess(updatedProcess));
         dispatch({ type: 'stepDescription/clearStepDescription' });
       })
@@ -75,7 +74,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
         <RightContent>
           <Header>
             <HomeRoutes>
-              <Link to="/">Home</Link>
+              <Link to="/home">Home</Link>
               <Link to="/inbox">Inbox</Link>
               <Link to="/task-manager">Task Manager</Link>
             </HomeRoutes>

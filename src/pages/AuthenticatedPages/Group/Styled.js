@@ -71,4 +71,11 @@ export const TableData = styled.div`
 `;
 export const AddProcessLink = styled.div`
   padding: 0px 0px 0px 25px;
+  span {
+    a {
+      cursor: pointer;
+      color: rgb(0, 62, 107);
+      font-weight: 600;
+    }
+  }
 `;

@@ -15,9 +15,10 @@ import {
 
 import { BookOutlined } from '@ant-design/icons';
 import useGet from '../../../hooks/useGet';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PopoverContainer } from 'layout/LoginLayout/Style';
 import { Button, Popover } from 'antd';
+import CommonModal from 'components/CommonModal/CommonModal';
 
 // Date formatting function
 const formatDate = (dateString) => {
@@ -35,6 +36,10 @@ const Home = () => {
   const [allProcess, setGetAllProcess] = useState(processList);
   const [popoverVisible, setPopoverVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
+  const [selectedProcessName, setSelectedProcessName] = useState();
+  const [processId, setProcessId] = useState();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -63,7 +68,13 @@ const Home = () => {
     setGetAllProcess(processList);
   }, [processList]);
 
-  const showModal = (title) => {};
+  const showModal = (title, i) => {
+    setModalTitle(title);
+    setSelectedProcessName(i?.name);
+    setIsModalOpen(true);
+    setProcessId(i?.id);
+  };
+
   const handleRightClick = (e, group) => {
     e.preventDefault();
     setSelectedGroup(group);
@@ -71,63 +82,72 @@ const Home = () => {
   };
 
   const handleEditClick = (process) => {
-    console.log(process);
     dispatch(setSelectedProcess(process));
     navigate('/add-process');
   };
 
   return (
-    <HomeContainer>
-      <HomeHeader>
-        <HeaderMessage>
-          <span>Welcome, {LoggedInName}!</span>
-        </HeaderMessage>
-        <HeaderTableHeader>
-          <div>Date Created</div>
-          <div>Last Update</div>
-          <div>Last Review</div>
-        </HeaderTableHeader>
-      </HomeHeader>
-      <HomeContent>
-        <TableData>
-          <table>
-            {allProcess?.map((i) => (
-              <Popover
-                key={i.id}
-                content={
-                  <PopoverContainer>
-                    <Button onClick={() => showModal('EditMember')}>Open</Button>
-                    <Button onClick={() => handleEditClick(i)}>Edit</Button>
-                    <Button onClick={() => showModal('EditMember')}>Delete</Button>
-                  </PopoverContainer>
-                }
-                trigger="contextMenu"
-                visible={popoverVisible && selectedGroup?.id === i.id}
-                onVisibleChange={(visible) => setPopoverVisible(visible)}
-                placement="rightTop"
-              >
-                <tr>
-                  <td className="Processname" onContextMenu={(e) => handleRightClick(e, i)}>
-                    <div>
-                      <BookOutlined />
-                      <span>{i?.name}</span>
-                    </div>
-                  </td>
-                  <td className="DateCreated">{formatDate(i?.createdAt)}</td>
-                  <td className="LastUpdated">01-Aug-2023</td>
-                  <td className="LastReview">01-Aug-2023</td>
-                </tr>
-              </Popover>
-            ))}
-          </table>
-        </TableData>
-        <AddProcessLink>
-          <span>
-            Create a new process <Link to="/add-process">here</Link>
-          </span>
-        </AddProcessLink>
-      </HomeContent>
-    </HomeContainer>
+    <>
+      <HomeContainer>
+        <HomeHeader>
+          <HeaderMessage>
+            <span>Welcome, {LoggedInName}!</span>
+          </HeaderMessage>
+          <HeaderTableHeader>
+            <div>Date Created</div>
+            <div>Last Update</div>
+            <div>Last Review</div>
+          </HeaderTableHeader>
+        </HomeHeader>
+        <HomeContent>
+          <TableData>
+            <table>
+              {allProcess?.map((i) => (
+                <Popover
+                  key={i.id}
+                  content={
+                    <PopoverContainer>
+                      <Button onClick={() => handleEditClick(i)}>Open</Button>
+                      <Button onClick={() => handleEditClick(i)}>Edit</Button>
+                      <Button onClick={() => showModal('Process Delete', i)}>Delete</Button>
+                    </PopoverContainer>
+                  }
+                  trigger="contextMenu"
+                  visible={popoverVisible && selectedGroup?.id === i.id}
+                  onVisibleChange={(visible) => setPopoverVisible(visible)}
+                  placement="rightTop"
+                >
+                  <tr>
+                    <td className="Processname" onContextMenu={(e) => handleRightClick(e, i)}>
+                      <div>
+                        <BookOutlined />
+                        <span>{i?.name}</span>
+                      </div>
+                    </td>
+                    <td className="DateCreated">{formatDate(i?.createdAt)}</td>
+                    <td className="LastUpdated">01-Aug-2023</td>
+                    <td className="LastReview">01-Aug-2023</td>
+                  </tr>
+                </Popover>
+              ))}
+            </table>
+          </TableData>
+          <AddProcessLink>
+            <span>
+              Create a new process <a onClick={() => showModal('Process')}>here</a>
+            </span>
+          </AddProcessLink>
+        </HomeContent>
+      </HomeContainer>
+      <CommonModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        title={modalTitle}
+        fetchData={fetchData}
+        processName={selectedProcessName}
+        processId={processId}
+      />
+    </>
   );
 };
 
