@@ -14,16 +14,16 @@ const CommonModal = ({
   isModalOpen,
   setIsModalOpen,
   title,
-  fetchData,
-  groupId,
-  setGroupId,
-  folderId,
-  groupName,
   groupAssignUsers,
+  fetchData,
+  setGroupId,
+  userData,
+  groupName,
+  groupId,
   folderName,
+  folderId,
   processName,
-  processId,
-  userData
+  processId
 }) => {
   const { mutateAsync: CommonAdd } = usePost();
   const { mutateAsync: CommonDelete } = useDelete();
@@ -33,7 +33,7 @@ const CommonModal = ({
   const [tags, setTag] = useState('');
   const [description, setDescription] = useState('');
   // Add Procedd State
-
+  const [rename, setRename] = useState('');
   const [userEmail, setUserEmail] = useState('');
   // get users
   const { mutateAsync: UserListGet } = useGet();
@@ -47,6 +47,7 @@ const CommonModal = ({
   const [userName, setUserName] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [isActive, setIsActive] = useState('');
+
   //user edit
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -258,10 +259,13 @@ const CommonModal = ({
     value: user.id
   }));
 
-  const defaultUserOptions = groupAssignUsers?.map((i) => ({
-    label: i?.user?.email,
-    value: i?.user.id
-  }));
+  useEffect(() => {
+    const defaultUserOptions = groupAssignUsers?.map((i) => ({
+      label: i?.user?.email,
+      value: i?.user.id
+    }));
+    setAssignUserId(defaultUserOptions);
+  }, [groupAssignUsers]);
 
   const AssignUser = () => {
     const payload = {
@@ -315,7 +319,76 @@ const CommonModal = ({
         console.error(err);
       });
   };
-  console.log(userData, 'userData');
+
+  // const Rename = () => {
+  //   const payload = {
+  //     name: rename,
+  //     folderId,
+  //     groupId,
+  //     ProcessId: processId
+  //   };
+
+  //   CommonPatch({
+  //     url: 'group',
+  //     type: 'details',
+  //     payload: payload,
+  //     token: true,
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data'
+  //     }
+  //   })
+  //     .then((res) => {
+  //       fetchData();
+  //       handleCancel();
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // };
+  const Rename = () => {
+    let payload = {
+      name: rename,
+      ProcessId: processId
+    };
+
+    if (groupId && folderId) {
+      payload = {
+        ...payload,
+        folderId
+      };
+    } else {
+      if (groupId) {
+        payload = {
+          ...payload,
+          groupId
+        };
+      }
+      if (folderId) {
+        payload = {
+          ...payload,
+          folderId
+        };
+      }
+    }
+
+    CommonPatch({
+      url: 'group',
+      type: 'details',
+      payload: payload,
+      token: true,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+      .then((res) => {
+        fetchData();
+        handleCancel();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   useEffect(() => {
     if (userData) {
       setUserName(userData.name || '');
@@ -325,6 +398,14 @@ const CommonModal = ({
     }
   }, [userData]);
 
+  useEffect(() => {
+    if (title === 'Rename') {
+      if (groupName) setRename(groupName);
+      if (folderName) setRename(folderName);
+      if (processName) setRename(processName);
+    }
+  }, [title, groupName, folderName, processName]);
+  console.log(groupAssignUsers, 'groupAssignUsers');
   return (
     <>
       {title === 'Group' && (
@@ -335,7 +416,6 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
-
       {title === 'EditMember' && (
         <Modal title={`Edit Members > ${groupName}`} open={isModalOpen} onOk={AssignUser} onCancel={handleCancel}>
           <BoxInput>
@@ -349,11 +429,11 @@ const CommonModal = ({
                 width: '100%'
               }}
               options={userOptions}
+              value={assignUserId}
             />
           </BoxInput>
         </Modal>
       )}
-
       {title === 'Folder' && (
         <Modal title="Add Folder" open={isModalOpen} onOk={handleSubmitFolder} onCancel={handleCancel}>
           <BoxInput>
@@ -362,7 +442,6 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
-
       {title === 'Process' && (
         <Modal title="Add Process" open={isModalOpen} onOk={handleSubmitProcess} onCancel={handleCancel}>
           <BoxInput>
@@ -385,7 +464,6 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
-
       {title === 'Users' && (
         <Modal title="Invite Users" open={isModalOpen} onOk={handleAddUser} onCancel={handleCancel}>
           <BoxInput>
@@ -400,7 +478,6 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
-
       {title === 'DeleteGroup' && (
         <Modal title="Delete Group" open={isModalOpen} onOk={handleGroupDelete} onCancel={handleCancel}>
           <p>
@@ -408,7 +485,6 @@ const CommonModal = ({
           </p>
         </Modal>
       )}
-
       {title === 'Folder Delete' && (
         <Modal title="Delete Folder" open={isModalOpen} onOk={handleFolderDelete} onCancel={handleCancel}>
           <p>
@@ -416,7 +492,6 @@ const CommonModal = ({
           </p>
         </Modal>
       )}
-
       {title === 'Process Delete' && (
         <Modal title="Delete Process" open={isModalOpen} onOk={handleProcessDelete} onCancel={handleCancel}>
           <p>
@@ -424,7 +499,6 @@ const CommonModal = ({
           </p>
         </Modal>
       )}
-
       {title === 'UsersDelete' && (
         <Modal title="Delete User" open={isModalOpen} onOk={handleUserDelete} onCancel={handleCancel}>
           <p>
@@ -432,7 +506,6 @@ const CommonModal = ({
           </p>
         </Modal>
       )}
-
       {title === 'UsersEdit' && (
         <Modal title="Edit User" open={isModalOpen} onOk={EditUser} onCancel={handleCancel}>
           <BoxInput>
@@ -459,6 +532,15 @@ const CommonModal = ({
               onChange={(e) => setMobileNumber(e.target.value)}
               placeholder="Enter Description"
             />
+          </BoxInput>
+        </Modal>
+      )}
+
+      {title === 'Rename' && (
+        <Modal title={groupName || folderName || processName} open={isModalOpen} onOk={Rename} onCancel={handleCancel}>
+          <BoxInput>
+            <label>Rename</label>
+            <Input size="large" type="text" value={rename} onChange={(e) => setRename(e.target.value)} placeholder="Enter Name" />
           </BoxInput>
         </Modal>
       )}

@@ -76,14 +76,47 @@ const LeftMenuBar = () => {
     setGetAllProcess(processList);
   }, [groupList, folderList, processList]);
 
-  const showModal = (title) => {
-    console.log('selectedGroup?.id', selectedGroup?.id);
+  const showModal = (title, isAllFolder) => {
+    if (title === 'Rename' && !isAllFolder) {
+      setModalTitle(title);
+      setIsModalOpen(true);
+      setGroupAssignUsers(selectedGroup?.assign);
+
+      if (popoverVisibleFolder) {
+        setFolderId(selectedFolder?.id);
+        setFolderName(selectedFolder?.name);
+        setGroupId('');
+        seGroupIName('');
+      }
+      if (popoverVisible) {
+        setGroupId(selectedGroup?.id);
+        seGroupIName(selectedGroup?.name);
+        setFolderId('');
+        setFolderName('');
+      }
+    } else if (title === 'Rename' && isAllFolder === true) {
+      setModalTitle(title);
+      setIsModalOpen(true);
+      setGroupId(selectedGroup?.id);
+      setFolderId(selectedFolder?.id);
+      seGroupIName(selectedGroup?.name);
+      setGroupAssignUsers(selectedGroup?.assign);
+      setFolderName(selectedFolder?.name);
+    } else {
+      setModalTitle(title);
+      setIsModalOpen(true);
+      setGroupId(selectedGroup?.id);
+      setFolderId(selectedFolder?.id);
+      seGroupIName(selectedGroup?.name);
+      setGroupAssignUsers(selectedGroup?.assign);
+      setFolderName(selectedFolder?.name);
+    }
+  };
+
+  const showFolderModal = (title) => {
     setModalTitle(title);
     setIsModalOpen(true);
-    setGroupId(selectedGroup?.id);
     setFolderId(selectedFolder?.id);
-    seGroupIName(selectedGroup?.name);
-    setGroupAssignUsers(selectedGroup?.assign);
     setFolderName(selectedFolder?.name);
   };
 
@@ -106,7 +139,12 @@ const LeftMenuBar = () => {
     setSelectedFolder(folder);
     setPopoverVisibleFolder(true);
   };
-
+  const ClearData = () => {
+    setFolderId('');
+    setGroupId('');
+    setSelectedFolder(null);
+    setSelectedGroup(null);
+  };
   return (
     <>
       <LeftSideBar>
@@ -131,7 +169,7 @@ const LeftMenuBar = () => {
             onOpenChange={handleOpenChange}
             placement="rightTop"
           >
-            <Button type="primary" style={{ backgroundColor: '#003e6b' }}>
+            <Button type="primary" style={{ backgroundColor: '#003e6b' }} onClick={ClearData}>
               <PlusOutlined style={{ color: '#ffffff' }} /> New
             </Button>
           </Popover>
@@ -162,12 +200,13 @@ const LeftMenuBar = () => {
               {/* this is all groups  */}
               {allGroups?.map((i) => (
                 <Popover
+                  className="abababab"
                   key={i.id}
                   content={
                     <>
-                      <PopoverContainer>
+                      <PopoverContainer className="okokokok">
                         <Button onClick={() => showModal('EditMember')}>Edit Members</Button>
-                        <Button onClick={() => showModal('EditMember')}>Rename</Button>
+                        <Button onClick={() => showModal('Rename')}>Rename</Button>
                         <Button onClick={() => showModal('TaskManager')}>Task Manager</Button>
                         <Button onClick={() => showModal('Folder')}>New Folder</Button>
                         <Button onClick={() => showModal('Process')}>New Process</Button>
@@ -176,7 +215,7 @@ const LeftMenuBar = () => {
                     </>
                   }
                   trigger="contextMenu"
-                  visible={popoverVisible && selectedGroup?.id === i.id}
+                  visible={!popoverVisibleFolder && popoverVisible && selectedGroup?.id === i.id}
                   onVisibleChange={(visible) => setPopoverVisible(visible)}
                   placement="rightTop"
                 >
@@ -185,7 +224,6 @@ const LeftMenuBar = () => {
                       isselected={pathname === `/group/${i.id}`}
                       onClick={() => {
                         handleGroupClick(i.id);
-                        // dispatch(selectedOptionList('group'));
                       }}
                     >
                       {pathname === `/group/${i.id}` ? <UngroupOutlined /> : <GroupOutlined />}
@@ -196,13 +234,34 @@ const LeftMenuBar = () => {
                     {selectedGroupId === i.id && (
                       <div>
                         {i?.folder?.map((folder) => (
-                          <Link key={folder.id} to={`/group/${selectedGroupId}/folder/${folder?.id}`}>
-                            <SidebarFolderRoute isselected={pathname === `/group/${selectedGroupId}/folder/${folder?.id}`}>
-                              {pathname === `/group/${selectedGroupId}/folder/${folder?.id}` ? <FolderOpenOutlined /> : <FolderOutlined />}
-
-                              {folder.name}
-                            </SidebarFolderRoute>
-                          </Link>
+                          <Popover
+                            key={folder.id}
+                            content={
+                              <PopoverContainer>
+                                <Button onClick={() => showFolderModal('Process')}>New Process</Button>
+                                <Button onClick={() => showFolderModal('Rename')}>Rename</Button>
+                                <Button onClick={() => showFolderModal('Folder Delete')}>Delete</Button>
+                              </PopoverContainer>
+                            }
+                            trigger="contextMenu"
+                            visible={popoverVisible && popoverVisibleFolder && selectedFolder?.id === folder.id}
+                            onVisibleChange={(visible) => setPopoverVisibleFolder(visible)}
+                            placement="rightTop"
+                          >
+                            <Link
+                              to={`/group/${selectedGroupId}/folder/${folder?.id}`}
+                              onContextMenu={(e) => handleFolderRightClick(e, folder)}
+                            >
+                              <SidebarFolderRoute isselected={pathname === `/group/${selectedGroupId}/folder/${folder?.id}`}>
+                                {pathname === `/group/${selectedGroupId}/folder/${folder?.id}` ? (
+                                  <FolderOpenOutlined />
+                                ) : (
+                                  <FolderOutlined />
+                                )}
+                                {folder.name}
+                              </SidebarFolderRoute>
+                            </Link>
+                          </Popover>
                         ))}
                       </div>
                     )}
@@ -217,6 +276,7 @@ const LeftMenuBar = () => {
                   content={
                     <PopoverContainer>
                       <Button onClick={() => showModal('Process')}>New Process</Button>
+                      <Button onClick={() => showModal('Rename', true)}>Rename</Button>
                       <Button onClick={() => showModal('Folder Delete')}>Delete</Button>
                     </PopoverContainer>
                   }

@@ -14,7 +14,6 @@ const Ckeditor = () => {
 
   const isAddStepEnabled = useSelector((state) => state.features.isAddStepEnabled);
   const stepDescription = useSelector((state) => state.stepDescription.stepDescription);
-  console.log(stepDescription, 'stepDescription');
   class MyUploadAdapter {
     constructor(loader) {
       this.loader = loader;
@@ -71,7 +70,6 @@ const Ckeditor = () => {
         config={editorConfiguration}
         data={editorData}
         onReady={(editor) => {
-          // console.log('Editor is ready to use!', editor);
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
@@ -79,10 +77,8 @@ const Ckeditor = () => {
           dispatch(setStepDescription(data));
         }}
         onBlur={(event, editor) => {
-          // console.log('Editor blurred.', editor);
         }}
         onFocus={(event, editor) => {
-          // console.log('Editor focused.', editor);
         }}
       />
     </div>

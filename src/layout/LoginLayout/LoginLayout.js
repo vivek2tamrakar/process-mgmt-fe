@@ -21,7 +21,6 @@ const LoginLayout = ({ setIsLoggedIn }) => {
   const token = localStorage.getItem('token');
   const location = useLocation();
   const { mutateAsync: GroupListGet } = useGet();
-  // console.log('selectedMenuOption', selectedOption);
   const handleLogout = () => {
     setIsLoggedIn(false);
     dispatch(logout());
@@ -34,8 +33,11 @@ const LoginLayout = ({ setIsLoggedIn }) => {
     })
       .then((res) => {
         dispatch(getProcessList({ processList: res?.process }));
-        const updatedProcess = res?.process.find((p) => p.id === process?.id);
-        console.log(updatedProcess, ']]]]]]]]]]]]]]]]]]]]]]]]]]]]');
+        const updatedProcess = res?.process.find((p) => p?.id === process?.id);
+
+        // console.log('updatedProcess', updatedProcess);
+        // console.log('process?.id', process?.id, res?.process);
+
         dispatch(setSelectedProcess(updatedProcess));
         dispatch({ type: 'stepDescription/clearStepDescription' });
       })
@@ -60,7 +62,6 @@ const LoginLayout = ({ setIsLoggedIn }) => {
       .then((res) => {
         dispatch({ type: 'stepDescription/clearStepDescription' });
         fetchData();
-        console.log('Response from API:', res);
       })
       .catch((error) => {
         console.error('Error while submitting form:', error);
