@@ -34,6 +34,7 @@ const CommonModal = ({
   const [description, setDescription] = useState('');
   // Add Procedd State
   const [rename, setRename] = useState('');
+  const [heading, setHeading] = useState('');
   const [userEmail, setUserEmail] = useState('');
   // get users
   const { mutateAsync: UserListGet } = useGet();
@@ -270,6 +271,7 @@ const CommonModal = ({
   const AssignUser = () => {
     const payload = {
       groupId,
+      folderId,
       assignUserId
     };
 
@@ -400,12 +402,23 @@ const CommonModal = ({
 
   useEffect(() => {
     if (title === 'Rename') {
-      if (groupName) setRename(groupName);
-      if (folderName) setRename(folderName);
-      if (processName) setRename(processName);
+      if (groupName) {
+        setRename(groupName);
+        setHeading(groupName);
+      }
+      if (folderName) {
+        setRename(folderName);
+        setHeading(folderName);
+      }
+      if (processName) {
+        setRename(processName);
+        setHeading(processName);
+      }
     }
   }, [title, groupName, folderName, processName]);
-  console.log(groupAssignUsers, 'groupAssignUsers');
+
+  console.log(groupName, folderName, processName);
+
   return (
     <>
       {title === 'Group' && (
@@ -537,7 +550,7 @@ const CommonModal = ({
       )}
 
       {title === 'Rename' && (
-        <Modal title={groupName || folderName || processName} open={isModalOpen} onOk={Rename} onCancel={handleCancel}>
+        <Modal title={heading} open={isModalOpen} onOk={Rename} onCancel={handleCancel}>
           <BoxInput>
             <label>Rename</label>
             <Input size="large" type="text" value={rename} onChange={(e) => setRename(e.target.value)} placeholder="Enter Name" />
