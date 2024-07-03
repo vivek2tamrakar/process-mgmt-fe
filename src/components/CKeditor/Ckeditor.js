@@ -10,7 +10,6 @@ const { REACT_APP_DETAILS_URL } = process.env;
 
 const Ckeditor = () => {
   const dispatch = useDispatch();
-  const [editorData, setEditorData] = useState('');
 
   const isAddStepEnabled = useSelector((state) => state.features.isAddStepEnabled);
   const stepDescription = useSelector((state) => state.stepDescription.stepDescription);
@@ -63,23 +62,18 @@ const Ckeditor = () => {
 
   return (
     <div>
-      {/* <Button onClick={submitForm}>Add</Button> */}
       <CKEditor
         disabled={isAddStepEnabled}
         editor={ClassicEditor}
         config={editorConfiguration}
-        data={editorData}
-        onReady={(editor) => {
-        }}
+        data={stepDescription}
+        onReady={(editor) => {}}
         onChange={(event, editor) => {
           const data = editor.getData();
-          setEditorData(data);
           dispatch(setStepDescription(data));
         }}
-        onBlur={(event, editor) => {
-        }}
-        onFocus={(event, editor) => {
-        }}
+        onBlur={(event, editor) => {}}
+        onFocus={(event, editor) => {}}
       />
     </div>
   );

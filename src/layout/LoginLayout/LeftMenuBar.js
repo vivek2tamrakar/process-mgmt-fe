@@ -50,6 +50,7 @@ const LeftMenuBar = () => {
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState(null);
   const [groupAssignUsers, setGroupAssignUsers] = useState([]);
+  const [folderAssignUsers, setFolderAssignUsers] = useState([]);
 
   const fetchData = () => {
     GroupListGet({
@@ -81,6 +82,7 @@ const LeftMenuBar = () => {
       setModalTitle(title);
       setIsModalOpen(true);
       setGroupAssignUsers(selectedGroup?.assign);
+      setFolderAssignUsers(selectedFolder?.assign);
 
       if (popoverVisibleFolder) {
         setFolderId(selectedFolder?.id);
@@ -101,6 +103,7 @@ const LeftMenuBar = () => {
       setFolderId(selectedFolder?.id);
       seGroupIName(selectedGroup?.name);
       setGroupAssignUsers(selectedGroup?.assign);
+      setFolderAssignUsers(selectedFolder?.assign);
       setFolderName(selectedFolder?.name);
     } else {
       setModalTitle(title);
@@ -109,6 +112,7 @@ const LeftMenuBar = () => {
       setFolderId(selectedFolder?.id);
       seGroupIName(selectedGroup?.name);
       setGroupAssignUsers(selectedGroup?.assign);
+      setFolderAssignUsers(selectedFolder?.assign);
       setFolderName(selectedFolder?.name);
     }
   };
@@ -145,6 +149,7 @@ const LeftMenuBar = () => {
     setSelectedFolder(null);
     setSelectedGroup(null);
   };
+  console.log(selectedFolder, 'selectedFolder');
   return (
     <>
       <LeftSideBar>
@@ -238,6 +243,7 @@ const LeftMenuBar = () => {
                             key={folder.id}
                             content={
                               <PopoverContainer>
+                                {/* <Button onClick={() => showModal('EditFolderMember')}>Edit Members</Button> */}
                                 <Button onClick={() => showFolderModal('Process')}>New Process</Button>
                                 <Button onClick={() => showFolderModal('Rename')}>Rename</Button>
                                 <Button onClick={() => showFolderModal('Folder Delete')}>Delete</Button>
@@ -275,6 +281,7 @@ const LeftMenuBar = () => {
                   key={i.id}
                   content={
                     <PopoverContainer>
+                      {/* <Button onClick={() => showModal('EditFolderMember')}>Edit Members</Button> */}
                       <Button onClick={() => showModal('Process')}>New Process</Button>
                       <Button onClick={() => showModal('Rename', true)}>Rename</Button>
                       <Button onClick={() => showModal('Folder Delete')}>Delete</Button>
@@ -314,6 +321,7 @@ const LeftMenuBar = () => {
         folderId={folderId}
         groupName={groupName}
         groupAssignUsers={groupAssignUsers}
+        folderAssignUsers={folderAssignUsers}
         folderName={folderName}
       />
     </>

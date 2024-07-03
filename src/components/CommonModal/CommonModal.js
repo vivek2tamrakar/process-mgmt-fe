@@ -15,6 +15,7 @@ const CommonModal = ({
   setIsModalOpen,
   title,
   groupAssignUsers,
+  folderAssignUsers,
   fetchData,
   setGroupId,
   userData,
@@ -43,6 +44,7 @@ const CommonModal = ({
   const dispatch = useDispatch();
   const CompanyId = localStorage.getItem('companyId');
   const [assignUserId, setAssignUserId] = useState([]);
+  const [assignfolderUserId, setAssignfolderUserId] = useState([]);
   //get users
   //user edit
   const [userName, setUserName] = useState('');
@@ -155,10 +157,17 @@ const CommonModal = ({
     })
       .then((res) => {
         setUserEmail('');
+        toast.success('User added successfully!');
+
         fetchData();
         handleCancel();
       })
       .catch((error) => {
+        if (error?.data?.message === 'EMAIL_ALREADY_EXIST') {
+          toast.error('Email Address already exist!');
+        } else {
+          toast.error('Server Error');
+        }
         console.error('Error:', error);
       });
   };
@@ -177,7 +186,6 @@ const CommonModal = ({
       })
       .catch((err) => {
         toast.error('Server Error!');
-
         console.error(err);
       });
   };
@@ -268,10 +276,17 @@ const CommonModal = ({
     setAssignUserId(defaultUserOptions);
   }, [groupAssignUsers]);
 
+  useEffect(() => {
+    const defaultUserOptions = folderAssignUsers?.map((i) => ({
+      label: i?.user?.email,
+      value: i?.user.id
+    }));
+    setAssignfolderUserId(defaultUserOptions);
+  }, [folderAssignUsers]);
+
   const AssignUser = () => {
     const payload = {
       groupId,
-      folderId,
       assignUserId
     };
 
@@ -285,14 +300,43 @@ const CommonModal = ({
       }
     })
       .then((res) => {
+        toast.success('User Assign Successfully !');
         fetchData();
         handleCancel();
         setAssignUserId('');
+        setAssignfolderUserId('');
       })
       .catch((err) => {
+        toast.error('server error !');
         console.error(err);
       });
   };
+
+  // const AssignUserFolder = () => {
+  //   const payload = {
+  //     folderId,
+  //     assignUserId: assignfolderUserId
+  //   };
+
+  //   CommonPatch({
+  //     url: 'assign',
+  //     type: 'details',
+  //     payload: payload,
+  //     token: true,
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data'
+  //     }
+  //   })
+  //     .then((res) => {
+  //       fetchData();
+  //       handleCancel();
+  //       setAssignUserId('');
+  //       setAssignfolderUserId('');
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // };
 
   const EditUser = () => {
     const payload = {
@@ -322,31 +366,6 @@ const CommonModal = ({
       });
   };
 
-  // const Rename = () => {
-  //   const payload = {
-  //     name: rename,
-  //     folderId,
-  //     groupId,
-  //     ProcessId: processId
-  //   };
-
-  //   CommonPatch({
-  //     url: 'group',
-  //     type: 'details',
-  //     payload: payload,
-  //     token: true,
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     }
-  //   })
-  //     .then((res) => {
-  //       fetchData();
-  //       handleCancel();
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
   const Rename = () => {
     let payload = {
       name: rename,
@@ -383,6 +402,7 @@ const CommonModal = ({
       }
     })
       .then((res) => {
+        toast.success('Name Changed Successfully !');
         fetchData();
         handleCancel();
       })
@@ -417,8 +437,6 @@ const CommonModal = ({
     }
   }, [title, groupName, folderName, processName]);
 
-  console.log(groupName, folderName, processName);
-
   return (
     <>
       {title === 'Group' && (
@@ -429,6 +447,7 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
+
       {title === 'EditMember' && (
         <Modal title={`Edit Members > ${groupName}`} open={isModalOpen} onOk={AssignUser} onCancel={handleCancel}>
           <BoxInput>
@@ -447,6 +466,26 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
+
+      {/* {title === 'EditFolderMember' && (
+        <Modal title={`Edit Members > ${folderName}`} open={isModalOpen} onOk={AssignUserFolder} onCancel={handleCancel}>
+          <BoxInput>
+            <label>Assign Users</label>
+            <Select
+              mode="tags"
+              size="large"
+              placeholder="Please select"
+              onChange={(value) => setAssignfolderUserId(value)}
+              style={{
+                width: '100%'
+              }}
+              options={userOptions}
+              value={assignfolderUserId}
+            />
+          </BoxInput>
+        </Modal>
+      )} */}
+
       {title === 'Folder' && (
         <Modal title="Add Folder" open={isModalOpen} onOk={handleSubmitFolder} onCancel={handleCancel}>
           <BoxInput>
@@ -455,6 +494,7 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
+
       {title === 'Process' && (
         <Modal title="Add Process" open={isModalOpen} onOk={handleSubmitProcess} onCancel={handleCancel}>
           <BoxInput>
@@ -477,6 +517,7 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
+
       {title === 'Users' && (
         <Modal title="Invite Users" open={isModalOpen} onOk={handleAddUser} onCancel={handleCancel}>
           <BoxInput>
@@ -491,6 +532,7 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
+
       {title === 'DeleteGroup' && (
         <Modal title="Delete Group" open={isModalOpen} onOk={handleGroupDelete} onCancel={handleCancel}>
           <p>
@@ -498,6 +540,7 @@ const CommonModal = ({
           </p>
         </Modal>
       )}
+
       {title === 'Folder Delete' && (
         <Modal title="Delete Folder" open={isModalOpen} onOk={handleFolderDelete} onCancel={handleCancel}>
           <p>
@@ -505,6 +548,7 @@ const CommonModal = ({
           </p>
         </Modal>
       )}
+
       {title === 'Process Delete' && (
         <Modal title="Delete Process" open={isModalOpen} onOk={handleProcessDelete} onCancel={handleCancel}>
           <p>
@@ -512,6 +556,7 @@ const CommonModal = ({
           </p>
         </Modal>
       )}
+
       {title === 'UsersDelete' && (
         <Modal title="Delete User" open={isModalOpen} onOk={handleUserDelete} onCancel={handleCancel}>
           <p>
@@ -519,6 +564,7 @@ const CommonModal = ({
           </p>
         </Modal>
       )}
+
       {title === 'UsersEdit' && (
         <Modal title="Edit User" open={isModalOpen} onOk={EditUser} onCancel={handleCancel}>
           <BoxInput>
