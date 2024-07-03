@@ -50,7 +50,6 @@ const Users = () => {
     setUserData(record);
     setUserId(record?.id);
     setUserName(record?.name);
-    console.log('Edit user:', record);
     setUserTitle('UsersEdit');
     setIsModalOpen(true);
   };
@@ -59,7 +58,6 @@ const Users = () => {
     setUserData(record);
     setUserId(record?.id);
     setUserName(record?.name);
-    console.log('Delete user:', record);
     setUserTitle('UsersDelete');
     setIsModalOpen(true);
   };
