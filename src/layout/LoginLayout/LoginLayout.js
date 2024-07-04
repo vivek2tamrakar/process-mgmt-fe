@@ -28,27 +28,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
     setIsLoggedIn(false);
     dispatch(logout());
   };
-  // const fetchData = () => {
-  //   GroupListGet({
-  //     url: 'group/list',
-  //     type: 'details',
-  //     token: true
-  //   })
-  //     .then((res) => {
-  //       dispatch(getProcessList({ processList: res?.process }));
-  //       const updatedProcess = res?.process.find((p) => p?.id === process?.id);
-  //       dispatch(getGroupList({ groupList: res?.group }));
-  //       const updatedGroup = res?.group.find((p) => p?.proces);
-  //       const updatedGroupProcess = updatedGroup?.process.find((p) => p?.id === process?.id);
 
-  //       dispatch(setSelectedProcess(updatedProcess));
-  //       dispatch(setSelectedProcess(updatedGroupProcess));
-  //       dispatch({ type: 'stepDescription/clearStepDescription' });
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching data:', error);
-  //     });
-  // };
   const fetchData = () => {
     GroupListGet({
       url: 'group/list',

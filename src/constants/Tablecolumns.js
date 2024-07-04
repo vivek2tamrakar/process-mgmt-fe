@@ -15,15 +15,32 @@ export const UserColumns = (handleEditUser, handleDeleteUser) => [
     textAlign: 'center'
   },
   {
-    title: 'Number',
-    dataIndex: 'mobileNumber',
-    key: 'mobileNumber',
-    width: '33.33%'
+    title: 'Role',
+    dataIndex: 'role',
+    key: 'role',
+    render: (role) => {
+      let roleName = '';
+      switch (role) {
+        case 3:
+          roleName = 'Manager';
+          break;
+        case 4:
+          roleName = 'Task Manager';
+          break;
+        case 5:
+          roleName = 'Employee';
+          break;
+        default:
+          roleName = 'Unknown';
+      }
+      return <span>{roleName}</span>;
+    }
   },
   {
-    title: 'isActive',
+    title: 'Status',
     dataIndex: 'isActive',
     key: 'isActive',
+    render: (isActive) => <span>{isActive ? 'Active' : 'Inactive'}</span>,
     width: '33.33%'
   },
   {

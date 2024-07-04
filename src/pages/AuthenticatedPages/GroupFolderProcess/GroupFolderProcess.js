@@ -73,7 +73,10 @@ const GroupFolderProcess = () => {
     dispatch(setSelectedProcess(process));
     navigate('/add-process');
   };
-
+  const handleOpenClick = (process) => {
+    dispatch(setSelectedProcess(process));
+    navigate('/open-process');
+  };
   return (
     <>
       <HomeContainer>
@@ -97,7 +100,7 @@ const GroupFolderProcess = () => {
                   key={i?.id}
                   content={
                     <PopoverContainer>
-                      <Button>Open</Button>
+                      <Button onClick={() => handleOpenClick(i)}>Open</Button>
                       <Button onClick={() => handleEditClick(i)}>Edit</Button>
                       <Button onClick={() => showModal('Process Delete', i)}>Delete</Button>
                     </PopoverContainer>
