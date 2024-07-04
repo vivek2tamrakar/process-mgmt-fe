@@ -119,7 +119,7 @@ const GroupFolderProcess = () => {
                     </td>
                     <td className="DateCreated">{formatDate(i?.createdAt)}</td>
                     <td className="LastUpdated">{formatDate(i?.updatedAt)}</td>
-                    <td className="LastReview">01-Aug-2023</td>
+                    <td className="LastReview"></td>
                   </tr>
                 </Popover>
               ))}

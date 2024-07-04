@@ -107,7 +107,7 @@ const Addprocess = () => {
                   <Input
                     // value={`${index + 1}. ${stripHtmlTags(i?.stepDescription).split('\n')[0]}`}
                     // value={`${index + 1}. ${stripHtmlTags(i?.stepDescription).split('\n')[0].split(' ')[0]}`}
-                    value={`${index + 1}. ${stripHtmlTags(i?.stepDescription).split(/\s+/)[0]}`}
+                    value={`${index + 1}. ${stripHtmlTags(i?.stepDescription).split(/\r?\n|\r|\s\s+/)[0].trim()}`}
                     type="text"
                     placeholder={`Add Step ${index + 1}`}
                     onClick={() => handleUpdateStepClick(index)}

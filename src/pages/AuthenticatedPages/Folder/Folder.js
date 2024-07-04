@@ -115,8 +115,8 @@ const Folder = () => {
                       </div>
                     </td>
                     <td className="DateCreated">{formatDate(i?.createdAt)}</td>
-                    <td className="LastUpdated">01-Aug-2023</td>
-                    <td className="LastReview">01-Aug-2023</td>
+                    <td className="LastUpdated"></td>
+                    <td className="LastReview"></td>
                   </tr>
                 </Popover>
               ))}

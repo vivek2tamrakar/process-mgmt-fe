@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useGet from 'hooks/useGet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGroupList, getFolderList, getProcessList } from '../../../features/Group/groupslice';
-import { Content, FolderComtainer, GroupComtainer, Header, MainContainer, ProcessComtainer } from './Styled';
+import { GroupContainerDashboard, Header, ContainerDashboard, Groups } from './Styled';
 import {
   NodeCollapseOutlined,
   GroupOutlined,
@@ -18,7 +18,9 @@ const Dashboard = () => {
   const [allGroups, setGetAllGroups] = useState(groupList);
   const [allFolders, setGetAllFolders] = useState(folderList);
   const [allProcess, setGetAllProcess] = useState(processList);
-  const [selectedView, setSelectedView] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState({ id: '', name: '' });
+  // const [selectedView, setSelectedView] = useState(null);
 
   const fetchData = () => {
     GroupListGet({
@@ -45,68 +47,60 @@ const Dashboard = () => {
     setGetAllProcess(processList);
   }, [groupList, folderList, processList]);
 
-  const handleViewChange = (view) => {
-    setSelectedView(view);
+  // const handleViewChange = (view) => {
+  //   setSelectedView(view);
+  // };
+  const handleOpen = (id, name) => {
+    setSelectedGroup({ id, name });
+    setOpen(true);
   };
+  // const handleClose = () => setOpen(false);
+
+  const [openFolderProcess, setOpenFolderProcess] = useState(false);
+  const [selectedFolder, setSelectedFolder] = useState({ id: '', name: '' });
+
+  const handleOpenFolder = (id, name) => {
+    setSelectedFolder({ id, name });
+    setOpenFolderProcess(true);
+  };
+  // const handleCloseFolderProcess = () => setOpenFolderProcess(false);
 
   return (
     <>
-      <MainContainer>
-        <GroupComtainer>
-          <Header>
-            {selectedView === 'groups' ? <UngroupOutlined /> : <GroupOutlined />}
-
-            <span>Groups</span>
-            {allGroups?.length}
-          </Header>
-
-          <Content onClick={() => handleViewChange('groups')}>Details</Content>
-        </GroupComtainer>
-
-        <GroupComtainer>
-          <Header>
-            {selectedView === 'folders' ? <FolderOpenOutlined /> : <FolderOutlined />}
-
-            <span>Folders</span>
-            {allFolders?.length}
-          </Header>
-          <Content onClick={() => handleViewChange('folders')}>Details</Content>
-        </GroupComtainer>
-
-        <GroupComtainer>
-          <Header>
-            {selectedView === 'processes' ? <NodeExpandOutlined /> : <NodeCollapseOutlined />}
-
-            <span>Process</span>
-            {allProcess?.length}
-          </Header>
-          <Content onClick={() => handleViewChange('processes')}>Details</Content>
-        </GroupComtainer>
-      </MainContainer>
-      {selectedView === 'groups' && (
-        <>
-          <h3>Groups</h3>
-          {allGroups.map((i) => (
-            <div key={i.id}>{i.name}</div>
+      <ContainerDashboard>
+        <Header>
+          <h2>Groups</h2>
+        </Header>
+        <GroupContainerDashboard>
+          {allGroups?.map((item) => (
+            <Groups className="ok">
+              <p>{item.name}</p>
+              <button onClick={() => handleOpen(item.id, item.name)}>Assign Member</button>
+            </Groups>
           ))}
-        </>
-      )}
-      {selectedView === 'folders' && (
-        <>
-          <h3>Folders</h3>
-          {allFolders.map((i) => (
-            <div key={i.id}>{i.name}</div>
+        </GroupContainerDashboard>
+        <Header>
+          <h2>Folder</h2>
+        </Header>
+        <GroupContainerDashboard>
+          {allFolders?.map((item) => (
+            <Groups className="ok">
+              <p>{item.name}</p>
+              <button onClick={() => handleOpenFolder(item.id, item.name)}>Add Process</button>
+            </Groups>
           ))}
-        </>
-      )}
-      {selectedView === 'processes' && (
-        <>
-          <h3>Processes</h3>
-          {allProcess.map((i) => (
-            <div key={i.id}>{i.name}</div>
+        </GroupContainerDashboard>
+        <Header>
+          <h2>Process</h2>
+        </Header>
+        <GroupContainerDashboard>
+          {allProcess?.map((item) => (
+            <Groups className="ok">
+              <p>{item.name}</p>
+            </Groups>
           ))}
-        </>
-      )}
+        </GroupContainerDashboard>
+      </ContainerDashboard>
     </>
   );
 };
