@@ -65,7 +65,11 @@ const LoginLayout = ({ setIsLoggedIn }) => {
   const submitForm = () => {
     const payload = {
       id: process?.id,
-      stepDescription
+      stepId: process?.stepId,
+      stepDescription,
+      name: process?.name,
+      description: process?.description,
+      tags: process?.tags
     };
 
     axios
@@ -83,8 +87,6 @@ const LoginLayout = ({ setIsLoggedIn }) => {
         console.error('Error while submitting form:', error);
       });
   };
-  console.log(process, 'process');
-  console.log(Group, 'group');
   return (
     <>
       <LoginLayoutContainer>

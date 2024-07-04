@@ -49,7 +49,6 @@ const Dashboard = () => {
     setSelectedView(view);
   };
 
-  console.log(allGroups, 'allGroups');
   return (
     <>
       <MainContainer>

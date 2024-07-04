@@ -149,7 +149,6 @@ const LeftMenuBar = () => {
     setSelectedFolder(null);
     setSelectedGroup(null);
   };
-  console.log(selectedFolder, 'selectedFolder');
   return (
     <>
       <LeftSideBar>
