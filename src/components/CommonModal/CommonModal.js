@@ -375,7 +375,6 @@ const CommonModal = ({
         console.error(err);
       });
   };
-  console.log('userData', userData);
   const Rename = () => {
     let payload = {
       name: rename,

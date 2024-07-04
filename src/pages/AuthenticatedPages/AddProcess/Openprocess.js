@@ -56,7 +56,6 @@ const Openprocess = () => {
     }
   }, [clickedIndex, process]);
   const sortedSteps = process?.step?.slice().sort((a, b) => a.id - b.id);
-  console.log('sortedSteps', sortedSteps, process.step);
   return (
     <AddProcessContainer>
       <StepsContainer>
