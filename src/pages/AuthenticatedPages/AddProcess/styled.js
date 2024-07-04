@@ -55,11 +55,15 @@ export const ProcessActionsContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 0 0 10px 20px;
+  padding: 0px 0px 10px 20px;
   width: 60%;
   gap: 3px;
 `;
-// export const AddProcessContainer = styled.div``;
+export const StepContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
 // export const AddProcessContainer = styled.div``;
 // export const AddProcessContainer = styled.div``;
 // export const AddProcessContainer = styled.div``;

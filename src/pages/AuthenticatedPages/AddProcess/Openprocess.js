@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleAddStep } from '../../../features/step/stepSlice';
 
 const { TextArea } = Input;
-const Addprocess = () => {
+const Openprocess = () => {
   const dispatch = useDispatch();
   const process = useSelector((state) => state.process.selectedProcess);
   const stripHtmlTags = (html) => {
@@ -115,11 +115,9 @@ const Addprocess = () => {
           </Button>
         </AllInputsContainer>
         <ProcessActionsContainer>
-          {/* <Button disabled>Edit Process</Button> */}
-          <Button disabled onClick={() => setCheckList(true)}>
-            Run CheckList
-          </Button>
-          <Button disabled>More Options</Button>
+          <Button>Edit Process</Button>
+          <Button onClick={() => setCheckList(true)}>Run CheckList</Button>
+          <Button>More Options</Button>
         </ProcessActionsContainer>
       </StepsContainer>
       {clickedIndex !== null ? (
@@ -138,4 +136,4 @@ const Addprocess = () => {
   );
 };
 
-export default Addprocess;
+export default Openprocess;

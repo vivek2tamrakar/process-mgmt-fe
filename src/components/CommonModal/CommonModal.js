@@ -48,9 +48,19 @@ const CommonModal = ({
   //get users
   //user edit
   const [userName, setUserName] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
   const [isActive, setIsActive] = useState('');
+  const [role, setRole] = useState('');
 
+  const roles = [
+    { label: 'Manager', value: 3 },
+    { label: 'Task Manager', value: 4 },
+    { label: 'Employee', value: 5 }
+  ];
+
+  const statusOptions = [
+    { label: 'Active', value: true },
+    { label: 'InActive', value: false }
+  ];
   //user edit
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -146,7 +156,7 @@ const CommonModal = ({
   const handleAddUser = () => {
     const payload = {
       email: userEmail,
-      role: 3
+      role: assignUserId
     };
     CommonAdd({
       url: 'users',
@@ -342,8 +352,8 @@ const CommonModal = ({
     const payload = {
       id: userData?.id,
       name: userName || userData?.name,
-      mobileNumber: mobileNumber || userData?.mobileNumber,
-      isActive: isActive || userData?.isActive
+      role: role || userData?.role,
+      isActive: isActive
     };
 
     CommonPatch({
@@ -365,7 +375,7 @@ const CommonModal = ({
         console.error(err);
       });
   };
-
+  console.log('userData', userData);
   const Rename = () => {
     let payload = {
       name: rename,
@@ -415,8 +425,9 @@ const CommonModal = ({
     if (userData) {
       setUserName(userData.name || '');
       setUserEmail(userData.email || '');
-      setMobileNumber(userData.mobileNumber || '');
-      setIsActive(userData.isActive || '');
+      // setIsActive(userData.isActive || '');
+      setIsActive(userData.isActive !== undefined ? userData.isActive : '');
+      setRole(userData.role || '');
     }
   }, [userData]);
 
@@ -484,7 +495,7 @@ const CommonModal = ({
             />
           </BoxInput>
         </Modal>
-      )} */}
+      )}  */}
 
       {title === 'Folder' && (
         <Modal title="Add Folder" open={isModalOpen} onOk={handleSubmitFolder} onCancel={handleCancel}>
@@ -528,6 +539,17 @@ const CommonModal = ({
               value={userEmail}
               onChange={(e) => setUserEmail(e.target.value)}
               placeholder="Address@workemail.com"
+            />
+          </BoxInput>
+          <BoxInput>
+            <label>Role</label>
+            <Select
+              size="large"
+              placeholder="Please select Role"
+              onChange={(value) => setAssignUserId(value)}
+              style={{ width: '100%' }}
+              options={roles}
+              value={assignUserId}
             />
           </BoxInput>
         </Modal>
@@ -583,13 +605,25 @@ const CommonModal = ({
             <Input size="large" value={userData?.email} />
           </BoxInput>
           <BoxInput>
-            <label>Number</label>
-            <Input
+            <label>Role</label>
+            <Select
               size="large"
-              type="text"
-              value={mobileNumber}
-              onChange={(e) => setMobileNumber(e.target.value)}
-              placeholder="Enter Description"
+              placeholder="Please select Role"
+              onChange={(value) => setRole(value)}
+              style={{ width: '100%' }}
+              options={roles}
+              value={role}
+            />
+          </BoxInput>
+          <BoxInput>
+            <label>Status</label>
+            <Select
+              size="large"
+              placeholder="Please select Status"
+              onChange={(value) => setIsActive(value)}
+              style={{ width: '100%' }}
+              options={statusOptions}
+              value={isActive}
             />
           </BoxInput>
         </Modal>

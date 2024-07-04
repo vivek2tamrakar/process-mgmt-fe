@@ -85,7 +85,10 @@ const Home = () => {
     dispatch(setSelectedProcess(process));
     navigate('/add-process');
   };
-
+  const handleOpenClick = (process) => {
+    dispatch(setSelectedProcess(process));
+    navigate('/open-process');
+  };
   return (
     <>
       <HomeContainer>
@@ -107,7 +110,7 @@ const Home = () => {
                   key={i.id}
                   content={
                     <PopoverContainer>
-                      <Button onClick={() => handleEditClick(i)}>Open</Button>
+                      <Button onClick={() => handleOpenClick(i)}>Open</Button>
                       <Button onClick={() => handleEditClick(i)}>Edit</Button>
                       <Button onClick={() => showModal('Process Delete', i)}>Delete</Button>
                     </PopoverContainer>
@@ -125,7 +128,7 @@ const Home = () => {
                       </div>
                     </td>
                     <td className="DateCreated">{formatDate(i?.createdAt)}</td>
-                    <td className="LastUpdated">01-Aug-2023</td>
+                    <td className="LastUpdated">{i?.updatedAt}</td>
                     <td className="LastReview">01-Aug-2023</td>
                   </tr>
                 </Popover>
