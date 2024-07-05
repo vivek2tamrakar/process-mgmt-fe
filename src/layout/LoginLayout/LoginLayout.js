@@ -2,16 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../features/auth/authSlice';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Header, HomeRoutes, LoginLayoutContainer, ProfileContainer, RightContent, ProcessStepButton } from './Style';
+import {
+  Header,
+  HomeRoutes,
+  LoginLayoutContainer,
+  ProfileContainer,
+  RightContent,
+  ProcessStepButton,
+  ProfileContainerContent
+} from './Style';
 import LeftMenuBar from './LeftMenuBar';
-import { Button } from 'antd';
+import { Button, Popover } from 'antd';
 import axios from 'axios';
 import { getGroupList, getProcessList } from '../../features/Group/groupslice';
 import { setSelectedProcess } from '../../features/process/processSlice';
-
 import useGet from 'hooks/useGet';
 import { setStepDescription } from 'features/CKeditor/ckeditorslice';
 import { toggleAddStep } from 'features/step/stepSlice';
+import ProfileImage from '../../assets/images/profiledummy.jpg';
+
 const { REACT_APP_DETAILS_URL } = process.env;
 
 const LoginLayout = ({ setIsLoggedIn }) => {
@@ -24,6 +33,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
   const token = localStorage.getItem('token');
   const location = useLocation();
   const { mutateAsync: GroupListGet } = useGet();
+  const [openProfile, setOpenProfile] = useState(false);
   const handleLogout = () => {
     setIsLoggedIn(false);
     dispatch(logout());
@@ -67,7 +77,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
       id: process?.id,
       stepId: process?.stepId,
       stepDescription,
-      name: process?.name,
+      name: process?.name ? process?.name : '',
       description: process?.description,
       tags: process?.tags
     };
@@ -108,9 +118,26 @@ const LoginLayout = ({ setIsLoggedIn }) => {
             )}
             {location.pathname !== '/add-process' && (
               <ProfileContainer>
-                <Button type="primary" onClick={handleLogout} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
-                  Logout
-                </Button>
+                <Popover
+                  placement="bottomRight"
+                  visible={openProfile}
+                  // onVisibleChange={openProfile}
+                  onClose={() => setOpenProfile(false)}
+                  content={
+                    <ProfileContainerContent className="ooll">
+                      <Button type="primary" onClick={handleLogout} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
+                        Profile
+                      </Button>
+                      <Button type="primary" onClick={handleLogout} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
+                        Logout
+                      </Button>
+                    </ProfileContainerContent>
+                  }
+                >
+                  <div onClick={() => setOpenProfile(!openProfile)}>
+                    <img src={ProfileImage} alt="noImage" />
+                  </div>
+                </Popover>
               </ProfileContainer>
             )}
           </Header>

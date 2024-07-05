@@ -75,7 +75,7 @@ const Dashboard = () => {
           {allGroups?.map((item) => (
             <Groups className="ok">
               <p>{item.name}</p>
-              <button onClick={() => handleOpen(item.id, item.name)}>Assign Member</button>
+              {/* <button onClick={() => handleOpen(item.id, item.name)}>Assign Member</button> */}
             </Groups>
           ))}
         </GroupContainerDashboard>

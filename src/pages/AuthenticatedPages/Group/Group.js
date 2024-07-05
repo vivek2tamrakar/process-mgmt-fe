@@ -114,7 +114,7 @@ const Group = () => {
                       </div>
                     </td>
                     <td className="DateCreated">{formatDate(i?.createdAt)}</td>
-                    <td className="LastUpdated"></td>
+                    <td className="LastUpdated">{formatDate(i?.updatedAt)}</td>
                     <td className="LastReview"></td>
                   </tr>
                 </Popover>

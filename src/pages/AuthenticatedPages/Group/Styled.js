@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 //////////////////////////////////////////////////////Home Style Component/////////////////////////////////
 export const HomeContainer = styled.div`
-  height: calc(100vh - 55px);
+  height: calc(100vh - 59px);
+  overflow: auto;
 `;
 export const HomeHeader = styled.div`
   height: 12%;
@@ -11,7 +12,7 @@ export const HomeHeader = styled.div`
   justify-content: space-between;
   padding: 0 150px 0 30px;
   span {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 600;
   }
 `;
@@ -22,7 +23,7 @@ export const HeaderTableHeader = styled.div`
   align-items: end;
   height: 100%;
   div {
-    font-size: 17px;
+    font-size: 16px;
     margin-bottom: 4px;
     margin-right: 20px;
   }

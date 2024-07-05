@@ -52,8 +52,8 @@ const CommonModal = ({
   const [role, setRole] = useState('');
 
   const roles = [
-    { label: 'Manager', value: 3 },
-    { label: 'Task Manager', value: 4 },
+    { label: 'Owner', value: 3 },
+    { label: 'Manager', value: 4 },
     { label: 'Employee', value: 5 }
   ];
 
