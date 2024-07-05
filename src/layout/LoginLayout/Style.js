@@ -7,6 +7,17 @@ export const LeftSideBar = styled.div`
   width: 17%;
   height: 100vh;
   background-color: #000000;
+  /* overflow-y: auto !important;
+  overflow: hidden;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #fff;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: green;
+  } */
 `;
 export const SideBarHeader = styled.div`
   background-color: white;
@@ -31,7 +42,7 @@ export const RightContent = styled.div`
 `;
 export const Header = styled.div`
   background-color: white;
-  height: 55px;
+  height: 59px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -54,6 +65,18 @@ export const PopoverContainer = styled.div`
   gap: 6px;
 `;
 export const SidebarRoutesContainer = styled.div`
+  max-height: calc(100vh - 134px);
+  overflow-y: auto !important;
+  overflow: hidden;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: black;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: gray;
+  }
   margin-top: 20px;
   a {
     color: white;
@@ -112,12 +135,39 @@ export const HomeRoutes = styled.div`
     color: black;
   }
 `;
-export const ProfileContainer = styled.div``;
+export const ProfileContainer = styled.div`
+  div {
+    background-color: whitesmoke;
+    height: 45px;
+    width: 55px;
+    display: flex;
+    align-items: c;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    img {
+      height: 35px;
+      width: 40px;
+      border-radius: 36px;
+    }
+  }
+`;
 export const ProcessStepButton = styled.div`
   display: flex;
   gap: 20px;
 `;
-// export const LoginLayoutContainer = styled.div``;
+export const ProfileContainerContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+  button {
+    width: 95px;
+  }
+`;
 // export const LoginLayoutContainer = styled.div``;
 // export const LoginLayoutContainer = styled.div``;
 // export const LoginLayoutContainer = styled.div``;

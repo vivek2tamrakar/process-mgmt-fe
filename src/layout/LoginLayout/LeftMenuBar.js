@@ -21,13 +21,18 @@ import {
   DashboardOutlined,
   HomeOutlined,
   UserOutlined,
-  GroupOutlined,
   FolderOpenOutlined,
   FolderOutlined,
-  NodeExpandOutlined,
-  UngroupOutlined
+  UsergroupAddOutlined,
+  UsergroupDeleteOutlined
 } from '@ant-design/icons';
 import logo from '../../assets/images/logo.34ac6a4edb0bef53937e.jpg';
+const truncateName = (name) => {
+  if (name.length > 10) {
+    return name.substring(0, 10) + '...';
+  }
+  return name;
+};
 const LeftMenuBar = () => {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -214,6 +219,8 @@ const LeftMenuBar = () => {
                         <Button onClick={() => showModal('TaskManager')}>Task Manager</Button>
                         <Button onClick={() => showModal('Folder')}>New Folder</Button>
                         <Button onClick={() => showModal('Process')}>New Process</Button>
+                        <Button>Copy</Button>
+                        <Button>Move</Button>
                         <Button onClick={() => showModal('DeleteGroup')}>Delete</Button>
                       </PopoverContainer>
                     </>
@@ -230,8 +237,8 @@ const LeftMenuBar = () => {
                         handleGroupClick(i.id);
                       }}
                     >
-                      {pathname === `/group/${i.id}` ? <UngroupOutlined /> : <GroupOutlined />}
-                      {i?.name}
+                      {pathname === `/group/${i.id}` ? <UsergroupDeleteOutlined /> : <UsergroupAddOutlined />}
+                      {truncateName(i.name)}
                     </SidebarGroupRoute>
                     {/* show folders here */}
 
@@ -263,7 +270,7 @@ const LeftMenuBar = () => {
                                 ) : (
                                   <FolderOutlined />
                                 )}
-                                {folder.name}
+                                {truncateName(folder.name)}
                               </SidebarFolderRoute>
                             </Link>
                           </Popover>
@@ -294,7 +301,8 @@ const LeftMenuBar = () => {
                   <Link key={i.id} to={`/folder/${i.id}`} onContextMenu={(e) => handleFolderRightClick(e, i)}>
                     <SidebarGroupRoute isselected={pathname === `/folder/${i.id}`}>
                       {pathname === `/folder/${i.id}` ? <FolderOpenOutlined /> : <FolderOutlined />}
-                      {i?.name}
+                      {/* {i?.name} */}
+                      {truncateName(i.name)}
                     </SidebarGroupRoute>
                   </Link>
                 </Popover>

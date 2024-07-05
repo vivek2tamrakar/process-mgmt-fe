@@ -59,6 +59,7 @@ const Addprocess = () => {
       });
     }
   }, [clickedIndex, process]);
+
   const sortedSteps = process?.step?.slice()?.sort((a, b) => a.id - b.id);
   const handleNameChange = (e) => {
     dispatch(updateProcessName(e.target.value));
@@ -78,17 +79,17 @@ const Addprocess = () => {
         <Breadcrumb>
           Home
           <RightOutlined />
-          {name}
+          {name ? name : ''}
         </Breadcrumb>
         <AllInputsContainer className="okokokok">
           <BoxInput>
             <label>Name:</label>
-            <Input value={process.name} onChange={handleNameChange} type="text" placeholder="Enter Process Name" />
+            <Input value={process?.name} onChange={handleNameChange} type="text" placeholder="Enter Process Name" />
           </BoxInput>
           <BoxInput>
             <label>Description:</label>
             <TextArea
-              value={process.description}
+              value={process?.description}
               onChange={handleDescriptionChange}
               type="text"
               rows={2}
@@ -97,7 +98,7 @@ const Addprocess = () => {
           </BoxInput>
           <BoxInput>
             <label>Tags:</label>
-            <TextArea value={process.tags} onChange={handleTagsChange} type="text" rows={2} placeholder="Tags and Keywords" />
+            <TextArea value={process?.tags} onChange={handleTagsChange} type="text" rows={2} placeholder="Tags and Keywords" />
           </BoxInput>
           <BoxInput>
             <label>Steps</label>
@@ -105,9 +106,9 @@ const Addprocess = () => {
               <StepContainer key={index}>
                 <div>
                   <Input
-                    // value={`${index + 1}. ${stripHtmlTags(i?.stepDescription).split('\n')[0]}`}
-                    // value={`${index + 1}. ${stripHtmlTags(i?.stepDescription).split('\n')[0].split(' ')[0]}`}
-                    value={`${index + 1}. ${stripHtmlTags(i?.stepDescription).split(/\r?\n|\r|\s\s+/)[0].trim()}`}
+                    value={`${index + 1}. ${stripHtmlTags(i?.stepDescription)
+                      ?.split(/\r?\n|\r|\s\s+/)[0]
+                      .trim()}`}
                     type="text"
                     placeholder={`Add Step ${index + 1}`}
                     onClick={() => handleUpdateStepClick(index)}
@@ -134,7 +135,6 @@ const Addprocess = () => {
           </Button>
         </AllInputsContainer>
         <ProcessActionsContainer>
-          {/* <Button disabled>Edit Process</Button> */}
           <Button disabled onClick={() => setCheckList(true)}>
             Run CheckList
           </Button>

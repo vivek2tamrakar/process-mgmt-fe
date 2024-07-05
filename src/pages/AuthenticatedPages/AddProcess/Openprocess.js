@@ -56,6 +56,13 @@ const Openprocess = () => {
     }
   }, [clickedIndex, process]);
   const sortedSteps = process?.step?.slice().sort((a, b) => a.id - b.id);
+  const handleCheckboxChange = (stepId) => {
+    console.log('Step Id:', stepId);
+    const stepsId = [];
+    stepsId.push(stepId);
+    console.log(stepsId, 'stepsId');
+  };
+
   return (
     <AddProcessContainer>
       <StepsContainer>
@@ -96,7 +103,7 @@ const Openprocess = () => {
                   </div>
                   {checkList && (
                     <div>
-                      <Input type="checkbox" />
+                      <Input type="checkbox" onChange={() => handleCheckboxChange(i.id)} />
                     </div>
                   )}
                 </StepContainer>

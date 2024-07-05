@@ -22,10 +22,10 @@ export const UserColumns = (handleEditUser, handleDeleteUser) => [
       let roleName = '';
       switch (role) {
         case 3:
-          roleName = 'Manager';
+          roleName = 'Owner';
           break;
         case 4:
-          roleName = 'Task Manager';
+          roleName = 'Manager';
           break;
         case 5:
           roleName = 'Employee';

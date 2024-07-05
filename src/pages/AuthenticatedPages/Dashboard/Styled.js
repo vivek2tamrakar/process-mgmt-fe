@@ -26,9 +26,12 @@ export const GroupContainerDashboard = styled.div`
   display: flex;
   gap: 25px;
   flex-wrap: wrap;
-  margin-left:15px;
+  margin-left: 15px;
 `;
-export const ContainerDashboard = styled.div``;
+export const ContainerDashboard = styled.div`
+  height: calc(100vh - 59px);
+  overflow: auto;
+`;
 export const GroupComtainer = styled.div`
   background-color: white;
   width: 220px;
