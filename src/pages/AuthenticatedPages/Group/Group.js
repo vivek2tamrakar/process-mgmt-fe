@@ -9,7 +9,7 @@ import { PopoverContainer } from 'layout/LoginLayout/Style';
 import { Button, Popover } from 'antd';
 import CommonModal from 'components/CommonModal/CommonModal';
 import useGet from 'hooks/useGet';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -77,9 +77,10 @@ const Group = () => {
     <>
       <HomeContainer>
         <HomeHeader>
-          <HeaderMessage>
+          <HeaderMessage className="qqqq">
             <span>
-              Home {' > '} {group?.name}
+              <Link to="/home">Home</Link>
+              {' > '} {group?.name}
             </span>
           </HeaderMessage>
           <HeaderTableHeader>

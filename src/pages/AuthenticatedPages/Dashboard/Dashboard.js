@@ -1,16 +1,103 @@
+// import React, { useState, useEffect } from 'react';
+// import useGet from 'hooks/useGet';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { getGroupList, getFolderList, getProcessList } from '../../../features/Group/groupslice';
+// import { GroupContainerDashboard, Header, ContainerDashboard, Groups } from './Styled';
+// const truncateName = (name) => {
+//   if (name.length > 10) {
+//     return name.substring(0, 10) + '...';
+//   }
+//   return name;
+// };
+// const Dashboard = () => {
+//   const dispatch = useDispatch();
+//   const { groupList, folderList, processList } = useSelector((state) => state.group);
+//   const { mutateAsync: GroupListGet } = useGet();
+//   const [allGroups, setGetAllGroups] = useState(groupList);
+//   const [allFolders, setGetAllFolders] = useState(folderList);
+//   const [allProcess, setGetAllProcess] = useState(processList);
+
+//   const fetchData = () => {
+//     GroupListGet({
+//       url: 'group/home',
+//       type: 'details',
+//       token: true
+//     })
+//       .then((res) => {
+//         dispatch(getGroupList({ groupList: res?.group }));
+//         dispatch(getFolderList({ folderList: res?.folder }));
+//         dispatch(getProcessList({ processList: res?.process }));
+//       })
+//       .catch((error) => {
+//         console.error('Error fetching data:', error);
+//       });
+//   };
+//   useEffect(() => {
+//     fetchData();
+//   }, []);
+
+//   useEffect(() => {
+//     setGetAllGroups(groupList);
+//     setGetAllFolders(folderList);
+//     setGetAllProcess(processList);
+//   }, [groupList, folderList, processList]);
+
+//   return (
+//     <>
+//       <ContainerDashboard>
+//         <Header>
+//           <h2>Groups</h2>
+//         </Header>
+//         <GroupContainerDashboard>
+//           {allGroups?.map((item) => (
+//             <Groups className="ok">
+//               <p>{truncateName(item.name)}</p>
+//             </Groups>
+//           ))}
+//         </GroupContainerDashboard>
+//         <Header>
+//           <h2>Folder</h2>
+//         </Header>
+//         <GroupContainerDashboard>
+//           {allFolders?.map((item) => (
+//             <Groups className="ok">
+//               <p>{truncateName(item.name)}</p>
+//             </Groups>
+//           ))}
+//         </GroupContainerDashboard>
+//         <Header>
+//           <h2>Process</h2>
+//         </Header>
+//         <GroupContainerDashboard>
+//           {allProcess?.map((item) => (
+//             <Groups className="ok">
+//               <p>{truncateName(item.name)}</p>
+//             </Groups>
+//           ))}
+//         </GroupContainerDashboard>
+//       </ContainerDashboard>
+//     </>
+//   );
+// };
+
+// export default Dashboard;
+
 import React, { useState, useEffect } from 'react';
+import { Button, Popover } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import CommonModal from '../../../components/CommonModal/CommonModal';
 import useGet from 'hooks/useGet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGroupList, getFolderList, getProcessList } from '../../../features/Group/groupslice';
 import { GroupContainerDashboard, Header, ContainerDashboard, Groups } from './Styled';
-import {
-  NodeCollapseOutlined,
-  GroupOutlined,
-  FolderOpenOutlined,
-  FolderOutlined,
-  NodeExpandOutlined,
-  UngroupOutlined
-} from '@ant-design/icons';
+
+const truncateName = (name) => {
+  if (name.length > 10) {
+    return name.substring(0, 10) + '...';
+  }
+  return name;
+};
+
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { groupList, folderList, processList } = useSelector((state) => state.group);
@@ -18,13 +105,15 @@ const Dashboard = () => {
   const [allGroups, setGetAllGroups] = useState(groupList);
   const [allFolders, setGetAllFolders] = useState(folderList);
   const [allProcess, setGetAllProcess] = useState(processList);
-  const [open, setOpen] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState({ id: '', name: '' });
-  // const [selectedView, setSelectedView] = useState(null);
+
+  const [popoverVisible, setPopoverVisible] = useState(false);
+  const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
 
   const fetchData = () => {
     GroupListGet({
-      url: 'group/list',
+      url: 'group/home',
       type: 'details',
       token: true
     })
@@ -37,6 +126,7 @@ const Dashboard = () => {
         console.error('Error fetching data:', error);
       });
   };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -47,35 +137,28 @@ const Dashboard = () => {
     setGetAllProcess(processList);
   }, [groupList, folderList, processList]);
 
-  // const handleViewChange = (view) => {
-  //   setSelectedView(view);
-  // };
-  const handleOpen = (id, name) => {
-    setSelectedGroup({ id, name });
-    setOpen(true);
+  const handleDashboardRightClick = (e) => {
+    e.preventDefault();
+    setPopoverPosition({ top: e.clientY, left: e.clientX });
+    setPopoverVisible(true);
   };
-  // const handleClose = () => setOpen(false);
 
-  const [openFolderProcess, setOpenFolderProcess] = useState(false);
-  const [selectedFolder, setSelectedFolder] = useState({ id: '', name: '' });
-
-  const handleOpenFolder = (id, name) => {
-    setSelectedFolder({ id, name });
-    setOpenFolderProcess(true);
+  const showModal = (title) => {
+    setModalTitle(title);
+    setIsModalOpen(true);
+    setPopoverVisible(false);
   };
-  // const handleCloseFolderProcess = () => setOpenFolderProcess(false);
 
   return (
     <>
-      <ContainerDashboard>
+      <ContainerDashboard onContextMenu={handleDashboardRightClick}>
         <Header>
           <h2>Groups</h2>
         </Header>
         <GroupContainerDashboard>
           {allGroups?.map((item) => (
-            <Groups className="ok">
-              <p>{item.name}</p>
-              {/* <button onClick={() => handleOpen(item.id, item.name)}>Assign Member</button> */}
+            <Groups key={item.id} className="ok">
+              <p>{truncateName(item.name)}</p>
             </Groups>
           ))}
         </GroupContainerDashboard>
@@ -84,9 +167,8 @@ const Dashboard = () => {
         </Header>
         <GroupContainerDashboard>
           {allFolders?.map((item) => (
-            <Groups className="ok">
-              <p>{item.name}</p>
-              <button onClick={() => handleOpenFolder(item.id, item.name)}>Add Process</button>
+            <Groups key={item.id} className="ok">
+              <p>{truncateName(item.name)}</p>
             </Groups>
           ))}
         </GroupContainerDashboard>
@@ -95,11 +177,33 @@ const Dashboard = () => {
         </Header>
         <GroupContainerDashboard>
           {allProcess?.map((item) => (
-            <Groups className="ok">
-              <p>{item.name}</p>
+            <Groups key={item.id} className="ok">
+              <p>{truncateName(item.name)}</p>
             </Groups>
           ))}
         </GroupContainerDashboard>
+
+        <Popover
+          content={
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+              <Button onClick={() => showModal('Group')}>New Group</Button>
+              <Button onClick={() => showModal('Folder')}>New Folder</Button>
+              <Button onClick={() => showModal('Process')}>New Process</Button>
+            </div>
+          }
+          trigger="click"
+          visible={popoverVisible}
+          onVisibleChange={setPopoverVisible}
+          placement="topLeft"
+          overlayStyle={{
+            position: 'absolute',
+            top: popoverPosition.top,
+            left: popoverPosition.left
+          }}
+        >
+          <div style={{ display: 'none' }} />
+        </Popover>
+        <CommonModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} title={modalTitle} fetchData={fetchData} />
       </ContainerDashboard>
     </>
   );

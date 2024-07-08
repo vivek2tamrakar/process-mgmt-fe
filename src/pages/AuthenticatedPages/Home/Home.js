@@ -23,6 +23,9 @@ import CommonModal from 'components/CommonModal/CommonModal';
 // Date formatting function
 const formatDate = (dateString) => {
   const date = new Date(dateString);
+  if (isNaN(date)) {
+    return 'Invalid Date'; // Or any default value you prefer
+  }
   return new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
     month: 'short',

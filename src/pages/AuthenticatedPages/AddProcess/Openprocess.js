@@ -14,11 +14,15 @@ import Ckeditor from '../../../components/CKeditor/Ckeditor';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleAddStep } from '../../../features/step/stepSlice';
 import { useNavigate } from 'react-router-dom';
+import usePatch from 'hooks/usePatch';
 
 const { TextArea } = Input;
+
 const Openprocess = () => {
+  const { mutateAsync: CommonPatch } = usePatch();
   const dispatch = useDispatch();
   const process = useSelector((state) => state.process.selectedProcess);
+
   const stripHtmlTags = (html) => {
     const div = document.createElement('div');
     div.innerHTML = html;
@@ -30,6 +34,7 @@ const Openprocess = () => {
   const [clickedIndex, setClickedIndex] = useState(null);
   const [stepDescriptions, setStepDescriptions] = useState(process?.step?.map((i) => stripHtmlTags(i?.stepDescription).split('\n')[0]));
   const [checkList, setCheckList] = useState(false);
+  const [stepIds, setStepIds] = useState([]);
 
   const handleAddStepClick = () => {
     dispatch(toggleAddStep());
@@ -57,10 +62,36 @@ const Openprocess = () => {
     }
   }, [clickedIndex, process]);
   const sortedSteps = process?.step?.slice().sort((a, b) => a.id - b.id);
+
   const handleCheckboxChange = (stepId) => {
-    const stepsId = [];
-    stepsId.push(stepId);
+    setStepIds((prevStepIds) => {
+      const updatedStepIds = prevStepIds.includes(stepId) ? prevStepIds.filter((id) => id !== stepId) : [...prevStepIds, stepId];
+      const updatedStepStatus = updatedStepIds.map((id) => true);
+
+      const payload = {
+        id: updatedStepIds,
+        isCompleted: updatedStepStatus
+      };
+
+      CommonPatch({
+        url: 'step',
+        type: 'details',
+        payload: payload,
+        token: true,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      return updatedStepIds;
+    });
   };
+
   const handleEditProcessClick = () => {
     navigate('/add-process');
   };
@@ -104,7 +135,7 @@ const Openprocess = () => {
                   </div>
                   {checkList && (
                     <div>
-                      <Input type="checkbox" onChange={() => handleCheckboxChange(i.id)} />
+                      <Input type="checkbox" onChange={() => handleCheckboxChange(i.id)} checked={stepIds.includes(i.id)} />
                     </div>
                   )}
                 </StepContainer>
