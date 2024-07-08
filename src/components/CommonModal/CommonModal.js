@@ -124,11 +124,18 @@ const CommonModal = ({
   const handleSubmitProcess = () => {
     const payload = {
       name,
-      groupId,
-      folderId,
+      // groupId,
+      // folderId,
       tags,
       description
     };
+    if (folderId && groupId) {
+      payload.folderId = folderId;
+    } else if (groupId) {
+      payload.groupId = groupId;
+    } else if (folderId) {
+      payload.folderId = folderId;
+    }
     CommonAdd({
       url: 'process',
       type: 'details',
@@ -322,32 +329,6 @@ const CommonModal = ({
       });
   };
 
-  // const AssignUserFolder = () => {
-  //   const payload = {
-  //     folderId,
-  //     assignUserId: assignfolderUserId
-  //   };
-
-  //   CommonPatch({
-  //     url: 'assign',
-  //     type: 'details',
-  //     payload: payload,
-  //     token: true,
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     }
-  //   })
-  //     .then((res) => {
-  //       fetchData();
-  //       handleCancel();
-  //       setAssignUserId('');
-  //       setAssignfolderUserId('');
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
-
   const EditUser = () => {
     const payload = {
       id: userData?.id,
@@ -375,6 +356,7 @@ const CommonModal = ({
         console.error(err);
       });
   };
+
   const Rename = () => {
     let payload = {
       name: rename,
@@ -424,7 +406,6 @@ const CommonModal = ({
     if (userData) {
       setUserName(userData.name || '');
       setUserEmail(userData.email || '');
-      // setIsActive(userData.isActive || '');
       setIsActive(userData.isActive !== undefined ? userData.isActive : '');
       setRole(userData.role || '');
     }
@@ -476,25 +457,6 @@ const CommonModal = ({
           </BoxInput>
         </Modal>
       )}
-
-      {/* {title === 'EditFolderMember' && (
-        <Modal title={`Edit Members > ${folderName}`} open={isModalOpen} onOk={AssignUserFolder} onCancel={handleCancel}>
-          <BoxInput>
-            <label>Assign Users</label>
-            <Select
-              mode="tags"
-              size="large"
-              placeholder="Please select"
-              onChange={(value) => setAssignfolderUserId(value)}
-              style={{
-                width: '100%'
-              }}
-              options={userOptions}
-              value={assignfolderUserId}
-            />
-          </BoxInput>
-        </Modal>
-      )}  */}
 
       {title === 'Folder' && (
         <Modal title="Add Folder" open={isModalOpen} onOk={handleSubmitFolder} onCancel={handleCancel}>

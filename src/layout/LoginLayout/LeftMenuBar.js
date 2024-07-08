@@ -15,7 +15,6 @@ import CommonModal from '../../components/CommonModal/CommonModal';
 import useGet from '../../hooks/useGet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGroupList, getFolderList, getProcessList } from '../../features/Group/groupslice';
-// import { selectedOptionList } from '../../features/SideBar/sideBarslice';
 import { Link, useLocation } from 'react-router-dom';
 import {
   DashboardOutlined,
@@ -196,7 +195,6 @@ const LeftMenuBar = () => {
               isselected={pathname === '/home'}
               onClick={() => {
                 setShowSubMenu(!showSubMenu);
-                // dispatch(selectedOptionList('process'));
               }}
             >
               <HomeOutlined />
@@ -219,8 +217,6 @@ const LeftMenuBar = () => {
                         <Button onClick={() => showModal('TaskManager')}>Task Manager</Button>
                         <Button onClick={() => showModal('Folder')}>New Folder</Button>
                         <Button onClick={() => showModal('Process')}>New Process</Button>
-                        <Button>Copy</Button>
-                        <Button>Move</Button>
                         <Button onClick={() => showModal('DeleteGroup')}>Delete</Button>
                       </PopoverContainer>
                     </>
@@ -249,8 +245,11 @@ const LeftMenuBar = () => {
                             key={folder.id}
                             content={
                               <PopoverContainer>
-                                {/* <Button onClick={() => showModal('EditFolderMember')}>Edit Members</Button> */}
-                                <Button onClick={() => showFolderModal('Process')}>New Process</Button>
+                                <Link to={`/group/${selectedGroupId}/folder/${folder?.id}`}>
+                                  {' '}
+                                  <Button onClick={() => showFolderModal('Process')}>New Process</Button>
+                                </Link>
+
                                 <Button onClick={() => showFolderModal('Rename')}>Rename</Button>
                                 <Button onClick={() => showFolderModal('Folder Delete')}>Delete</Button>
                               </PopoverContainer>
@@ -287,7 +286,6 @@ const LeftMenuBar = () => {
                   key={i.id}
                   content={
                     <PopoverContainer>
-                      {/* <Button onClick={() => showModal('EditFolderMember')}>Edit Members</Button> */}
                       <Button onClick={() => showModal('Process')}>New Process</Button>
                       <Button onClick={() => showModal('Rename', true)}>Rename</Button>
                       <Button onClick={() => showModal('Folder Delete')}>Delete</Button>
