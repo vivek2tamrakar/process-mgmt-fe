@@ -13,6 +13,7 @@ import { RightOutlined } from '@ant-design/icons';
 import Ckeditor from '../../../components/CKeditor/Ckeditor';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleAddStep } from '../../../features/step/stepSlice';
+import { useNavigate } from 'react-router-dom';
 
 const { TextArea } = Input;
 const Openprocess = () => {
@@ -25,7 +26,7 @@ const Openprocess = () => {
   };
 
   const { id, name, description, tags, steps } = process || {};
-
+  const navigate = useNavigate();
   const [clickedIndex, setClickedIndex] = useState(null);
   const [stepDescriptions, setStepDescriptions] = useState(process?.step?.map((i) => stripHtmlTags(i?.stepDescription).split('\n')[0]));
   const [checkList, setCheckList] = useState(false);
@@ -57,12 +58,12 @@ const Openprocess = () => {
   }, [clickedIndex, process]);
   const sortedSteps = process?.step?.slice().sort((a, b) => a.id - b.id);
   const handleCheckboxChange = (stepId) => {
-    console.log('Step Id:', stepId);
     const stepsId = [];
     stepsId.push(stepId);
-    console.log(stepsId, 'stepsId');
   };
-
+  const handleEditProcessClick = () => {
+    navigate('/add-process');
+  };
   return (
     <AddProcessContainer>
       <StepsContainer>
@@ -121,7 +122,7 @@ const Openprocess = () => {
           </Button>
         </AllInputsContainer>
         <ProcessActionsContainer>
-          <Button>Edit Process</Button>
+          <Button onClick={handleEditProcessClick}>Edit Process</Button>
           <Button onClick={() => setCheckList(true)}>Run CheckList</Button>
           <Button>More Options</Button>
         </ProcessActionsContainer>

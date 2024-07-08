@@ -46,6 +46,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
       token: true
     })
       .then((res) => {
+        console.log(res);
         const allGroups = res?.group || [];
         const allProcesses = res?.process || [];
 
@@ -61,6 +62,12 @@ const LoginLayout = ({ setIsLoggedIn }) => {
           if (updatedGroupProcess) {
             dispatch(setSelectedProcess(updatedGroupProcess));
           }
+          group.folder?.forEach((folder) => {
+            const updatedFolderProcess = folder.process?.find((p) => p?.id === process?.id);
+            if (updatedFolderProcess) {
+              dispatch(setSelectedProcess(updatedFolderProcess));
+            }
+          });
         });
         dispatch(setStepDescription(''));
         dispatch(toggleAddStep(false));

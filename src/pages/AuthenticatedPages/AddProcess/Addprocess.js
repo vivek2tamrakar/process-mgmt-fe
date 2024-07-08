@@ -37,7 +37,6 @@ const Addprocess = () => {
 
   const handleUpdateStepClick = (index) => {
     const clickedStepId = process?.step[index]?.id;
-    console.log('Clicked Step ID:', clickedStepId);
     setClickedIndex(index);
     dispatch(toggleAddStep());
     dispatch(updateStepId(clickedStepId));
