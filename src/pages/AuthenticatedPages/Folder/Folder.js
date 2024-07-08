@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddProcessLink, HeaderMessage, HeaderTableHeader, HomeContainer, HomeContent, HomeHeader, TableData } from './Styled';
 import { BookOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import CommonModal from 'components/CommonModal/CommonModal';
 import useGet from 'hooks/useGet';
 import { getProcessList, getFolderList } from '../../../features/Group/groupslice';
@@ -80,7 +80,7 @@ const Folder = () => {
         <HomeHeader>
           <HeaderMessage>
             <span>
-              Home {' > '} {folder?.name}
+              <Link to="/home">Home</Link> {' > '} {folder?.name}
             </span>
           </HeaderMessage>
           <HeaderTableHeader>

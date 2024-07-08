@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddProcessLink, HeaderMessage, HeaderTableHeader, HomeContainer, HomeContent, HomeHeader, TableData } from './Styled';
 import { BookOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import useGet from 'hooks/useGet';
 import { getProcessList, getFolderList, getGroupList } from '../../../features/Group/groupslice';
 import CommonModal from 'components/CommonModal/CommonModal';
@@ -83,7 +83,8 @@ const GroupFolderProcess = () => {
         <HomeHeader>
           <HeaderMessage>
             <span>
-              Home {' > '} {group?.name} {' > '} {folder?.name}
+              <Link to="/home">Home</Link> {' > '} <Link to={`/group/${groupId}`}>{group?.name}</Link>
+              {' > '} {folder?.name}
             </span>
           </HeaderMessage>
           <HeaderTableHeader>

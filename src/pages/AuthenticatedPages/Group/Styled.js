@@ -14,6 +14,10 @@ export const HomeHeader = styled.div`
   span {
     font-size: 16px;
     font-weight: 600;
+    a {
+      text-decoration: none;
+      color: black;
+    }
   }
 `;
 export const HeaderMessage = styled.div``;
@@ -22,6 +26,7 @@ export const HeaderTableHeader = styled.div`
   gap: 40px;
   align-items: end;
   height: 100%;
+
   div {
     font-size: 16px;
     margin-bottom: 4px;

@@ -13,6 +13,10 @@ export const HomeHeader = styled.div`
   span {
     font-size: 16px;
     font-weight: 600;
+    a {
+      text-decoration: none;
+      color: black;
+    }
   }
 `;
 export const HeaderMessage = styled.div``;
