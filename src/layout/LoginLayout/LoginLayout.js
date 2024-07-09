@@ -20,7 +20,7 @@ import useGet from 'hooks/useGet';
 import { setStepDescription } from 'features/CKeditor/ckeditorslice';
 import { toggleAddStep } from 'features/step/stepSlice';
 import ProfileImage from '../../assets/images/profiledummy.jpg';
-
+import { useNavigate } from 'react-router-dom';
 const { REACT_APP_DETAILS_URL } = process.env;
 
 const LoginLayout = ({ setIsLoggedIn }) => {
@@ -29,7 +29,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
   const process = useSelector((state) => state.process.selectedProcess);
   const Group = useSelector((state) => state.process.selectedProcess);
   const stepDescription = useSelector((state) => state.stepDescription.stepDescription);
-
+  const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const location = useLocation();
   const { mutateAsync: GroupListGet } = useGet();
@@ -37,6 +37,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     dispatch(logout());
+    navigate('/login')
   };
 
   const fetchData = () => {
@@ -132,7 +133,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
                   onClose={() => setOpenProfile(false)}
                   content={
                     <ProfileContainerContent className="ooll">
-                      <Button type="primary" onClick={handleLogout} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
+                      <Button type="primary" onClick={()=> navigate('/profile')} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
                         Profile
                       </Button>
                       <Button type="primary" onClick={handleLogout} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>

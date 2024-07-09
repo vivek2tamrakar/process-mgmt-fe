@@ -88,3 +88,32 @@ export const BySigningUpText = styled.div`
     color: #003e6b;
   }
 `;
+
+export const ForgetPasswordContainer = styled.div`
+  display: flex;
+  background-color: #f5f5f5;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 65px);
+`;
+export const ForgetPasswordBox = styled.div`
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+export const ForgetInputBox = styled.div`
+  background-color: white;
+  height: 300px;
+  width: 420px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  form {
+    padding: 18px;
+  }
+  .logintext {
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+  }
+`;

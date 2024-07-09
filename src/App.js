@@ -3,12 +3,14 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import HomeLayout from './layout/HomeLayout/HomeLayout';
 import Login from './pages/authentication/Login';
+import ForgetPassword from './pages/authentication/ForgetPassword';
 import Register from './pages/authentication/Register';
 import Homepage from './pages/Homepage/Homepage';
 import LoginLayout from './layout/LoginLayout/LoginLayout';
 import Dashboard from './pages/AuthenticatedPages/Dashboard/Dashboard';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import Home from './pages/AuthenticatedPages/Home/Home';
+import Profile from './pages/AuthenticatedPages/Profile/Profile';
 import Users from './pages/AuthenticatedPages/Users/Users';
 import Group from './pages/AuthenticatedPages/Group/Group';
 import Folder from './pages/AuthenticatedPages/Folder/Folder';
@@ -51,6 +53,7 @@ function App() {
               <Route index element={<Dashboard />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="home" element={<Home />} />
+              <Route path="profile" element={<Profile />} />
               <Route path="users" element={<Users />} />
               <Route path="group/:groupId" element={<Group />} />
               <Route path="folder/:folderId" element={<Folder />} />
@@ -66,6 +69,7 @@ function App() {
               <Route index element={<Login onLogin={handleLogin} setIsLoggedIn={setIsLoggedIn} />} />
 
               <Route path="login" element={<Login onLogin={handleLogin} setIsLoggedIn={setIsLoggedIn} />} />
+              <Route path="forget-password" element={<ForgetPassword />} />
               <Route path="register" element={<Register />} />
               <Route path="*" element={<Homepage />} />
             </Route>

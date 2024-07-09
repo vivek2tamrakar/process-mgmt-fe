@@ -95,7 +95,7 @@ const Login = ({ setIsLoggedIn }) => {
               />
 
               <ForgotPasswordLink>
-                <Link to="/">Forgot Password?</Link>
+                <Link to="/forget-password">Forgot Password?</Link>
               </ForgotPasswordLink>
               <Button
                 // onClick={handleLogin}

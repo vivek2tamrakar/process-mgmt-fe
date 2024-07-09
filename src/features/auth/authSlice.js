@@ -36,6 +36,17 @@ export const register = createAsyncThunk('users/company', async ({ name, email, 
   }
 });
 
+export const forgetPassword = createAsyncThunk('users/forgetPass', async ({ username }, { rejectWithValue }) => {
+  try {
+    const response = await axios.patch(`${process.env.REACT_APP_AUTH_URL}users/forget-password`, {
+      email: username
+    });
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
 export const logout = createAsyncThunk('auth/logout', async () => {
   localStorage.removeItem('token');
   localStorage.removeItem('companyId');
