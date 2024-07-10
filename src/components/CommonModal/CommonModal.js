@@ -282,13 +282,13 @@ const CommonModal = ({
 
   const userOptions = allUsers?.map((user) => ({
     label: user.email,
-    value: user.id
+    value: user?.id
   }));
 
   useEffect(() => {
     const defaultUserOptions = groupAssignUsers?.map((i) => ({
       label: i?.user?.email,
-      value: i?.user.id
+      value: i?.user?.id
     }));
     setAssignUserId(defaultUserOptions);
   }, [groupAssignUsers]);
@@ -296,7 +296,7 @@ const CommonModal = ({
   useEffect(() => {
     const defaultUserOptions = folderAssignUsers?.map((i) => ({
       label: i?.user?.email,
-      value: i?.user.id
+      value: i?.user?.id
     }));
     setAssignfolderUserId(defaultUserOptions);
   }, [folderAssignUsers]);
