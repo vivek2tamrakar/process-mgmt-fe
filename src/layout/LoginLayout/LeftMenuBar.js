@@ -55,17 +55,22 @@ const LeftMenuBar = () => {
   const [selectedGroupId, setSelectedGroupId] = useState(null);
   const [groupAssignUsers, setGroupAssignUsers] = useState([]);
   const [folderAssignUsers, setFolderAssignUsers] = useState([]);
-
+  const companyId = localStorage.getItem('companyId');
+  console.log('LoggedInData',companyId)
   const fetchData = () => {
     GroupListGet({
-      url: 'group/list',
+      url: 'group/list/'+companyId,
       type: 'details',
       token: true
     })
       .then((res) => {
-        dispatch(getGroupList({ groupList: res?.group }));
-        dispatch(getFolderList({ folderList: res?.folder }));
-        dispatch(getProcessList({ processList: res?.process }));
+        const allGroups = [...(res?.group || []), ...(res?.assignGroup || [])] 
+        const allFolder = [...(res?.folder || []), ...(res?.assignFolder || [])] 
+        const allProcess = [...(res?.folder || []), ...(res?.assignProcess || [])]
+        console.log('allGroups',allGroups)
+        dispatch(getGroupList({ groupList: allGroups}));
+        dispatch(getFolderList({ folderList: allFolder }));
+        dispatch(getProcessList({ processList: allProcess }));
       })
       .catch((error) => {
         console.error('Error fetching data:', error);

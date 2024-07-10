@@ -110,10 +110,11 @@ const Dashboard = () => {
   const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
-
+  const companyId = localStorage.getItem('companyId');
+  console.log('LoggedInData',companyId)
   const fetchData = () => {
     GroupListGet({
-      url: 'group/home',
+      url: 'group/home/'+companyId,
       type: 'details',
       token: true
     })

@@ -39,17 +39,19 @@ const LoginLayout = ({ setIsLoggedIn }) => {
     dispatch(logout());
     navigate('/login')
   };
-
+  const companyId = localStorage.getItem('companyId');
+  console.log('LoggedInData',companyId)
   const fetchData = () => {
     GroupListGet({
-      url: 'group/list',
+      url: `group/list/`+companyId,
       type: 'details',
       token: true
     })
       .then((res) => {
         console.log(res);
-        const allGroups = res?.group || [];
-        const allProcesses = res?.process || [];
+        const allGroups = [...(res?.group || []), ...(res?.assignGroup || [])] 
+        // const allFolder = [...(res?.folder || []), ...(res?.assignFolder || [])] 
+        const allProcesses = [...(res?.folder || []), ...(res?.assignProcess || [])]
 
         dispatch(getGroupList({ groupList: allGroups }));
 

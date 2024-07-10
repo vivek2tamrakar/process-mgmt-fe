@@ -46,16 +46,20 @@ const Folder = () => {
     setProcessId(i?.id);
     setSelectedProcessName(i?.name);
   };
-
+  const companyId = localStorage.getItem('companyId');
+  console.log('LoggedInData',companyId)
   const fetchData = () => {
     GroupListGet({
-      url: 'group/list',
+      url: 'group/list/'+companyId,
       type: 'details',
       token: true
     })
       .then((res) => {
-        dispatch(getProcessList({ processList: res?.process }));
-        dispatch(getFolderList({ folderList: res?.folder }));
+        // const allGroups = [...(res?.group || []), ...(res?.assignGroup || [])] 
+        const allFolder = [...(res?.folder || []), ...(res?.assignFolder || [])] 
+        const allProcesses = [...(res?.folder || []), ...(res?.assignProcess || [])]
+        dispatch(getProcessList({ processList: allProcesses }));
+        dispatch(getFolderList({ folderList: allFolder }));
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
