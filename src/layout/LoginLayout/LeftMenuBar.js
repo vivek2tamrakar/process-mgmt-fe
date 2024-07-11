@@ -25,7 +25,9 @@ import {
   UsergroupAddOutlined,
   UsergroupDeleteOutlined
 } from '@ant-design/icons';
+import { toast } from 'react-hot-toast';
 import logo from '../../assets/images/logo.34ac6a4edb0bef53937e.jpg';
+import usePost from 'hooks/usePost';
 const truncateName = (name) => {
   if (name.length > 10) {
     return name.substring(0, 10) + '...';
@@ -33,6 +35,7 @@ const truncateName = (name) => {
   return name;
 };
 const LeftMenuBar = () => {
+  const { mutateAsync: CopyProcess } = usePost();
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -64,7 +67,7 @@ const LeftMenuBar = () => {
       token: true
     })
       .then((res) => {
-        const allGroups = [...(res?.group || []), ...(res?.assignGroup || [])] 
+        const allGroups = [...(res?.group || []), ...(res?.assignGroup || [])]
         const allFolder = [...(res?.folder || []), ...(res?.assignFolder || [])] 
         const allProcess = [...(res?.folder || []), ...(res?.assignProcess || [])]
         console.log('allGroups',allGroups)
@@ -76,6 +79,32 @@ const LeftMenuBar = () => {
         console.error('Error fetching data:', error);
       });
   };
+
+  const copyProcess = async(type, folder) => {
+    const id = await navigator.clipboard.readText();
+    const payload = {
+      id: id,
+      userId: companyId,
+      [type]: folder,
+    }
+    CopyProcess({
+      url: `process/copy-process`,
+      type: 'details',
+      payload: payload,
+      token: true
+  })
+      .then((res) => {
+        setPopoverVisible(false);
+          toast.success('Process Moved Successfully.');
+          console.log(res);
+      })
+      .catch((err) => {
+        setPopoverVisible(false);
+          console.error(err);
+          toast.error('Process Moved failed.');
+      });
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -206,11 +235,10 @@ const LeftMenuBar = () => {
               Home
             </SidebarRoute>
           </Link>
-
           {showSubMenu && (
             <>
               {/* this is all groups  */}
-              {allGroups?.map((i) => (
+              {allGroups.map((i) => (
                 <Popover
                   className="abababab"
                   key={i.id}
@@ -255,6 +283,7 @@ const LeftMenuBar = () => {
                                   <Button onClick={() => showFolderModal('Process')}>New Process</Button>
                                 </Link>
 
+                                <Button onClick={() => copyProcess('folderId', folder?.id)}>Paste</Button>
                                 <Button onClick={() => showFolderModal('Rename')}>Rename</Button>
                                 <Button onClick={() => showFolderModal('Folder Delete')}>Delete</Button>
                               </PopoverContainer>
@@ -286,7 +315,7 @@ const LeftMenuBar = () => {
               ))}
 
               {/* this is all folders */}
-              {allFolders?.map((i) => (
+              { /*allFolders?.map((i) => (
                 <Popover
                   key={i.id}
                   content={
@@ -304,12 +333,12 @@ const LeftMenuBar = () => {
                   <Link key={i.id} to={`/folder/${i.id}`} onContextMenu={(e) => handleFolderRightClick(e, i)}>
                     <SidebarGroupRoute isselected={pathname === `/folder/${i.id}`}>
                       {pathname === `/folder/${i.id}` ? <FolderOpenOutlined /> : <FolderOutlined />}
-                      {/* {i?.name} */}
+                      // { {i?.name} }
                       {truncateName(i.name)}
                     </SidebarGroupRoute>
                   </Link>
                 </Popover>
-              ))}
+              )) */}
             </>
           )}
 

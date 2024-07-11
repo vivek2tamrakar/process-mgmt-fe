@@ -10,7 +10,7 @@ import CommonModal from 'components/CommonModal/CommonModal';
 import { PopoverContainer } from 'layout/LoginLayout/Style';
 import { Button, Popover } from 'antd';
 import { setSelectedProcess } from '../../../features/process/processSlice';
-
+import { toast } from 'react-hot-toast';
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   return new Intl.DateTimeFormat('en-GB', {
@@ -73,6 +73,11 @@ const GroupFolderProcess = () => {
     fetchData();
   }, []);
 
+  const copy = (process) => {
+    navigator.clipboard.writeText(process.id);
+    toast.success('Process Copied.');
+    setPopoverVisible(false);
+  }
   const handleEditClick = (process) => {
     dispatch(setSelectedProcess(process));
     navigate('/add-process');
@@ -107,7 +112,7 @@ const GroupFolderProcess = () => {
                     <PopoverContainer>
                       <Button onClick={() => handleOpenClick(i)}>Open</Button>
                       <Button onClick={() => handleEditClick(i)}>Edit</Button>
-                      <Button>Copy</Button>
+                      <Button onClick={() => copy(i)}>Copy</Button>
                       <Button>Move</Button>
                       <Button onClick={() => showModal('Process Delete', i)}>Delete</Button>
                     </PopoverContainer>

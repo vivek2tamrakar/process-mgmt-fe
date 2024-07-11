@@ -135,7 +135,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
                   onClose={() => setOpenProfile(false)}
                   content={
                     <ProfileContainerContent className="ooll">
-                      <Button type="primary" onClick={()=> navigate('/profile')} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
+                      <Button type="primary" onClick={()=> {setOpenProfile(!openProfile);navigate('/profile')}} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
                         Profile
                       </Button>
                       <Button type="primary" onClick={handleLogout} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>

@@ -12,7 +12,7 @@ import {
   HomeHeader,
   TableData
 } from '../Group/Styled';
-
+import { toast } from 'react-hot-toast';
 import { BookOutlined } from '@ant-design/icons';
 import useGet from '../../../hooks/useGet';
 import { useNavigate } from 'react-router-dom';
@@ -88,6 +88,12 @@ const Home = () => {
     setPopoverVisible(true);
   };
 
+  const copy = (process) => {
+    navigator.clipboard.writeText(process.id);
+    toast.success('Process Copied.');
+    setPopoverVisible(false);
+  }
+
   const handleEditClick = (process) => {
     dispatch(setSelectedProcess(process));
     navigate('/add-process');
@@ -119,7 +125,7 @@ const Home = () => {
                     <PopoverContainer>
                       <Button onClick={() => handleOpenClick(i)}>Open</Button>
                       <Button onClick={() => handleEditClick(i)}>Edit</Button>
-                      <Button>Copy</Button>
+                      <Button onClick={() => copy(i)}>Copy</Button>
                       <Button>Move</Button>
                       <Button onClick={() => showModal('Process Delete', i)}>Delete</Button>
                     </PopoverContainer>
