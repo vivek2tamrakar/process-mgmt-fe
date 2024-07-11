@@ -46,6 +46,7 @@ const Group = () => {
     setProcessId(i?.id);
   };
   const companyId = localStorage.getItem('companyId');
+  const userRole = localStorage.getItem('userRole');
   console.log('LoggedInData',companyId)
   const fetchData = () => {
     GroupListGet({
@@ -105,6 +106,8 @@ const Group = () => {
                 <Popover
                   key={i?.id}
                   content={
+                    <>
+                     {(parseInt(userRole) === 4 || parseInt(userRole) === 3 || parseInt(userRole) === 2) && (
                     <PopoverContainer>
                       <Button onClick={() => handleOpenClick(i)}>Open</Button>
                       <Button onClick={() => handleEditClick(i)}>Edit</Button>
@@ -112,6 +115,13 @@ const Group = () => {
                       <Button>Move</Button>
                       <Button onClick={() => showModal('Process Delete', i)}>Delete</Button>
                     </PopoverContainer>
+                    )}
+                    {(parseInt(userRole) === 5) && (
+                     <PopoverContainer>
+                     <Button onClick={() => handleOpenClick(i)}>Open</Button>
+                   </PopoverContainer>
+                    )}
+                   </>
                   }
                   trigger="contextMenu"
                   visible={popoverVisible && selectedGroup?.id === i.id}

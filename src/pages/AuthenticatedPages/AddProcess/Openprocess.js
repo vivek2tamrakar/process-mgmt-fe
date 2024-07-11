@@ -35,7 +35,7 @@ const Openprocess = () => {
   const [stepDescriptions, setStepDescriptions] = useState(process?.step?.map((i) => stripHtmlTags(i?.stepDescription).split('\n')[0]));
   const [checkList, setCheckList] = useState(false);
   const [stepIds, setStepIds] = useState([]);
-
+  const userRole = localStorage.getItem('userRole');
   const handleAddStepClick = () => {
     dispatch(toggleAddStep());
   };
@@ -106,15 +106,15 @@ const Openprocess = () => {
         <AllInputsContainer className="okokokok">
           <BoxInput>
             <label>Name:</label>
-            <Input value={name} type="text" placeholder="Enter Process Name" readOnly />
+            <Input value={name} type="text" placeholder="Enter Process Name" style={{backgroundColor:'#ccc'}} readOnly />
           </BoxInput>
           <BoxInput>
             <label>Description:</label>
-            <TextArea value={description} type="text" rows={2} placeholder="Enter Process Description" readOnly />
+            <TextArea value={description} type="text" rows={2} placeholder="Enter Process Description" style={{backgroundColor:'#ccc'}} readOnly />
           </BoxInput>
           <BoxInput>
             <label>Tags:</label>
-            <TextArea value={tags} type="text" rows={2} placeholder="Tags and Keywords" readOnly />
+            <TextArea value={tags} type="text" rows={2} placeholder="Tags and Keywords" style={{backgroundColor:'#ccc'}} readOnly />
           </BoxInput>
           <BoxInput>
             <label>Steps</label>
@@ -130,6 +130,7 @@ const Openprocess = () => {
                       type="text"
                       placeholder={`Add Step ${index + 1}`}
                       onClick={() => handleUpdateStepClick(index)}
+                      style={{backgroundColor:'#ccc'}}
                       readOnly
                     />
                   </div>
@@ -141,6 +142,8 @@ const Openprocess = () => {
                 </StepContainer>
               ))}
           </BoxInput>
+          {
+          (parseInt(userRole) === 4 || parseInt(userRole) === 3 || parseInt(userRole) === 2) && (
           <Button
             style={{
               backgroundColor: 'rgb(0, 62, 107)',
@@ -151,9 +154,12 @@ const Openprocess = () => {
           >
             + Add Step
           </Button>
+          )}
         </AllInputsContainer>
         <ProcessActionsContainer>
-          <Button onClick={handleEditProcessClick}>Edit Process</Button>
+        {
+          (parseInt(userRole) === 4 || parseInt(userRole) === 3 || parseInt(userRole) === 2) && (<Button onClick={handleEditProcessClick}>Edit Process</Button>
+          )}
           <Button onClick={() => setCheckList(true)}>Run CheckList</Button>
           <Button>More Options</Button>
         </ProcessActionsContainer>

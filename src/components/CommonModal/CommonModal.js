@@ -258,23 +258,23 @@ const CommonModal = ({
       });
   };
 
-  const fetchUserData = () => {
-    UserListGet({
-      url: `users/list/${CompanyId}`,
-      type: 'details',
-      token: true
-    })
-      .then((res) => {
-        dispatch(getUserList({ userList: res }));
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  };
+  // const fetchUserData = () => {
+  //   UserListGet({
+  //     url: `users/list/${CompanyId}`,
+  //     type: 'details',
+  //     token: true
+  //   })
+  //     .then((res) => {
+  //       dispatch(getUserList({ userList: res }));
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching data:', error);
+  //     });
+  // };
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  // useEffect(() => {
+  //   fetchUserData();
+  // }, []);
 
   useEffect(() => {
     setAllUsers(userList);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProcessList } from '../../../features/Group/groupslice';
+import { getFolderList, getGroupList, getProcessList } from '../../../features/Group/groupslice';
 import { setSelectedProcess } from '../../../features/process/processSlice';
 import {
   AddProcessLink,
@@ -49,6 +49,7 @@ const Home = () => {
 
   const LoggedInName = localStorage.getItem('LoggedInName');
   const companyId = localStorage.getItem('companyId');
+  const userRole = localStorage.getItem('userRole');
   console.log('LoggedInData',companyId)
   const fetchData = () => {
     GroupListGet({
@@ -57,10 +58,12 @@ const Home = () => {
       token: true
     })
       .then((res) => {
-        // const allGroups = [...(res?.group || []), ...(res?.assignGroup || [])] 
-        // const allFolder = [...(res?.folder || []), ...(res?.assignFolder || [])]
+        const allGroups = [...(res?.group || []), ...(res?.assignGroup || [])] 
+        const allFolder = [...(res?.folder || []), ...(res?.assignFolder || [])]
         const allProcesses = [...(res?.folder || []), ...(res?.assignProcess || [])]
         dispatch(getProcessList({ processList: allProcesses }));
+        dispatch(getGroupList({ groupList: allGroups}));
+        dispatch(getFolderList({ folderList: allFolder }));
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -122,13 +125,23 @@ const Home = () => {
                 <Popover
                   key={i.id}
                   content={
-                    <PopoverContainer>
+                    <>
+                     {(parseInt(userRole) === 4 || parseInt(userRole) === 3 || parseInt(userRole) === 2) && (
+                      <PopoverContainer>
                       <Button onClick={() => handleOpenClick(i)}>Open</Button>
                       <Button onClick={() => handleEditClick(i)}>Edit</Button>
                       <Button onClick={() => copy(i)}>Copy</Button>
                       <Button>Move</Button>
                       <Button onClick={() => showModal('Process Delete', i)}>Delete</Button>
                     </PopoverContainer>
+                     )}
+                     {(parseInt(userRole) === 5) && (
+                      <PopoverContainer>
+                      <Button onClick={() => handleOpenClick(i)}>Open</Button>
+                    </PopoverContainer>
+                     )}
+                    </>
+                    
                   }
                   trigger="contextMenu"
                   visible={popoverVisible && selectedGroup?.id === i.id}

@@ -59,7 +59,8 @@ const LeftMenuBar = () => {
   const [groupAssignUsers, setGroupAssignUsers] = useState([]);
   const [folderAssignUsers, setFolderAssignUsers] = useState([]);
   const companyId = localStorage.getItem('companyId');
-  console.log('LoggedInData',companyId)
+  const userRole = localStorage.getItem('userRole');
+  console.log(userRole,'LoggedInData',companyId)
   const fetchData = () => {
     GroupListGet({
       url: 'group/list/'+companyId,
@@ -238,12 +239,14 @@ const LeftMenuBar = () => {
           {showSubMenu && (
             <>
               {/* this is all groups  */}
+              
               {allGroups.map((i) => (
                 <Popover
                   className="abababab"
                   key={i.id}
                   content={
                     <>
+                    {(parseInt(userRole) === 4 || parseInt(userRole) === 3 || parseInt(userRole) === 2) && (
                       <PopoverContainer className="okokokok">
                         <Button onClick={() => showModal('EditMember')}>Edit Members</Button>
                         <Button onClick={() => showModal('Rename')}>Rename</Button>
@@ -252,7 +255,9 @@ const LeftMenuBar = () => {
                         <Button onClick={() => showModal('Process')}>New Process</Button>
                         <Button onClick={() => showModal('DeleteGroup')}>Delete</Button>
                       </PopoverContainer>
+                       )}
                     </>
+                   
                   }
                   trigger="contextMenu"
                   visible={!popoverVisibleFolder && popoverVisible && selectedGroup?.id === i.id}
@@ -277,6 +282,8 @@ const LeftMenuBar = () => {
                           <Popover
                             key={folder.id}
                             content={
+                              <>
+                              {(parseInt(userRole) === 4 || parseInt(userRole) === 3 || parseInt(userRole) === 2) && (
                               <PopoverContainer>
                                 <Link to={`/group/${selectedGroupId}/folder/${folder?.id}`}>
                                   {' '}
@@ -287,6 +294,8 @@ const LeftMenuBar = () => {
                                 <Button onClick={() => showFolderModal('Rename')}>Rename</Button>
                                 <Button onClick={() => showFolderModal('Folder Delete')}>Delete</Button>
                               </PopoverContainer>
+                              )}
+                              </>
                             }
                             trigger="contextMenu"
                             visible={popoverVisible && popoverVisibleFolder && selectedFolder?.id === folder.id}
@@ -341,13 +350,15 @@ const LeftMenuBar = () => {
               )) */}
             </>
           )}
-
+          { parseInt(userRole) === 4 || parseInt(userRole) === 3 || parseInt(userRole) === 2 && (
           <Link to="/users">
             <SidebarRoute isselected={pathname === '/users'}>
               <UserOutlined />
               Users
             </SidebarRoute>
           </Link>
+          )
+          }
         </SidebarRoutesContainer>
       </LeftSideBar>
       <CommonModal
