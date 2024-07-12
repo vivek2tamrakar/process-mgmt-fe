@@ -10,7 +10,7 @@ const UpdateProfile = ({ user, fetchData }) => {
     const [name, setName] = useState(user.name);
     const [email, setEmail] = useState(user.email);
     const [file, setFile] = useState(null);
-    const [blob, setBlob] = useState(null);
+    const [blob, setBlob] = useState(user.profilePic || null);
     const [mobileNum, setMobileNum] = useState(user.mobileNumber);
 
     const onFileUpload = (e) => {
