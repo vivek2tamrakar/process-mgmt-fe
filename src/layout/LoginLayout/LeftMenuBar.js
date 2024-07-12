@@ -28,6 +28,7 @@ import {
 import { toast } from 'react-hot-toast';
 import logo from '../../assets/images/logo.34ac6a4edb0bef53937e.jpg';
 import usePost from 'hooks/usePost';
+import usePatch from 'hooks/usePatch';
 const truncateName = (name) => {
   if (name.length > 10) {
     return name.substring(0, 10) + '...';
@@ -36,6 +37,7 @@ const truncateName = (name) => {
 };
 const LeftMenuBar = () => {
   const { mutateAsync: CopyProcess } = usePost();
+  const { mutateAsync: MoveProcess } = usePatch();
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -90,6 +92,29 @@ const LeftMenuBar = () => {
     }
     CopyProcess({
       url: `process/copy-process`,
+      type: 'details',
+      payload: payload,
+      token: true
+  })
+      .then((res) => {
+        setPopoverVisible(false);
+          toast.success('Process Paste Successfully.');
+          console.log(res);
+      })
+      .catch((err) => {
+        setPopoverVisible(false);
+          console.error(err);
+          toast.error('Process Paste failed.');
+      });
+  }
+  const moveProcess = async(type, folder) => {
+    const id = await navigator.clipboard.readText();
+    const payload = {
+      id: id,
+      [type]: folder,
+    }
+    MoveProcess({
+      url: `process`,
       type: 'details',
       payload: payload,
       token: true
@@ -291,6 +316,7 @@ const LeftMenuBar = () => {
                                 </Link>
 
                                 <Button onClick={() => copyProcess('folderId', folder?.id)}>Paste</Button>
+                                <Button onClick={() => moveProcess('folderId', folder?.id)}>Move</Button>
                                 <Button onClick={() => showFolderModal('Rename')}>Rename</Button>
                                 <Button onClick={() => showFolderModal('Folder Delete')}>Delete</Button>
                               </PopoverContainer>

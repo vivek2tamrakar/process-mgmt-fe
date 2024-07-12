@@ -10,3 +10,17 @@ export const BoxInput = styled.div`
     font-size: 14px;
   }
 `;
+
+export const ProfileWrapper = styled.div`
+display: flex;
+justify-content: center;
+flex-direction: column;
+margin-top: 20px;
+align-items: center;
+`;
+
+export const Form = styled.form`
+width: 100%;
+padding: 40px;
+max-width: 600px;
+margin: auto;`

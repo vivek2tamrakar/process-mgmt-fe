@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.ant-tabs-tab-active {
+  background-color: #000 !important;
+}
+.ant-tabs-tab-active div {
+  color: #fff !important;
+}
+.ant-tabs-nav-wrap {
+  border-bottom: 1px solid #bcbcbc ;
+}
