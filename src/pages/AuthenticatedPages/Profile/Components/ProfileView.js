@@ -5,7 +5,7 @@ import ProfileImage from '../../../../assets/images/profiledummy.jpg';
 const ProfileView = ({ user }) => {
     return (
         <ProfileWrapper>
-            <img src={user.profilePic ? user.profilePic : ProfileImage} alt="noImage" width={220} height={200} />
+            <img src={user?.profilePic ? user?.profilePic : ProfileImage} alt="noImage" width={220} height={200} />
             <div
                 style={{
                     marginTop: 15
