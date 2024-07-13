@@ -73,10 +73,15 @@ const GroupFolderProcess = () => {
     fetchData();
   }, []);
 
-  const copy = (process) => {
-    navigator.clipboard.writeText(process.id);
-    toast.success('Process Copied.');
-    setPopoverVisible(false);
+  const copy = async (process) => {
+    try {
+      await navigator.clipboard.writeText(process.id);
+      toast.success('Process Copied.');
+      setPopoverVisible(false);
+    }
+    catch(err) {
+      console.log(err)
+    }
   }
   const handleEditClick = (process) => {
     dispatch(setSelectedProcess(process));

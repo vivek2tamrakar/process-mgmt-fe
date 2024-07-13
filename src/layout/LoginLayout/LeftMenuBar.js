@@ -84,6 +84,7 @@ const LeftMenuBar = () => {
   };
 
   const copyProcess = async(type, folder) => {
+    try {
     const id = await navigator.clipboard.readText();
     const payload = {
       id: id,
@@ -106,8 +107,13 @@ const LeftMenuBar = () => {
           console.error(err);
           toast.error('Process Paste failed.');
       });
+    }
+    catch(err) {
+      console.log(err);
+    }
   }
   const moveProcess = async(type, folder) => {
+    try {
     const id = await navigator.clipboard.readText();
     const payload = {
       id: id,
@@ -129,6 +135,10 @@ const LeftMenuBar = () => {
           console.error(err);
           toast.error('Process Moved failed.');
       });
+    }
+    catch(err) {
+      console.log(err);
+    }
   }
 
   useEffect(() => {
