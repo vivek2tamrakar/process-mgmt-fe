@@ -5,6 +5,14 @@ export const AddProcessContainer = styled.div`
   height: calc(100vh - 57px);
   display: flex;
 `;
+export const ProcessStepButton = styled.div`
+  display: flex;
+  gap: 20px;
+  position: absolute;
+  top: 15px;
+  right: 140px;
+`;
+
 export const StepsContainer = styled.div`
   width: 35%;
   border-right: 1px solid black;
@@ -63,8 +71,17 @@ export const StepContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+  position: relative;
 `;
-// export const AddProcessContainer = styled.div``;
+
+export const LineThrough = styled.div`
+top: 15px;
+background-color: #000;
+position: absolute;
+height: 1px;
+z-index: 999;
+width: 180px;
+`;
 // export const AddProcessContainer = styled.div``;
 // export const AddProcessContainer = styled.div``;
 // export const AddProcessContainer = styled.div``;

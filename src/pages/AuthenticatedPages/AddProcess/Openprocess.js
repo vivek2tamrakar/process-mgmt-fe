@@ -6,7 +6,9 @@ import {
   CkEditorComtainer,
   AllInputsContainer,
   StepsContainer,
-  ProcessActionsContainer
+  ProcessActionsContainer,
+  ProcessStepButton,
+  LineThrough
 } from './styled';
 import { Breadcrumb, Button, Input } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
@@ -15,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleAddStep } from '../../../features/step/stepSlice';
 import { useNavigate } from 'react-router-dom';
 import usePatch from 'hooks/usePatch';
+import { toast } from 'react-hot-toast';
 
 const { TextArea } = Input;
 
@@ -34,12 +37,13 @@ const Openprocess = () => {
   const [clickedIndex, setClickedIndex] = useState(null);
   const [stepDescriptions, setStepDescriptions] = useState(process?.step?.map((i) => stripHtmlTags(i?.stepDescription).split('\n')[0]));
   const [checkList, setCheckList] = useState(false);
-  const [stepIds, setStepIds] = useState([]);
+  const [stepIds, setStepIds] = useState(() => process?.step?.filter((i) => i.isCompleted).map(i => i.id));
+  const [stepPayload, setStepPayload] = useState(null);
   const userRole = localStorage.getItem('userRole');
   const handleAddStepClick = () => {
     dispatch(toggleAddStep());
   };
-
+  console.log(process?.step)
   const handleUpdateStepClick = (index) => {
     setClickedIndex(index);
     dispatch(toggleAddStep());
@@ -73,10 +77,20 @@ const Openprocess = () => {
         isCompleted: updatedStepStatus
       };
 
+      setStepPayload(payload)
+    
+      return updatedStepIds;
+    });
+  };
+
+  const saveSteps = () => {
+      if(!stepPayload) {
+        return;
+      }
       CommonPatch({
         url: 'step',
         type: 'details',
-        payload: payload,
+        payload: stepPayload,
         token: true,
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -84,19 +98,22 @@ const Openprocess = () => {
       })
         .then((res) => {
           console.log(res);
+          toast.success('Step Marked Completed!');
+          setCheckList(false)
         })
         .catch((err) => {
           console.error(err);
         });
-      return updatedStepIds;
-    });
-  };
+  }
 
   const handleEditProcessClick = () => {
     navigate('/add-process');
   };
   return (
     <AddProcessContainer>
+      { checkList && <ProcessStepButton>
+        <Button onClick={() => saveSteps()}>Step Completed</Button>
+      </ProcessStepButton>}
       <StepsContainer>
         <Breadcrumb>
           Home
@@ -123,7 +140,9 @@ const Openprocess = () => {
               ?.sort((a, b) => a.id - b.id)
               ?.map((i, index) => (
                 <StepContainer key={index}>
+
                   <div>
+                    {i.isCompleted && <LineThrough></LineThrough>}
                     {' '}
                     <Input
                       value={`${index + 1}. ${stepDescriptions[index]}`}
@@ -134,7 +153,7 @@ const Openprocess = () => {
                       readOnly
                     />
                   </div>
-                  {checkList && (
+                  {checkList && !i.isCompleted && (
                     <div>
                       <Input type="checkbox" onChange={() => handleCheckboxChange(i.id)} checked={stepIds.includes(i.id)} />
                     </div>
