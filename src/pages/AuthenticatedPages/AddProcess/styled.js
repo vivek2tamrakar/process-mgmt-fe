@@ -10,7 +10,7 @@ export const ProcessStepButton = styled.div`
   gap: 20px;
   position: absolute;
   top: 15px;
-  right: 140px;
+  right: 100px;
 `;
 
 export const StepsContainer = styled.div`

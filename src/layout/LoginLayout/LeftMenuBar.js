@@ -83,11 +83,21 @@ const LeftMenuBar = () => {
       });
   };
 
-  const copyProcess = async(type, folder) => {
+  const copyMoveProcess = async(type, folder) => {
+    const text = await navigator.clipboard.readText();
+    const [id, opr] = text.split('_');
+    if(opr === "MOVE") {
+      moveProcess(type, folder, id)
+    }
+    else {
+      copyProcess(type, folder, id)
+    }
+  }
+
+  const copyProcess = async(type, folder, id) => {
     try {
-    const id = await navigator.clipboard.readText();
     const payload = {
-      id: id,
+      id,
       userId: companyId,
       [type]: folder,
     }
@@ -112,11 +122,10 @@ const LeftMenuBar = () => {
       console.log(err);
     }
   }
-  const moveProcess = async(type, folder) => {
+  const moveProcess = async(type, folder, id) => {
     try {
-    const id = await navigator.clipboard.readText();
-    const payload = {
-      id: id,
+     const payload = {
+      id,
       [type]: folder,
     }
     MoveProcess({
@@ -325,8 +334,7 @@ const LeftMenuBar = () => {
                                   <Button onClick={() => showFolderModal('Process')}>New Process</Button>
                                 </Link>
 
-                                <Button onClick={() => copyProcess('folderId', folder?.id)}>Paste Process</Button>
-                                <Button onClick={() => moveProcess('folderId', folder?.id)}>Move Proces</Button>
+                                <Button onClick={() => copyMoveProcess('folderId', folder?.id)}>Paste</Button>
                                 <Button onClick={() => showFolderModal('Rename')}>Rename</Button>
                                 <Button onClick={() => showFolderModal('Folder Delete')}>Delete</Button>
                               </PopoverContainer>
