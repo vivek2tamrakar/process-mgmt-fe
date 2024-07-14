@@ -91,9 +91,9 @@ const Home = () => {
     setPopoverVisible(true);
   };
 
-  const copy = async (process) => {
+  const copy = async (process, type) => {
     try {
-      await navigator.clipboard.writeText(process.id);
+      await navigator.clipboard.writeText(process.id+"_"+type);
       toast.success('Process Copied.');
       setPopoverVisible(false);
     }
@@ -135,8 +135,8 @@ const Home = () => {
                       <PopoverContainer>
                       <Button onClick={() => handleOpenClick(i)}>Open</Button>
                       <Button onClick={() => handleEditClick(i)}>Edit</Button>
-                      <Button onClick={() => copy(i)}>Copy</Button>
-                      <Button>Move</Button>
+                      <Button onClick={() => copy(i, 'COPY')}>Copy</Button>
+                      <Button onClick={() => copy(i, 'MOVE')}>Move</Button>
                       <Button onClick={() => showModal('Process Delete', i)}>Delete</Button>
                     </PopoverContainer>
                      )}

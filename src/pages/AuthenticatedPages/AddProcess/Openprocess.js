@@ -113,6 +113,7 @@ const Openprocess = () => {
     <AddProcessContainer>
       { checkList && <ProcessStepButton>
         <Button onClick={() => saveSteps()}>Step Completed</Button>
+        <Button onClick={() => setCheckList(false)}>Cancel</Button>
       </ProcessStepButton>}
       <StepsContainer>
         <Breadcrumb>
@@ -153,7 +154,7 @@ const Openprocess = () => {
                       readOnly
                     />
                   </div>
-                  {checkList && !i.isCompleted && (
+                  {checkList && (
                     <div>
                       <Input type="checkbox" onChange={() => handleCheckboxChange(i.id)} checked={stepIds.includes(i.id)} />
                     </div>
