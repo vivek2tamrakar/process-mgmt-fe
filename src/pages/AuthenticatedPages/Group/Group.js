@@ -80,6 +80,16 @@ const Group = () => {
       console.log(err)
     }
   }
+   const move = async (process) => {
+    try {
+      await navigator.clipboard.writeText(process.id);
+      toast.success('Process Copied.');
+      setPopoverVisible(false);
+    }
+    catch(err) {
+      console.log(err)
+    }
+  }
   const handleEditClick = (process) => {
     dispatch(setSelectedProcess(process));
     navigate('/add-process');
@@ -117,7 +127,7 @@ const Group = () => {
                       <Button onClick={() => handleOpenClick(i)}>Open</Button>
                       <Button onClick={() => handleEditClick(i)}>Edit</Button>
                       <Button onClick={() => copy(i)}>Copy</Button>
-                      <Button>Move</Button>
+                      <Button onClick={() => move(i)}>Move</Button>
                       <Button onClick={() => showModal('Process Delete', i)}>Delete</Button>
                     </PopoverContainer>
                     )}
@@ -142,7 +152,7 @@ const Group = () => {
                     </td>
                     <td className="DateCreated">{formatDate(i?.createdAt)}</td>
                     <td className="LastUpdated">{formatDate(i?.updatedAt)}</td>
-                    <td className="LastReview"></td>
+                    <td className="LastReview">{i?.step?.[0]?.lastReview ? formatDate(i?.step?.[0]?.lastReview):''}</td>
                   </tr>
                 </Popover>
               ))}

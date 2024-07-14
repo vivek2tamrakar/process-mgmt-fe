@@ -325,8 +325,8 @@ const LeftMenuBar = () => {
                                   <Button onClick={() => showFolderModal('Process')}>New Process</Button>
                                 </Link>
 
-                                <Button onClick={() => copyProcess('folderId', folder?.id)}>Paste</Button>
-                                <Button onClick={() => moveProcess('folderId', folder?.id)}>Move</Button>
+                                <Button onClick={() => copyProcess('folderId', folder?.id)}>Paste Process</Button>
+                                <Button onClick={() => moveProcess('folderId', folder?.id)}>Move Proces</Button>
                                 <Button onClick={() => showFolderModal('Rename')}>Rename</Button>
                                 <Button onClick={() => showFolderModal('Folder Delete')}>Delete</Button>
                               </PopoverContainer>

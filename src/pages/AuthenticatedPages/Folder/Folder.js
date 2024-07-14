@@ -120,7 +120,7 @@ const Folder = () => {
                     </td>
                     <td className="DateCreated">{formatDate(i?.createdAt)}</td>
                     <td className="LastUpdated">{formatDate(i?.updatedAt)}</td>
-                    <td className="LastReview"></td>
+                    <td className="LastReview">{i?.step?.[0]?.lastReview ? formatDate(i?.step?.[0]?.lastReview):''}</td>
                   </tr>
                 </Popover>
               ))}
