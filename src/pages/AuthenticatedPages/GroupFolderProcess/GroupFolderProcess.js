@@ -32,6 +32,7 @@ const GroupFolderProcess = () => {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [selectedProcessName, setSelectedProcessName] = useState();
   const [processId, setProcessId] = useState();
+  const userRole = localStorage.getItem('userRole');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -126,9 +127,9 @@ const GroupFolderProcess = () => {
                   content={
                     <PopoverContainer>
                       <Button onClick={() => handleOpenClick(i)}>Open</Button>
-                      <Button onClick={() => handleEditClick(i)}>Edit</Button>
+                      { parseInt(userRole) !== 5 && <><Button onClick={() => handleEditClick(i)}>Edit</Button>
                       <Button onClick={() => copy(i, 'COPY')}>Copy</Button>
-                      <Button onClick={() => copy(i, 'MOVE')}>Move</Button>
+                      <Button onClick={() => copy(i, 'MOVE')}>Move</Button></>}
                       <Button onClick={() => showModal('Process Delete', i)}>Delete</Button>
                     </PopoverContainer>
                   }

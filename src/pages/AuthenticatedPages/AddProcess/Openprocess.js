@@ -8,7 +8,9 @@ import {
   StepsContainer,
   ProcessActionsContainer,
   ProcessStepButton,
-  LineThrough
+  LineThrough,
+  MoreOptionListItem,
+  MoreOptionList
 } from './styled';
 import { Breadcrumb, Button, Input } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
@@ -39,6 +41,7 @@ const Openprocess = () => {
   const [checkList, setCheckList] = useState(false);
   const [stepIds, setStepIds] = useState(() => process?.step?.filter((i) => i.isCompleted).map(i => i.id));
   const [stepPayload, setStepPayload] = useState(null);
+  const [moreOpt, setMoreOpt] = useState(false);
   const userRole = localStorage.getItem('userRole');
   const handleAddStepClick = () => {
     dispatch(toggleAddStep());
@@ -181,7 +184,22 @@ const Openprocess = () => {
           (parseInt(userRole) === 4 || parseInt(userRole) === 3 || parseInt(userRole) === 2) && (<Button onClick={handleEditProcessClick}>Edit Process</Button>
           )}
           <Button onClick={() => setCheckList(true)}>Run CheckList</Button>
-          <Button>More Options</Button>
+          <div style={{position: 'relative', width: '100%'}} onClick={() => setMoreOpt((val)=> !val)}>
+            <Button style={{width: '100%'}}>More Options</Button>
+            {moreOpt && <MoreOptionList style={{position: 'absolute'}}>
+              <MoreOptionListItem>Review Process</MoreOptionListItem>
+              <MoreOptionListItem>Print</MoreOptionListItem>
+              <MoreOptionListItem>Move Process</MoreOptionListItem>
+              <MoreOptionListItem>Copy Process</MoreOptionListItem>
+              <MoreOptionListItem>Delete Process</MoreOptionListItem>
+              <MoreOptionListItem>View Mark Up Mode/Edits/Comments</MoreOptionListItem>
+              <MoreOptionListItem>View Process details</MoreOptionListItem>
+              <MoreOptionListItem>Share Process</MoreOptionListItem>
+              <MoreOptionListItem>Send Process</MoreOptionListItem>
+              <MoreOptionListItem>Comment on Process</MoreOptionListItem>
+            </MoreOptionList>}
+          </div>
+          
         </ProcessActionsContainer>
       </StepsContainer>
       {clickedIndex !== null ? (

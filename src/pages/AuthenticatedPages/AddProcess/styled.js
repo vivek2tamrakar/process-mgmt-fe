@@ -82,8 +82,21 @@ height: 1px;
 z-index: 999;
 width: 180px;
 `;
-// export const AddProcessContainer = styled.div``;
-// export const AddProcessContainer = styled.div``;
+export const MoreOptionListItem = styled.div`
+padding: 5px 12px;
+border-bottom: 1px solid #d9d9d9;
+font-size: 14px;
+cursor: pointer;
+&:hover {
+  background-color: #d9d9d9;
+}
+`;
+export const MoreOptionList = styled.div`
+bottom: 30px;
+position: absolute;
+background: #fff;
+border: 1px solid #d9d9d9;
+border-radius: 6px;`;
 // export const AddProcessContainer = styled.div``;
 // export const AddProcessContainer = styled.div``;
 // export const AddProcessContainer = styled.div``;

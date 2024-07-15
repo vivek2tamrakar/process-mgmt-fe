@@ -9,7 +9,8 @@ import {
   ProfileContainer,
   RightContent,
   ProcessStepButton,
-  ProfileContainerContent
+  ProfileContainerContent,
+  SearchBar
 } from './Style';
 import LeftMenuBar from './LeftMenuBar';
 import { Button, Popover } from 'antd';
@@ -21,6 +22,7 @@ import { setStepDescription } from 'features/CKeditor/ckeditorslice';
 import { toggleAddStep } from 'features/step/stepSlice';
 import ProfileImage from '../../assets/images/profiledummy.jpg';
 import { useNavigate } from 'react-router-dom';
+import { SearchOutlined } from '@ant-design/icons';
 const { REACT_APP_DETAILS_URL } = process.env;
 
 const LoginLayout = ({ setIsLoggedIn }) => {
@@ -127,6 +129,10 @@ const LoginLayout = ({ setIsLoggedIn }) => {
               </ProcessStepButton>
             )}
             {location.pathname !== '/add-process' && (
+              <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+               {location.pathname !== '/open-process' && <>
+               <SearchOutlined style={{position: 'relative', right: '-40px'}} /><SearchBar type="search" placeholder='Search (hashtags)' />
+               </>}
               <ProfileContainer>
                 <Popover
                   placement="bottomRight"
@@ -149,6 +155,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
                   </div>
                 </Popover>
               </ProfileContainer>
+              </div>
             )}
           </Header>
           <Outlet />

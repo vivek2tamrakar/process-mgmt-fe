@@ -168,6 +168,13 @@ export const ProfileContainerContent = styled.div`
     width: 95px;
   }
 `;
-// export const LoginLayoutContainer = styled.div``;
+export const SearchBar = styled.input`
+padding: 5px 12px 5px 40px;
+height: 40px;
+background-color: #fff;
+border: 1px solid #d9d9d9;
+border-radius: 8px;
+width: 240px;
+`;
 // export const LoginLayoutContainer = styled.div``;
 // export const LoginLayoutContainer = styled.div``;
