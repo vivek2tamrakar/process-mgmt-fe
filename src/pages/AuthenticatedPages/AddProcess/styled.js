@@ -79,7 +79,7 @@ top: 15px;
 background-color: #000;
 position: absolute;
 height: 1px;
-z-index: 999;
+z-index: 99;
 width: 180px;
 `;
 export const MoreOptionListItem = styled.div`
@@ -96,6 +96,7 @@ bottom: 30px;
 position: absolute;
 background: #fff;
 border: 1px solid #d9d9d9;
+z-index: 999;
 border-radius: 6px;`;
 // export const AddProcessContainer = styled.div``;
 // export const AddProcessContainer = styled.div``;

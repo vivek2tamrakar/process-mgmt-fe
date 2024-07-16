@@ -46,3 +46,4 @@
 .ant-tabs-nav-wrap {
   border-bottom: 1px solid #bcbcbc ;
 }
+@media print { .printable-element { display: inline-block !important;  } }

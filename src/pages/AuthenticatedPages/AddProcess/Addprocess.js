@@ -101,11 +101,13 @@ const Addprocess = () => {
           </BoxInput>
           <BoxInput>
             <label>Steps</label>
-            {process?.step?.map((i, index) => (
+            {process?.step
+              ?.slice()
+              ?.sort((a, b) => a.id - b.id).map((i, index) => (
               <StepContainer key={index}>
                 <div>
                   <Input
-                    value={`${index + 1}. ${stripHtmlTags(i?.stepDescription)
+                    value={`${index + 1}. ${stripHtmlTags(i.stepDescription)
                       ?.split(/\r?\n|\r|\s\s+/)[0]
                       .trim()}`}
                     type="text"

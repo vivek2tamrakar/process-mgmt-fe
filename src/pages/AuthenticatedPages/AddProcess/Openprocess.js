@@ -124,7 +124,7 @@ const Openprocess = () => {
           <RightOutlined />
           {name}
         </Breadcrumb>
-        <AllInputsContainer className="okokokok">
+        <AllInputsContainer className="okokokok printable-element">
           <BoxInput>
             <label>Name:</label>
             <Input value={name} type="text" placeholder="Enter Process Name" style={{backgroundColor:'#ccc'}} readOnly />
@@ -143,13 +143,13 @@ const Openprocess = () => {
               ?.slice()
               ?.sort((a, b) => a.id - b.id)
               ?.map((i, index) => (
+                
                 <StepContainer key={index}>
-
                   <div>
                     {i.isCompleted && <LineThrough></LineThrough>}
                     {' '}
                     <Input
-                      value={`${index + 1}. ${stepDescriptions[index]}`}
+                      value={`${index + 1}. ${i.stepDescription}`}
                       type="text"
                       placeholder={`Add Step ${index + 1}`}
                       onClick={() => handleUpdateStepClick(index)}
@@ -167,6 +167,7 @@ const Openprocess = () => {
           </BoxInput>
           {
           (parseInt(userRole) === 4 || parseInt(userRole) === 3 || parseInt(userRole) === 2) && (
+           
           <Button
             style={{
               backgroundColor: 'rgb(0, 62, 107)',
@@ -177,12 +178,17 @@ const Openprocess = () => {
           >
             + Add Step
           </Button>
-          )}
+        )}
         </AllInputsContainer>
         <ProcessActionsContainer>
+        <Button onClick={() => saveSteps()} disabled={stepIds.length != sortedSteps.length}>
+            Review Complete
+          </Button>
         {
-          (parseInt(userRole) === 4 || parseInt(userRole) === 3 || parseInt(userRole) === 2) && (<Button onClick={handleEditProcessClick}>Edit Process</Button>
+          (parseInt(userRole) === 4 || parseInt(userRole) === 3 || parseInt(userRole) === 2) && (
+          <Button onClick={handleEditProcessClick}>Edit Process</Button>
           )}
+            
           <Button onClick={() => setCheckList(true)}>Run CheckList</Button>
           <div style={{position: 'relative', width: '100%'}} onClick={() => setMoreOpt((val)=> !val)}>
             <Button style={{width: '100%'}}>More Options</Button>
