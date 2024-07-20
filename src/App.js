@@ -19,6 +19,7 @@ import GroupFolderProcess from './pages/AuthenticatedPages/GroupFolderProcess/Gr
 import { Toaster } from 'react-hot-toast';
 import Addprocess from './pages/AuthenticatedPages/AddProcess/Addprocess';
 import Openprocess from 'pages/AuthenticatedPages/AddProcess/Openprocess';
+import Viewprocess from 'pages/AuthenticatedPages/AddProcess/Viewprocess';
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ function App() {
               <Route path="process/:id" element={<Process />} />
               <Route path="add-process" element={<Addprocess />} />
               <Route path="open-process" element={<Openprocess />} />
+              <Route path="view-process" element={<Viewprocess />} />
               <Route path="*" element={<Dashboard />} />
             </Route>
           ) : (
