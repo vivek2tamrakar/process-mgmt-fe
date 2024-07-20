@@ -1,0 +1,37 @@
+.comments {
+    height: calc(100vh - 105px);
+}
+
+.footer {
+    border-top: 1px solid #eee;
+    box-sizing: border-box;
+    padding-top: 20px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.main {
+    height: calc(100vh - 205px);
+    overflow: auto;
+}
+
+.comment {
+    padding: 15px;
+    background-color: #eeeeee;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.datetime {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 12px;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.disable {
+    pointer-events: none;
+    background-color: gray;
+}

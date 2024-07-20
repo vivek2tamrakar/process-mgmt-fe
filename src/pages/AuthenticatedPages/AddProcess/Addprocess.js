@@ -35,7 +35,8 @@ const Addprocess = () => {
     dispatch(toggleAddStep());
   };
 
-  const handleUpdateStepClick = (index) => {
+  const handleUpdateStepClick = (id) => {
+    const index = process?.step?.findIndex(val => val.id === id)
     const clickedStepId = process?.step[index]?.id;
     setClickedIndex(index);
     dispatch(toggleAddStep());
@@ -101,9 +102,7 @@ const Addprocess = () => {
           </BoxInput>
           <BoxInput>
             <label>Steps</label>
-            {process?.step
-              ?.slice()
-              ?.sort((a, b) => a.id - b.id).map((i, index) => (
+            {sortedSteps.map((i, index) => (
               <StepContainer key={index}>
                 <div>
                   <Input
@@ -112,7 +111,7 @@ const Addprocess = () => {
                       .trim()}`}
                     type="text"
                     placeholder={`Add Step ${index + 1}`}
-                    onClick={() => handleUpdateStepClick(index)}
+                    onClick={() => handleUpdateStepClick(i.id)}
                     readOnly
                   />
                 </div>

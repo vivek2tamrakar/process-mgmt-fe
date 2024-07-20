@@ -12,3 +12,17 @@ code {
 .ant-btn.css-dev-only-do-not-override-zg0ahe.ant-btn-primary {
   background-color: rgb(0, 62, 107);
 }
+
+@media print {
+  html, body {
+    height: 100vh; /* Use 100% here to support printing more than a single page*/
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+  }
+
+  .print-process {
+    margin: 50px;
+    display: block!important;
+  }
+}

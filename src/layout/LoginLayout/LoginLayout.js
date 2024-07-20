@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../features/auth/authSlice';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import Styles from "./MainStyle.module.css";
 import {
   Header,
   HomeRoutes,
@@ -36,6 +37,9 @@ const LoginLayout = ({ setIsLoggedIn }) => {
   const location = useLocation();
   const { mutateAsync: GroupListGet } = useGet();
   const [openProfile, setOpenProfile] = useState(false);
+  const [showList, setShowList] = useState(false);
+  const [searchList, setSearchList] = useState([]);
+  const [searchVal, setSearchVal] = useState("");
   const handleLogout = () => {
     setIsLoggedIn(false);
     dispatch(logout());
@@ -84,6 +88,46 @@ const LoginLayout = ({ setIsLoggedIn }) => {
       });
   };
 
+  const search = (event) => {
+    setSearchVal(event.target.value);
+    setSearchList([])
+    if(!event.target.value) {
+      return;
+    }
+    axios
+      .get(`${REACT_APP_DETAILS_URL}process/search/${companyId}?tags=${event.target.value}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((res) => {
+        console.log(res.data)
+        setShowList(true)
+        setSearchList(res.data)
+      })
+      .catch((error) => {
+        console.error('Error while submitting form:', error);
+      });
+  }
+
+  const processById = (id) => {
+    axios
+      .get(`${REACT_APP_DETAILS_URL}process/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((res) => {
+        dispatch(setSelectedProcess(res.data));
+        navigate('/open-process');
+      })
+      .catch((error) => {
+        console.error('Error while submitting form:', error);
+      });
+  }
+
   const submitForm = () => {
     const payload = {
       id: process?.id,
@@ -130,9 +174,14 @@ const LoginLayout = ({ setIsLoggedIn }) => {
             )}
             {location.pathname !== '/add-process' && (
               <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-               {location.pathname !== '/open-process' && <>
-               <SearchOutlined style={{position: 'relative', right: '-40px'}} /><SearchBar type="search" placeholder='Search (hashtags)' />
-               </>}
+               {location.pathname !== '/open-process' && <div style={{position: 'relative'}}>
+               <SearchOutlined style={{position: 'relative', right: '-30px', top: '3px'}} /><SearchBar value={searchVal} type="search" placeholder='Search (hashtags)' onInput={search} />
+                {showList && <div className={Styles.searchList} >
+                  { searchList.map((val) => (<div className={Styles.searchItem} key={val.id} onClick={()=> {setShowList(data => !data);setSearchVal(val.name);processById(val.id)}}>
+                    {val.name}
+                  </div>)) }
+                </div>}
+               </div>}
               <ProfileContainer>
                 <Popover
                   placement="bottomRight"

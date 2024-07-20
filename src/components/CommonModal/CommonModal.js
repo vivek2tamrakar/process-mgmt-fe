@@ -67,6 +67,30 @@ const CommonModal = ({
     setName('');
   };
 
+  const shareProcess = () => {
+    const payload = {
+      receiverId : [22],
+      processId : 16
+    };
+    
+    CommonAdd({
+      url: 'users/send-email',
+      type: 'details',
+      payload: payload,
+      token: true
+    })
+      .then((res) => {
+        toast.success('Share Process Successfully !');
+        handleCancel();
+        setAssignUserId('');
+        setAssignfolderUserId('');
+      })
+      .catch((err) => {
+        toast.error('server error !');
+        console.error(err);
+      });
+  };
+
   const handleSubmitGroup = () => {
     const payload = {
       name
@@ -258,23 +282,25 @@ const CommonModal = ({
       });
   };
 
-  // const fetchUserData = () => {
-  //   UserListGet({
-  //     url: `users/list/${CompanyId}`,
-  //     type: 'details',
-  //     token: true
-  //   })
-  //     .then((res) => {
-  //       dispatch(getUserList({ userList: res }));
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching data:', error);
-  //     });
-  // };
+  const fetchUserData = () => {
+    UserListGet({
+      url: `assign/group-id/${groupId}`,
+      type: 'details',
+      token: true
+    })
+      .then((res) => {
+        dispatch(getUserList({ userList: res.map(val => val.user) }));
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  };
 
-  // useEffect(() => {
-  //   fetchUserData();
-  // }, []);
+  useEffect(() => {
+    console.log(groupId)
+    if(groupId)
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     setAllUsers(userList);
@@ -443,6 +469,25 @@ const CommonModal = ({
         <Modal title={`Edit Members > ${groupName}`} open={isModalOpen} onOk={AssignUser} onCancel={handleCancel}>
           <BoxInput>
             <label>Assign Users</label>
+            <Select
+              mode="tags"
+              size="large"
+              placeholder="Please select"
+              onChange={(value) => setAssignUserId(value)}
+              style={{
+                width: '100%'
+              }}
+              options={userOptions}
+              value={assignUserId}
+            />
+          </BoxInput>
+        </Modal>
+      )}
+
+      {title === 'ShareProcess' && (
+        <Modal title={`Share Process`} open={isModalOpen} onOk={shareProcess} onCancel={handleCancel}>
+          <BoxInput>
+            <label>Email</label>
             <Select
               mode="tags"
               size="large"

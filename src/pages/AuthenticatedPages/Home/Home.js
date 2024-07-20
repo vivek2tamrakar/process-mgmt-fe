@@ -101,16 +101,6 @@ const Home = () => {
       console.log(err)
     }
   }
-  const move = async (process) => {
-    try {
-      await navigator.clipboard.writeText(process.id);
-      toast.success('Process Copied.');
-      setPopoverVisible(false);
-    }
-    catch(err) {
-      console.log(err)
-    }
-  }
   
 
   const handleEditClick = (process) => {
