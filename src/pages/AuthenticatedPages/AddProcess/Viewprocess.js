@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-    StepContainer,
     AddProcessContainer,
     BoxInput,
     AllInputsContainer,
@@ -8,13 +7,11 @@ import {
 } from './styled';
 import { Breadcrumb, Input } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleAddStep } from '../../../features/step/stepSlice';
+import { useSelector } from 'react-redux';
 import Styles from "./Style.module.css"
 const { TextArea } = Input;
 
 const Viewprocess = () => {
-    const dispatch = useDispatch();
     const process = useSelector((state) => state.process.selectedProcess);
     const stripHtmlTags = (html) => {
         const div = document.createElement('div');
@@ -22,22 +19,12 @@ const Viewprocess = () => {
         return div.textContent || div.innerText || '';
     };
 
-    const { id, name, description, tags } = process || {};
+    const { name, description, tags } = process || {};
     const [clickedIndex, setClickedIndex] = useState(null);
     const [stepDescriptions, setStepDescriptions] = useState(process?.step?.map((i) => stripHtmlTags(i?.stepDescription).split('\n')[0]));
-    const [reviewedStep, setReviewedStep] = useState([]);
-
+    
     const sortedSteps = process?.step?.slice().sort((a, b) => a.id - b.id);
 
-
-    const handleUpdateStepClick = (id) => {
-        const index = process?.step?.findIndex(val => val.id === id)
-        setClickedIndex(index);
-        dispatch(toggleAddStep());
-        if (!reviewedStep.includes(id)) {
-            setReviewedStep(prev => [...prev, id])
-        }
-    };
 
     useEffect(() => {
         if (clickedIndex !== null) {

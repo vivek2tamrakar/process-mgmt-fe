@@ -174,7 +174,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
             )}
             {location.pathname !== '/add-process' && (
               <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-               {location.pathname !== '/open-process' && <div style={{position: 'relative'}}>
+               {(location.pathname !== '/open-process' && location.pathname !== '/view-process') && <div style={{position: 'relative'}}>
                <SearchOutlined style={{position: 'relative', right: '-30px', top: '3px'}} /><SearchBar value={searchVal} type="search" placeholder='Search (hashtags)' onInput={search} />
                 {showList && <div className={Styles.searchList} >
                   { searchList.map((val) => (<div className={Styles.searchItem} key={val.id} onClick={()=> {setShowList(data => !data);setSearchVal(val.name);processById(val.id)}}>
