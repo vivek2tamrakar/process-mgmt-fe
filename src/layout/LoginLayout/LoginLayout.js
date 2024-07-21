@@ -162,7 +162,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
             <HomeRoutes>
               <Link to="/home">Home</Link>
               <Link to="/inbox">Inbox</Link>
-              <Link to="/task-manager">Task Manager</Link>
+              <Link to="/create-task">Task Manager</Link>
             </HomeRoutes>
             {location.pathname === '/add-process' && (
               <ProcessStepButton>

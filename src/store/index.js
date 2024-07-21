@@ -5,6 +5,7 @@ import userReducer from '../../src/features/User/userslice';
 import processReducer from '../../src/features/process/processSlice';
 import featuresReducer from '../../src/features/step/stepSlice';
 import stepDescriptionReducer from '../../src/features/CKeditor/ckeditorslice';
+import taskReducer from 'features/task/taskSlice';
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -12,7 +13,8 @@ const store = configureStore({
     user: userReducer,
     process: processReducer,
     features: featuresReducer,
-    stepDescription: stepDescriptionReducer
+    stepDescription: stepDescriptionReducer,
+    tasks: taskReducer
   }
 });
 

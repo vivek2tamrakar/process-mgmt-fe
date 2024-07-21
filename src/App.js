@@ -21,6 +21,7 @@ import Addprocess from './pages/AuthenticatedPages/AddProcess/Addprocess';
 import Openprocess from 'pages/AuthenticatedPages/AddProcess/Openprocess';
 import Viewprocess from 'pages/AuthenticatedPages/AddProcess/Viewprocess';
 import TaskManager from 'pages/AuthenticatedPages/TaskManager/TaskManager';
+import TaskForm from 'pages/AuthenticatedPages/task/TaskForm';
 
 const queryClient = new QueryClient();
 
@@ -65,6 +66,7 @@ function App() {
               <Route path="open-process" element={<Openprocess />} />
               <Route path="view-process" element={<Viewprocess />} />
               <Route path="task-manager" element={<TaskManager />} />
+              <Route path="create-task" element={<TaskForm />} />
               <Route path="*" element={<Dashboard />} />
             </Route>
           ) : (
