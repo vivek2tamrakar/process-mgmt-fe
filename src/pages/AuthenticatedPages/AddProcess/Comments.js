@@ -63,7 +63,7 @@ export default function Comments({id}) {
                     {commentList.map(val => (
                         <div key={val.id}>
                             <div className={Styles.comment}>{val.name}</div>
-                            <div className={Styles.datetime}>{val.user.name}</div>
+                            <div className={Styles.datetime}>{val?.created_at} {val.user.name}</div>
                         </div>
                     ))}
                 </div>
