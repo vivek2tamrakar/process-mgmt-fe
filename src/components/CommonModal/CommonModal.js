@@ -69,10 +69,10 @@ const CommonModal = ({
 
   const shareProcess = () => {
     const payload = {
-      receiverId : [22],
-      processId : 16
+      receiverId : assignUserId,
+      processId
     };
-    
+    console.log(payload)
     CommonAdd({
       url: 'users/send-email',
       type: 'details',

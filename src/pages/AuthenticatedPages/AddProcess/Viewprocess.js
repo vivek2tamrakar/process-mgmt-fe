@@ -9,6 +9,7 @@ import { Breadcrumb, Input } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import Styles from "./Style.module.css"
+import { useNavigate, Link } from 'react-router-dom';
 const { TextArea } = Input;
 
 const Viewprocess = () => {
@@ -18,7 +19,7 @@ const Viewprocess = () => {
         div.innerHTML = html;
         return div.textContent || div.innerText || '';
     };
-
+    const navigate = useNavigate();
     const { name, description, tags } = process || {};
     const [clickedIndex, setClickedIndex] = useState(null);
     const [stepDescriptions, setStepDescriptions] = useState(process?.step?.map((i) => stripHtmlTags(i?.stepDescription).split('\n')[0]));
@@ -39,8 +40,9 @@ const Viewprocess = () => {
     return (
         <AddProcessContainer>
             <StepsContainer>
+            <div className={Styles.back} onClick={() => navigate('/open-process')}>&larr; Back</div>
                 <Breadcrumb>
-                    Home
+                <Link to="/home">Home</Link>
                     <RightOutlined />
                     {name}
                 </Breadcrumb>

@@ -25,6 +25,7 @@ import ProfileImage from '../../assets/images/profiledummy.jpg';
 import { useNavigate } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 const { REACT_APP_DETAILS_URL } = process.env;
+const profilePic = localStorage.getItem("profilePic")
 
 const LoginLayout = ({ setIsLoggedIn }) => {
   const dispatch = useDispatch();
@@ -200,7 +201,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
                   }
                 >
                   <div onClick={() => setOpenProfile(!openProfile)}>
-                    <img src={ProfileImage} alt="noImage" />
+                    <img src={profilePic ? profilePic: ProfileImage} alt="noImage" />
                   </div>
                 </Popover>
               </ProfileContainer>

@@ -49,3 +49,9 @@
     border-bottom: 1px solid #eee;
     margin-bottom: 30px;
 }
+
+.back {
+    cursor: pointer;
+    padding: 20px 20px 0;
+    font-weight: 900;
+}

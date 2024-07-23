@@ -17,7 +17,7 @@ import { RightOutlined } from '@ant-design/icons';
 import Ckeditor from '../../../components/CKeditor/Ckeditor';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleAddStep } from '../../../features/step/stepSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import usePatch from 'hooks/usePatch';
 import Comments from "./Comments";
 import { toast } from 'react-hot-toast';
@@ -33,6 +33,7 @@ const Openprocess = () => {
   const contentToPrint = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
+  const [processId, setProcessId] = useState('');
   const handlePrint = useReactToPrint({
     documentTitle: "Process Detail",
     onBeforePrint: () => console.log("before printing..."),
@@ -89,7 +90,8 @@ const Openprocess = () => {
     }
   }, [clickedIndex, process]);
 
-  function showModal(title) {
+  function showModal(title, id) {
+    setProcessId(id)
     setModalTitle(title);
     setIsModalOpen(true);
   }
@@ -170,7 +172,7 @@ const Openprocess = () => {
         </ProcessStepButton>}
         <StepsContainer>
           <Breadcrumb>
-            Home
+          <Link to="/home">Home</Link>
             <RightOutlined />
             {name}
           </Breadcrumb>
@@ -229,7 +231,7 @@ const Openprocess = () => {
               )}
           </AllInputsContainer>
           <ProcessActionsContainer>
-            <Button onClick={() => saveSteps()} disabled={stepIds.length != sortedSteps.length}>
+            <Button onClick={() => saveSteps()} disabled={stepIds.length != sortedSteps.length || !checkList}>
               Review Complete
             </Button>
             {
@@ -251,10 +253,8 @@ const Openprocess = () => {
                 <MoreOptionListItem onClick={() => copy(id, 'MOVE')}>Move Process</MoreOptionListItem>
                 <MoreOptionListItem onClick={() => copy(id, 'COPY')}>Copy Process</MoreOptionListItem>
                 <MoreOptionListItem>Delete Process</MoreOptionListItem>
-                <MoreOptionListItem>View Mark Up Mode/Edits/Comments</MoreOptionListItem>
                 <MoreOptionListItem onClick={()=> navigate('/view-process')}>View Process details</MoreOptionListItem>
-                <MoreOptionListItem onClick={() => showModal('ShareProcess')}>Share Process</MoreOptionListItem>
-                <MoreOptionListItem>Send Process</MoreOptionListItem>
+                <MoreOptionListItem onClick={() => showModal('ShareProcess', id)}>Share Process</MoreOptionListItem>
                 <MoreOptionListItem onClick={() => {setOpen(true); setMoreOpt((val) => !val)}}>Comment on Process</MoreOptionListItem>
               </MoreOptionList>}
             </div>
@@ -282,6 +282,7 @@ const Openprocess = () => {
         setIsModalOpen={setIsModalOpen}
         title={modalTitle}
         fetchData={()=> {}}
+        processId = {processId}
       />
     </>
   );
