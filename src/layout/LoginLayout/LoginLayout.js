@@ -169,7 +169,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
                 <Button disabled={isAddStepEnabled} onClick={submitForm}>
                   Save Changes
                 </Button>
-                <Button>Cancel Changes</Button>
+                <Button onClick={navigate('/add-process')}>Cancel Changes</Button>
               </ProcessStepButton>
             )}
             {location.pathname !== '/add-process' && (

@@ -251,10 +251,8 @@ const Openprocess = () => {
                 <MoreOptionListItem onClick={() => copy(id, 'MOVE')}>Move Process</MoreOptionListItem>
                 <MoreOptionListItem onClick={() => copy(id, 'COPY')}>Copy Process</MoreOptionListItem>
                 <MoreOptionListItem>Delete Process</MoreOptionListItem>
-                <MoreOptionListItem>View Mark Up Mode/Edits/Comments</MoreOptionListItem>
                 <MoreOptionListItem onClick={()=> navigate('/view-process')}>View Process details</MoreOptionListItem>
                 <MoreOptionListItem onClick={() => showModal('ShareProcess')}>Share Process</MoreOptionListItem>
-                <MoreOptionListItem>Send Process</MoreOptionListItem>
                 <MoreOptionListItem onClick={() => {setOpen(true); setMoreOpt((val) => !val)}}>Comment on Process</MoreOptionListItem>
               </MoreOptionList>}
             </div>
