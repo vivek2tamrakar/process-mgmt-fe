@@ -229,7 +229,7 @@ const Openprocess = () => {
               )}
           </AllInputsContainer>
           <ProcessActionsContainer>
-            <Button onClick={() => saveSteps()} disabled={stepIds.length != sortedSteps.length}>
+            <Button onClick={() => saveSteps()} disabled={stepIds?.length != sortedSteps?.length}>
               Review Complete
             </Button>
             {
@@ -242,7 +242,7 @@ const Openprocess = () => {
             <div style={{ position: 'relative', width: '100%' }}>
               <Button style={{ width: '100%' }} onClick={() => {setMoreOpt((val) => !val)}}>More Options</Button>
               {moreOpt && <MoreOptionList style={{ position: 'absolute' }}>
-                <MoreOptionListItem className={`${reviewedStep.length !== sortedSteps.length ? Styles.disable : ''}`}
+                <MoreOptionListItem className={`${reviewedStep?.length !== sortedSteps?.length ? Styles.disable : ''}`}
                   onClick={reviewProcess}>Review Process</MoreOptionListItem>
                 <MoreOptionListItem onClick={() => {
                   handlePrint(null, () => contentToPrint.current);

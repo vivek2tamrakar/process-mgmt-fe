@@ -92,7 +92,7 @@ import { getGroupList, getFolderList, getProcessList } from '../../../features/G
 import { GroupContainerDashboard, Header, ContainerDashboard, Groups } from './Styled';
 
 const truncateName = (name) => {
-  if (name.length > 10) {
+  if (name?.length > 10) {
     return name.substring(0, 10) + '...';
   }
   return name;
