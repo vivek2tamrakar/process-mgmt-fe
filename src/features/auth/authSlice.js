@@ -18,6 +18,7 @@ export const login = createAsyncThunk('auth/login', async ({ username, password 
     localStorage.setItem('companyId', response.data.id);
     localStorage.setItem('LoggedInName', response.data.name);
     localStorage.setItem('userRole', response.data.role);
+    localStorage.setItem('profilePic', response.data.profilePic);
     // localStorage.setItem('LoggedInData',response.data)
     return response.data;
   } catch (error) {

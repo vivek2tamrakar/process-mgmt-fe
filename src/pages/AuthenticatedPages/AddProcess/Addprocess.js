@@ -13,6 +13,7 @@ import { RightOutlined } from '@ant-design/icons';
 import Ckeditor from '../../../components/CKeditor/Ckeditor';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleAddStep } from '../../../features/step/stepSlice';
+import { Link } from 'react-router-dom';
 import { updateProcessName, updateProcessDescription, updateProcessTags, updateStepId } from '../../../features/process/processSlice';
 
 const { TextArea } = Input;
@@ -77,7 +78,7 @@ const Addprocess = () => {
     <AddProcessContainer>
       <StepsContainer>
         <Breadcrumb>
-          Home
+        <Link to="/home">Home</Link>
           <RightOutlined />
           {name ? name : ''}
         </Breadcrumb>

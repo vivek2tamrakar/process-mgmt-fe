@@ -25,6 +25,7 @@ import ProfileImage from '../../assets/images/profiledummy.jpg';
 import { useNavigate } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 const { REACT_APP_DETAILS_URL } = process.env;
+const profilePic = localStorage.getItem("profilePic")
 
 const LoginLayout = ({ setIsLoggedIn }) => {
   const dispatch = useDispatch();
@@ -162,7 +163,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
             <HomeRoutes>
               <Link to="/home">Home</Link>
               <Link to="/inbox">Inbox</Link>
-              <Link to="/create-task">Task Manager</Link>
+              <Link to="/task-manager">Task Manager</Link>
             </HomeRoutes>
             {location.pathname === '/add-process' && (
               <ProcessStepButton>
@@ -200,7 +201,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
                   }
                 >
                   <div onClick={() => setOpenProfile(!openProfile)}>
-                    <img src={ProfileImage} alt="noImage" />
+                    <img src={profilePic ? profilePic: ProfileImage} alt="noImage" />
                   </div>
                 </Popover>
               </ProfileContainer>

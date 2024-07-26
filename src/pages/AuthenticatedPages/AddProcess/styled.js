@@ -75,12 +75,12 @@ export const StepContainer = styled.div`
 `;
 
 export const LineThrough = styled.div`
-top: 15px;
+top: 20px;
 background-color: #000;
 position: absolute;
 height: 1px;
 z-index: 99;
-width: 180px;
+width: 174px;
 `;
 export const MoreOptionListItem = styled.div`
 padding: 5px 12px;
