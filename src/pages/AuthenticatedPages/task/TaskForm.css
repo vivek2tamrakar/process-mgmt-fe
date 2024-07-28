@@ -52,7 +52,7 @@ form {
   
   input[type="time"] {
     display: block;
-    width: calc(50% - 10px);
+    width: calc(100% - 10px);
     float: left;
   }
   

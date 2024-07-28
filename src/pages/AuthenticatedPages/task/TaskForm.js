@@ -13,8 +13,8 @@ const TaskForm = () => {
 
   const [taskData, setTaskData] = useState({
     group: '',
-    taskName: '',
-    taskDescription: '',
+    name: '',
+    description: '',
     taskOwner: '',
     process: '',
     checklistRequired: false,
@@ -81,11 +81,11 @@ const TaskForm = () => {
       </div>
       <div>
         <label>Task Name</label>
-        <input type="text" name="taskName" value={taskData.taskName} onChange={handleChange} />
+        <input type="text" name="name" value={taskData.name} onChange={handleChange} />
       </div>
       <div>
         <label>Task Description</label>
-        <input type="text" name="taskDescription" value={taskData.taskDescription} onChange={handleChange} />
+        <input type="text" name="description" value={taskData.description} onChange={handleChange} />
       </div>
       <div>
         <label>Task Owner</label>
@@ -108,13 +108,15 @@ const TaskForm = () => {
           Checklist Required
         </label>
       </div>
-      <div>
+      <div style={{display: 'flex'}}>
+      <div style={{width: '100%'}}>
         <label>Start Time</label>
         <input type="time" name="startTime" value={taskData.startTime} onChange={handleChange} />
       </div>
-      <div>
+      <div style={{width: '100%'}}>
         <label>End Time</label>
         <input type="time" name="endTime" value={taskData.endTime} onChange={handleChange} />
+      </div>
       </div>
       <div>
         <label>Duration</label>

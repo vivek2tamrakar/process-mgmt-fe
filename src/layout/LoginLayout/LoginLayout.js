@@ -47,16 +47,16 @@ const LoginLayout = ({ setIsLoggedIn }) => {
     navigate('/login')
   };
   const companyId = localStorage.getItem('companyId');
-  console.log('LoggedInData',companyId)
+  console.log('LoggedInData', companyId)
   const fetchData = () => {
     GroupListGet({
-      url: `group/list/`+companyId,
+      url: `group/list/` + companyId,
       type: 'details',
       token: true
     })
       .then((res) => {
         console.log(res);
-        const allGroups = [...(res?.group || []), ...(res?.assignGroup || [])] 
+        const allGroups = [...(res?.group || []), ...(res?.assignGroup || [])]
         // const allFolder = [...(res?.folder || []), ...(res?.assignFolder || [])] 
         const allProcesses = [...(res?.folder || []), ...(res?.assignProcess || [])]
 
@@ -92,7 +92,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
   const search = (event) => {
     setSearchVal(event.target.value);
     setSearchList([])
-    if(!event.target.value) {
+    if (!event.target.value) {
       return;
     }
     axios
@@ -165,6 +165,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
               <Link to="/inbox">Inbox</Link>
               <Link to="/task-manager">Task Manager</Link>
             </HomeRoutes>
+
             {location.pathname === '/add-process' && (
               <ProcessStepButton>
                 <Button disabled={isAddStepEnabled} onClick={submitForm}>
@@ -173,38 +174,46 @@ const LoginLayout = ({ setIsLoggedIn }) => {
                 <Button>Cancel Changes</Button>
               </ProcessStepButton>
             )}
+            <HomeRoutes>
+              <Link to="/create-task">
+              <Button >
+                Create Task
+              </Button>
+
+            </Link></HomeRoutes>
+
             {location.pathname !== '/add-process' && (
-              <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-               {(location.pathname !== '/open-process' && location.pathname !== '/view-process') && <div style={{position: 'relative'}}>
-               <SearchOutlined style={{position: 'relative', right: '-30px', top: '3px'}} /><SearchBar value={searchVal} type="search" placeholder='Search (hashtags)' onInput={search} />
-                {showList && <div className={Styles.searchList} >
-                  { searchList.map((val) => (<div className={Styles.searchItem} key={val.id} onClick={()=> {setShowList(data => !data);setSearchVal(val.name);processById(val.id)}}>
-                    {val.name}
-                  </div>)) }
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                {(location.pathname !== '/open-process' && location.pathname !== '/view-process' && !location.pathname.includes('task')) && <div style={{ position: 'relative' }}>
+                  <SearchOutlined style={{ position: 'relative', right: '-30px', top: '3px' }} /><SearchBar value={searchVal} type="search" placeholder='Search (hashtags)' onInput={search} />
+                  {showList && <div className={Styles.searchList} >
+                    {searchList.map((val) => (<div className={Styles.searchItem} key={val.id} onClick={() => { setShowList(data => !data); setSearchVal(val.name); processById(val.id) }}>
+                      {val.name}
+                    </div>))}
+                  </div>}
                 </div>}
-               </div>}
-              <ProfileContainer>
-                <Popover
-                  placement="bottomRight"
-                  visible={openProfile}
-                  // onVisibleChange={openProfile}
-                  onClose={() => setOpenProfile(false)}
-                  content={
-                    <ProfileContainerContent className="ooll">
-                      <Button type="primary" onClick={()=> {setOpenProfile(!openProfile);navigate('/profile')}} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
-                        Profile
-                      </Button>
-                      <Button type="primary" onClick={handleLogout} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
-                        Logout
-                      </Button>
-                    </ProfileContainerContent>
-                  }
-                >
-                  <div onClick={() => setOpenProfile(!openProfile)}>
-                    <img src={profilePic ? profilePic: ProfileImage} alt="noImage" />
-                  </div>
-                </Popover>
-              </ProfileContainer>
+                <ProfileContainer>
+                  <Popover
+                    placement="bottomRight"
+                    visible={openProfile}
+                    // onVisibleChange={openProfile}
+                    onClose={() => setOpenProfile(false)}
+                    content={
+                      <ProfileContainerContent className="ooll">
+                        <Button type="primary" onClick={() => { setOpenProfile(!openProfile); navigate('/profile') }} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
+                          Profile
+                        </Button>
+                        <Button type="primary" onClick={handleLogout} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
+                          Logout
+                        </Button>
+                      </ProfileContainerContent>
+                    }
+                  >
+                    <div onClick={() => setOpenProfile(!openProfile)}>
+                      <img src={profilePic ? profilePic : ProfileImage} alt="noImage" />
+                    </div>
+                  </Popover>
+                </ProfileContainer>
               </div>
             )}
           </Header>
