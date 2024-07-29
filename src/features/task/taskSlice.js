@@ -6,7 +6,7 @@ export const addTask = createAsyncThunk(
   'tasks/addTask',
   async (taskData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/tasks', taskData);
+      const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}tasks`, taskData);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
