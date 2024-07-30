@@ -234,7 +234,7 @@ const LeftMenuBar = () => {
   };
   return (
     <>
-      <LeftSideBar>
+     {!pathname.includes('task-manager') && <LeftSideBar>
         <SideBarHeader>
           <Link to="/">
             <img src={logo} alt="noimage" />
@@ -404,7 +404,7 @@ const LeftMenuBar = () => {
           )
           }
         </SidebarRoutesContainer>
-      </LeftSideBar>
+      </LeftSideBar>}
       <CommonModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}

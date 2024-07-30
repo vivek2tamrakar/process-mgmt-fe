@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../features/auth/authSlice';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import Styles from "./MainStyle.module.css";
+import logo from '../../assets/images/logo.34ac6a4edb0bef53937e.jpg';
 import {
   Header,
   HomeRoutes,
@@ -11,7 +12,8 @@ import {
   RightContent,
   ProcessStepButton,
   ProfileContainerContent,
-  SearchBar
+  SearchBar,
+  SideBarHeader
 } from './Style';
 import LeftMenuBar from './LeftMenuBar';
 import { Button, Popover } from 'antd';
@@ -158,65 +160,72 @@ const LoginLayout = ({ setIsLoggedIn }) => {
     <>
       <LoginLayoutContainer>
         <LeftMenuBar />
-        <RightContent>
-          <Header>
-            <HomeRoutes>
-              <Link to="/home">Home</Link>
-              <Link to="/inbox">Inbox</Link>
-              <Link to="/task-manager">Task Manager</Link>
-            </HomeRoutes>
+        <RightContent style={location.pathname === '/task-manager' ? { width: '100%' } : {}}>
+          <div style={{ display: 'flex' }}>
+            {location.pathname === '/task-manager' && <SideBarHeader  style={{width: '290px', marginBottom: 0}}>
+              <Link to="/">
+                <img src={logo} alt="noimage" />
+              </Link>
+            </SideBarHeader>}
+            <Header>
+              <HomeRoutes>
+                <Link to="/home">Home</Link>
+                <Link to="/inbox">Inbox</Link>
+                <Link to="/task-manager">Task Manager</Link>
+              </HomeRoutes>
 
-            {location.pathname === '/add-process' && (
-              <ProcessStepButton>
-                <Button disabled={isAddStepEnabled} onClick={submitForm}>
-                  Save Changes
-                </Button>
-                <Button>Cancel Changes</Button>
-              </ProcessStepButton>
-            )}
-            <HomeRoutes>
-              <Link to="/create-task">
-              <Button >
-                Create Task
-              </Button>
+              {location.pathname === '/add-process' && (
+                <ProcessStepButton>
+                  <Button disabled={isAddStepEnabled} onClick={submitForm}>
+                    Save Changes
+                  </Button>
+                  <Button>Cancel Changes</Button>
+                </ProcessStepButton>
+              )}
+              <HomeRoutes>
+                <Link to="/create-task">
+                  <Button >
+                    Create Task
+                  </Button>
 
-            </Link></HomeRoutes>
+                </Link></HomeRoutes>
 
-            {location.pathname !== '/add-process' && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                {(location.pathname !== '/open-process' && location.pathname !== '/view-process' && !location.pathname.includes('task')) && <div style={{ position: 'relative' }}>
-                  <SearchOutlined style={{ position: 'relative', right: '-30px', top: '3px' }} /><SearchBar value={searchVal} type="search" placeholder='Search (hashtags)' onInput={search} />
-                  {showList && <div className={Styles.searchList} >
-                    {searchList.map((val) => (<div className={Styles.searchItem} key={val.id} onClick={() => { setShowList(data => !data); setSearchVal(val.name); processById(val.id) }}>
-                      {val.name}
-                    </div>))}
+              {location.pathname !== '/add-process' && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  {(location.pathname !== '/open-process' && location.pathname !== '/view-process' && !location.pathname.includes('task')) && <div style={{ position: 'relative' }}>
+                    <SearchOutlined style={{ position: 'relative', right: '-30px', top: '3px' }} /><SearchBar value={searchVal} type="search" placeholder='Search (hashtags)' onInput={search} />
+                    {showList && <div className={Styles.searchList} >
+                      {searchList.map((val) => (<div className={Styles.searchItem} key={val.id} onClick={() => { setShowList(data => !data); setSearchVal(val.name); processById(val.id) }}>
+                        {val.name}
+                      </div>))}
+                    </div>}
                   </div>}
-                </div>}
-                <ProfileContainer>
-                  <Popover
-                    placement="bottomRight"
-                    visible={openProfile}
-                    // onVisibleChange={openProfile}
-                    onClose={() => setOpenProfile(false)}
-                    content={
-                      <ProfileContainerContent className="ooll">
-                        <Button type="primary" onClick={() => { setOpenProfile(!openProfile); navigate('/profile') }} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
-                          Profile
-                        </Button>
-                        <Button type="primary" onClick={handleLogout} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
-                          Logout
-                        </Button>
-                      </ProfileContainerContent>
-                    }
-                  >
-                    <div onClick={() => setOpenProfile(!openProfile)}>
-                      <img src={profilePic ? profilePic : ProfileImage} alt="noImage" />
-                    </div>
-                  </Popover>
-                </ProfileContainer>
-              </div>
-            )}
-          </Header>
+                  <ProfileContainer>
+                    <Popover
+                      placement="bottomRight"
+                      visible={openProfile}
+                      // onVisibleChange={openProfile}
+                      onClose={() => setOpenProfile(false)}
+                      content={
+                        <ProfileContainerContent className="ooll">
+                          <Button type="primary" onClick={() => { setOpenProfile(!openProfile); navigate('/profile') }} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
+                            Profile
+                          </Button>
+                          <Button type="primary" onClick={handleLogout} style={{ backgroundColor: '#003e6b', color: '#ffffff' }}>
+                            Logout
+                          </Button>
+                        </ProfileContainerContent>
+                      }
+                    >
+                      <div onClick={() => setOpenProfile(!openProfile)}>
+                        <img src={profilePic ? profilePic : ProfileImage} alt="noImage" />
+                      </div>
+                    </Popover>
+                  </ProfileContainer>
+                </div>
+              )}
+            </Header>
+          </div>
           <Outlet />
         </RightContent>
       </LoginLayoutContainer>

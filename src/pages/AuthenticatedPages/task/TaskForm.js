@@ -1,32 +1,45 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTask } from '../../../features/task/taskSlice';
+import { getUserList } from '../../../features/User/userslice';
 import { getFolderList, getGroupList, getProcessList } from '../../../features/Group/groupslice';
 import useGet from 'hooks/useGet';
+import { DatePicker, Select } from 'antd';
 import './TaskForm.css';  // Import the CSS file
 
 const TaskForm = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { mutateAsync: UserListGet } = useGet();
   const { mutateAsync: GroupListGet } = useGet();
+  const { userList } = useSelector((state) => state.user);
+  const [allUsers, setAllUsers] = useState(userList.map(val => ({value: val?.id, label: val?.email})));
   const { groupList, processList } = useSelector((state) => state.group);
   const companyId = localStorage.getItem('companyId');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get("id") || "";
+  const startTime = searchParams.get("startTime") || "";
+  const endTime = searchParams.get("endTime") || "";
 
   const [taskData, setTaskData] = useState({
-    group: '',
+    groupId: id,
     name: '',
     description: '',
-    taskOwner: '',
-    process: '',
+    userId: [],
+    createdId: companyId,
+    processId: undefined,
     checklistRequired: false,
-    startTime: '',
-    endTime: '',
+    startDate: startTime,
+    endDate: endTime,
     duration: '',
-    allDayTask: false,
-    reminder: '',
-    recurrencePattern: 'daily',
+    isProcess: false,
+    isDayTask: false,
+    remainder: '',
+    recurrenType: 'day',
     recurrenceInterval: 1,
+    recurrenEndDate: '',
     rangeOfRecurrence: 'noEndDate',
-    endDate: '',
     endAfterOccurrences: '',
   });
 
@@ -38,9 +51,25 @@ const TaskForm = () => {
     });
   };
 
+  const fetchUserData = () => {
+    UserListGet({
+      url: `assign/group-id/${taskData.groupId}`,
+      type: 'details',
+      token: true
+    })
+      .then((res) => {
+        console.log(res)
+        dispatch(getUserList({ userList: res.map(val => val.user) }));
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(addTask(taskData));
+    navigate('/task-manager')
   };
 
   const fetchData = () => {
@@ -66,11 +95,21 @@ const TaskForm = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (taskData.groupId)
+      fetchUserData();
+  }, [taskData.groupId]);
+
+  useEffect(() => {
+    console.log(userList)
+    setAllUsers(userList.map(val => ({value: val?.id, label: val?.email})));
+  }, [userList]);
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
         <label>Group</label>
-        <select name="group" value={taskData.group} onChange={handleChange}>
+        <select name="groupId" value={taskData.groupId} onChange={handleChange} disabled={id!=""}>
           <option value="">Select Group</option>
           {groupList.map((group) => (
             <option key={group.id} value={group.id}>
@@ -89,12 +128,26 @@ const TaskForm = () => {
       </div>
       <div>
         <label>Task Owner</label>
-        <input type="text" name="taskOwner" value={taskData.taskOwner} onChange={handleChange} />
+        {/* <input type="text" name="taskOwner" value={taskData.taskOwner} onChange={handleChange} /> */}
+        <Select
+          mode="multiple"
+          allowClear
+          name="userId"
+          style={{
+            width: '100%',
+          }}
+          placeholder="Please select"
+          defaultValue={[]}
+          onChange={(value) => {
+            handleChange({ target: { name: 'userId', value, type: 'text' } })
+          }}
+          options={allUsers}
+        />
       </div>
       <div>
         <label>Add Process</label>
-        <select name="process" value={taskData.process} onChange={handleChange}>
-          <option value="">Select Process</option>
+        <select name="processId" value={taskData.processId} onChange={handleChange}>
+          <option value={undefined}>Select Process</option>
           {processList.map((process) => (
             <option key={process.id} value={process.id}>
               {process.name}
@@ -108,15 +161,27 @@ const TaskForm = () => {
           Checklist Required
         </label>
       </div>
-      <div style={{display: 'flex'}}>
-      <div style={{width: '100%'}}>
-        <label>Start Time</label>
-        <input type="time" name="startTime" value={taskData.startTime} onChange={handleChange} />
-      </div>
-      <div style={{width: '100%'}}>
-        <label>End Time</label>
-        <input type="time" name="endTime" value={taskData.endTime} onChange={handleChange} />
-      </div>
+      <div style={{ display: 'flex' }}>
+        <div style={{ width: '100%', display : startTime=="" ? 'block': 'none' }} >
+          <label>Start Time</label>
+          <DatePicker
+            showTime
+            onChange={(value, dateString) => {
+              handleChange({ target: { name: 'startDate', value: dateString, type: 'date' } })
+            }}
+          />
+          {/* <input type="datetime-local" name="startTime" value={taskData.startDate} onChange={handleChange} /> */}
+        </div>
+        <div style={{ width: '100%',display : endTime=="" ? 'block': 'none' }}>
+          <label>End Time</label>
+          <DatePicker
+            showTime
+            onChange={(value, dateString) => {
+              handleChange({ target: { name: 'endDate', value: dateString, type: 'date' } })
+            }}
+          />
+          {/* <input type="datetime-local" name="endTime" value={taskData.endDate} onChange={handleChange} /> */}
+        </div>
       </div>
       <div>
         <label>Duration</label>
@@ -124,18 +189,18 @@ const TaskForm = () => {
       </div>
       <div>
         <label>
-          <input type="checkbox" name="allDayTask" checked={taskData.allDayTask} onChange={handleChange} />
+          <input type="checkbox" name="isDayTask" checked={taskData.isDayTask} onChange={handleChange} />
           All Day Task
         </label>
       </div>
       <div>
         <label>Reminder</label>
-        <input type="text" name="reminder" value={taskData.reminder} onChange={handleChange} />
+        <input type="text" name="remainder" value={taskData.remainder} onChange={handleChange} />
       </div>
       <div>
         <label>Recurrence Pattern</label>
-        <select name="recurrencePattern" value={taskData.recurrencePattern} onChange={handleChange}>
-          <option value="daily">Daily</option>
+        <select name="recurrenType" value={taskData.recurrenType} onChange={handleChange}>
+          <option value="day">Daily</option>
           <option value="everyNDays">Every N days</option>
           <option value="everyWeekday">Every weekday</option>
           <option value="weekly">Weekly</option>
@@ -143,7 +208,7 @@ const TaskForm = () => {
           <option value="yearly">Yearly</option>
         </select>
       </div>
-      {taskData.recurrencePattern === 'everyNDays' && (
+      {taskData.recurrenType === 'everyNDays' && (
         <div>
           <label>Every</label>
           <input type="number" name="recurrenceInterval" value={taskData.recurrenceInterval} onChange={handleChange} />
@@ -161,7 +226,7 @@ const TaskForm = () => {
       {taskData.rangeOfRecurrence === 'endByDate' && (
         <div>
           <label>End Date</label>
-          <input type="date" name="endDate" value={taskData.endDate} onChange={handleChange} />
+          <input type="date" name="recurrenEndDate" value={taskData.recurrenEndDate} onChange={handleChange} />
         </div>
       )}
       {taskData.rangeOfRecurrence === 'endAfterOccurrences' && (
