@@ -1,0 +1,25 @@
+.sidebar {
+  width: 290px;
+  height: calc(100vh - 60px);
+  background-color: #000;
+}
+
+.timeentry {
+  display: flex;
+  flex-direction: column;
+  min-height: 36px;
+  background-color: #fff;
+  border: 1px solid;
+  position: relative;
+}
+
+.placeholderbg {
+  box-sizing: border-box;
+  border: 0.1px solid #6c6c6c;
+  width: 60px;
+}
+
+.line {
+    height: calc(100vh - 60px);
+    border: 1px solid;
+}

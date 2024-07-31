@@ -6,7 +6,10 @@ form {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: #f9f9f9;
+    height: calc(100vh - 110px);
+    overflow: auto;
   }
+
   
   form div {
     margin-bottom: 15px;
@@ -19,7 +22,7 @@ form {
   }
   
   input[type="text"],
-  input[type="time"],
+  input[type="datetime-local"],
   input[type="date"],
   input[type="number"],
   select {
@@ -50,13 +53,13 @@ form {
     background-color: #0056b3;
   }
   
-  input[type="time"] {
+  input[type="datetime-local"] {
     display: block;
     width: calc(100% - 10px);
     float: left;
   }
   
-  input[type="time"] + label {
+  input[type="datetime-local"] + label {
     float: left;
     margin: 0 10px;
   }

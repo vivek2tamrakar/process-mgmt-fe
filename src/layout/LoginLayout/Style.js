@@ -43,6 +43,7 @@ export const RightContent = styled.div`
 export const Header = styled.div`
   background-color: white;
   height: 59px;
+  width: calc(100vw - 290px);
   display: flex;
   align-items: center;
   justify-content: space-between;

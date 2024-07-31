@@ -1,12 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+
 // Async thunk for adding a task
 export const addTask = createAsyncThunk(
   'tasks/addTask',
   async (taskData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}tasks`, taskData);
+      const token = localStorage.getItem("token");
+      let headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}task` ,taskData, { headers });
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
