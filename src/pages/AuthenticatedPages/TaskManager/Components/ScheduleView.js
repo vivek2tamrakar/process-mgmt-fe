@@ -22,7 +22,7 @@ const ScheduleView = ({ data, date, id, index }) => {
                             {val.status === 4 && <span className='completed status-btn'>Completed</span>}
                             {val.status === 3 && <span className='overdue status-btn'>Overdue</span>}
                             {val.status === 2 && <span className='inprogress status-btn'>In Progress / Now / Current</span>}
-                            {val.status === 1 && <span className="due">Due in {(val.endTimestamp - val.startTimestamp) / 60} mins</span>}
+                            {val.status === 1 && <span className="due inprogress status-btn">Due in {((val.endTimestamp - val.startTimestamp) / 60).toFixed(2)} mins</span>}
                         </td>
                     </tr>)}
                 </tbody>
