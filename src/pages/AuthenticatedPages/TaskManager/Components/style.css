@@ -23,3 +23,103 @@
     height: calc(100vh - 60px);
     border: 1px solid;
 }
+
+.heading-type {
+  width: calc(100vw - 470px);
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.status-header {
+  width: calc((100vw - 470px)/4);
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.list-header {
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.overdue {
+  background-color: #ff7c7c;
+}
+.inprogress {
+  background-color: #fbcf69;
+}
+.open {
+  background-color: #a2a2a2;
+}
+.completed {
+  background-color: #5afc5f;
+}
+
+.status-list {
+  display: flex;
+  gap: 15px;
+  width: calc((100vw - 470px)/4);
+  flex-direction: column;
+}
+
+.schedule-view table {
+  border-collapse: collapse;
+  width: calc(100vw - 470px);
+}
+.schedule-view th, .schedule-view td {
+  border: none;
+  text-align: left;
+  padding: 8px;
+}
+.schedule-view th {
+  text-decoration: underline;
+}
+.schedule-view th {
+  background-color: #f2f2f2;
+}
+.status-btn {
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.schedule-view {
+  border-left: 1px solid ;
+}
+
+.month-app {
+  margin: 20px;
+  background-color: #fff;
+  width: 100%;
+  display: flex;
+  min-height: 100%;
+  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.month-app-sidebar {
+  width: 300px;
+  line-height: 1.5;
+  background: #eaf9ff;
+  border-right: 1px solid #d3e2e8;
+}
+
+.month-app-sidebar-section {
+  padding: 2em;
+}
+
+.month-app-main {
+  flex-grow: 1;
+  padding: 3em;
+}
+
+.fc { /* the calendar root */
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.fc-col-header {
+  width: calc(100vw - 470px);
+}
