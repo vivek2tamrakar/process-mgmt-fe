@@ -68,6 +68,7 @@
   justify-content: center;
   position: sticky;
   bottom: 20px;
+  z-index: 99999999999;
 }
 
 .TaskScheduleType div {
