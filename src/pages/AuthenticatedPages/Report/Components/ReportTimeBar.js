@@ -1,7 +1,7 @@
 import React from 'react';
 import Style from './Style.module.css';
 export default function TaskTimeBar({ data }) {
-
+console.log(data)
     const time = [
         '07:00',
         '08:00',

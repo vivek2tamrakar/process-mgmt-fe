@@ -32,12 +32,6 @@
   box-sizing: border-box;
 }
 
-.status-header {
-  width: calc((100vw - 470px)/4);
-  padding: 15px;
-  border-radius: 12px;
-  text-align: center;
-}
 
 .list-header {
   padding: 15px;
@@ -66,4 +60,18 @@
 
 .table {
   margin: 20px;
+}
+
+
+.st-overdue {
+  color: #ff7c7c;
+}
+.st-inprogress {
+  color: #fbcf69;
+}
+.st-open {
+  color: #a2a2a2;
+}
+.st-completed {
+  color: #5afc5f;
 }
