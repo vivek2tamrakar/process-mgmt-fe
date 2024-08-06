@@ -295,9 +295,7 @@ export default function TaskManager() {
                         {!loading && <Report value={value} date={date} task={task} type={scheduleType}></Report>}
                     </div>}
                     {view === 'List' && <div className={Style.TaskManager}>
-                        <Table dataSource={dataSource} columns={columns} className="table" />;
-                        <Table dataSource={dataSource2} columns={columns} className="table" />;
-                        <Table dataSource={dataSource3} columns={columns} className="table" />;
+                        <Table dataSource={dataSource} columns={columns} className="table" />
                     </div>}
                 </div>
             </div>

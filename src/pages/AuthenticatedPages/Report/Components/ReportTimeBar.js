@@ -31,33 +31,6 @@ export default function TaskTimeBar({ data }) {
                 </div>) : <div className={Style.Body}>
                 </div>}
             </div>
-            <div className='timeentry'>
-                <div style={{ position: 'absolute', width: '100%', height: data ? (data.filter(val => val.width).length * 36 || 36) : 36, display: 'flex' }}>
-                    {time.map((val) => (<div className="placeholderbg"></div>))}
-                </div>
-                {data ? data.filter(val => val.width).map(res => <div className={Style.Body}>
-                    <span className={Style.Task} style={{ width: res.width / 60, left: res.left / 60 }}>{res.name} </span>
-                </div>) : <div className={Style.Body}>
-                </div>}
-            </div>
-            <div className='timeentry'>
-                <div style={{ position: 'absolute', width: '100%', height: data ? (data.filter(val => val.width).length * 36 || 36) : 36, display: 'flex' }}>
-                    {time.map((val) => (<div className="placeholderbg"></div>))}
-                </div>
-                {data ? data.filter(val => val.width).map(res => <div className={Style.Body}>
-                    <span className={Style.Task} style={{ width: res.width / 60, left: res.left / 60 }}>{res.name} </span>
-                </div>) : <div className={Style.Body}>
-                </div>}
-            </div>
-            <div className='timeentry'>
-                <div style={{ position: 'absolute', width: '100%', height: data ? (data.filter(val => val.width).length * 36 || 36) : 36, display: 'flex' }}>
-                    {time.map((val) => (<div className="placeholderbg"></div>))}
-                </div>
-                {data ? data.filter(val => val.width).map(res => <div className={Style.Body}>
-                    <span className={Style.Task} style={{ width: res.width / 60, left: res.left / 60 }}>{res.name} </span>
-                </div>) : <div className={Style.Body}>
-                </div>}
-            </div>
         </div>
     );
 }
