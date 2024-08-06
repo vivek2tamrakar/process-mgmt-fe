@@ -104,10 +104,10 @@ export default function TaskManager() {
     };
 
     function convertToTree(data) {
-        let returnData = data.map(group => ({
+        let returnData = data?.map(group => ({
             value: `${group.id}$$${group.name}`,
             title: group.name,
-            children: group.folder.map(folder => ({
+            children: group.folder?.map(folder => ({
                 value: `${folder.id}$$${folder.name}`,
                 title: folder.name
             }))

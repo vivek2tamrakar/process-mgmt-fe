@@ -234,7 +234,7 @@ const LeftMenuBar = () => {
   };
   return (
     <>
-     {!pathname.includes('task-manager') && <LeftSideBar>
+     {(!pathname.includes('task-manager') && !pathname.includes('report-manager')) && <LeftSideBar>
         <SideBarHeader>
           <Link to="/">
             <img src={logo} alt="noimage" />

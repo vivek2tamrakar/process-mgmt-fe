@@ -160,9 +160,9 @@ const LoginLayout = ({ setIsLoggedIn }) => {
     <>
       <LoginLayoutContainer>
         <LeftMenuBar />
-        <RightContent style={location.pathname === '/task-manager' ? { width: '100%' } : {}}>
+        <RightContent style={(location.pathname === '/task-manager' || location.pathname === '/report-manager') ? { width: '100%' } : {}}>
           <div style={{ display: 'flex' }}>
-            {location.pathname === '/task-manager' && <SideBarHeader  style={{width: '290px', marginBottom: 0}}>
+            {(location.pathname === '/task-manager' || location.pathname === '/report-manager') && <SideBarHeader  style={{width: '290px', marginBottom: 0}}>
               <Link to="/">
                 <img src={logo} alt="noimage" />
               </Link>
@@ -172,6 +172,7 @@ const LoginLayout = ({ setIsLoggedIn }) => {
                 <Link to="/home">Home</Link>
                 <Link to="/inbox">Inbox</Link>
                 <Link to="/task-manager">Task Manager</Link>
+                <Link to="/report-manager">Report Manager</Link>
               </HomeRoutes>
 
               {location.pathname === '/add-process' && (
