@@ -1,0 +1,86 @@
+.TaskManager {
+  height: calc(100vh - 59px);
+  width: calc(100vw - 286px);
+  /* background: #fff; */
+  overflow: auto;
+}
+
+.TaskManager td:first-child {
+  max-width: 200px !important;
+}
+
+.Timer {
+  display: flex;
+  /* flex-direction: column; */
+  /* border: 1px solid; */
+}
+
+.Header {
+  background-color: #003e6b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 40px;
+  box-sizing: border-box;
+  border: 0.1px solid #6c6c6c;
+}
+
+.Body {
+  color: #000;
+  display: inline-block;
+  height: 30px;
+  margin: 3px 0;
+}
+
+.Task {
+  background-color: #000;
+  display: block;
+  padding: 5px;
+  position: relative;
+  color: #fff;
+  box-sizing: border-box;
+  border-radius: 6px;
+}
+
+.GroupName {
+  width: 180px;
+  height: 40px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Owner {
+  width: 180px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.TaskScheduleType {
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  bottom: 20px;
+  z-index: 99999999999;
+}
+
+.TaskScheduleType div {
+  border: 1px solid;
+  padding: 7px 16px;
+  cursor: pointer;
+  background-color: #fff;
+}
+.TaskScheduleType div:hover {
+  background-color: aliceblue;
+}
+.selected {
+  border: 1px solid #000 !important;
+  background-color: #000 !important;
+  color: #fff;
+}
