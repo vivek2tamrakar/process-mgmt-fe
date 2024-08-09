@@ -6,6 +6,7 @@ import { Calendar, TreeSelect } from 'antd';
 import useGet from 'hooks/useGet';
 import { useDispatch, useSelector } from 'react-redux';
 import './Components/style.css';
+import * as moment from "moment";
 const getCurrentDate = () => {
     const date = new Date();
     const year = date.getFullYear();
@@ -17,8 +18,29 @@ const getCurrentDate = () => {
 const onPanelChange = (value, mode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
 };
+// Convert Local Time to UTC
+function localToUTC(localDateString) {
+    // Parse the local time string with moment
+    const localTime = moment(localDateString).local();
+    
+    // Convert to UTC
+    const utcTime = localTime.utc().format('YYYY-MM-DDTHH:mm:ss');
+    
+    return utcTime;
+}
+
+// Convert UTC to Local Time
+function utcToLocal(utcDateString) {
+    // Parse the UTC time string with moment
+    const utcTime = moment.utc(utcDateString);
+    
+    // Convert to local time
+    const localTime = utcTime.local().format('YYYY-MM-DDTHH:mm:ss');
+    
+    return localTime;
+}
 export default function TaskManager() {
-    const currentTime = new Date().getTime() / 1000;
+    const currentTime = moment().valueOf() / 1000;
     const { mutateAsync: TaskListGet } = useGet();
     const companyId = localStorage.getItem('companyId');
     const [tree, setTree] = useState([]);
@@ -31,15 +53,15 @@ export default function TaskManager() {
     const [scheduleType, setScheduleType] = useState('week');
 
     const fetchData = () => {
-        const currentTime7 = new Date(date + 'T07:00:00.000Z').getTime() / 1000;
-        const currentTime18 = new Date(date + 'T19:00:00.000Z').getTime() / 1000;
+        const currentTime7 =  moment(date).startOf('day').valueOf() / 1000;
+        const currentTime18 = moment(date).endOf('day').valueOf() / 1000;
         TaskListGet({
             url: 'task/' + companyId,
             type: 'details',
             token: true
         })
             .then((res) => {
-                
+
                 let result = {};
                 if (scheduleType === 'month' || scheduleType === 'next7' || scheduleType === 'workweek') {
                     result = res.reduce((acc, item) => {
@@ -116,17 +138,14 @@ export default function TaskManager() {
         return returnData;
     }
     useEffect(() => {
-        const element = document.getElementById('timer');
-        const currentTime7 = new Date(date + 'T07:00:00.000Z').getTime() / 1000;
-        const currentTime18 = new Date(date + 'T19:00:00.000Z').getTime() / 1000;
-        if (element) {
-            let val = 0;
-            if (currentTime > currentTime7 && currentTime <= currentTime18) {
-                val = ((currentTime - currentTime7) / 60)
-            }
-            const { left } = element.getBoundingClientRect();
-            setLeft(left + val)
+        const currentTime7 =  moment(date).startOf('day').valueOf() / 1000;
+        const currentTime18 = moment(date).endOf('day').valueOf() / 1000;
+        let val = 0;
+        if (currentTime > currentTime7 && currentTime <= currentTime18) {
+            val = ((currentTime - currentTime7) / 60)
         }
+        setLeft(val)
+
         fetchData();
     }, [date, scheduleType]);
 
@@ -145,7 +164,6 @@ export default function TaskManager() {
 
     return (
         <>
-            <div className='line' style={{ position: 'absolute', zIndex: 999, left }}></div>
             <div style={{ display: 'flex' }}>
                 <div className='sidebar'>
                     <label style={{ color: '#fff', marginTop: 20 }}>Select Group</label>
@@ -165,17 +183,18 @@ export default function TaskManager() {
                         <Calendar fullscreen={false} onPanelChange={onPanelChange} onChange={onDateChange} />
                     </div>
                 </div>
-                <div>
+                <div style={{ position: 'relative' }}>
+
                     <div className={Style.TaskManager}>
-                        {!loading && <TaskScheduler value={value} date={date} task={task} type={scheduleType}></TaskScheduler>}
+                        {!loading && <TaskScheduler value={value} date={date} task={task} type={scheduleType} left={left}></TaskScheduler>}
                     </div>
                     <div className={Style.TaskScheduleType}>
-                        <div className={scheduleType === 'week' ? Style.selected : null} onClick={() => {setLoading(true) ;setScheduleType('week')}}>Week</div>
-                        <div className={scheduleType === 'next7' ? Style.selected : null} onClick={() => {setLoading(true) ;setScheduleType('next7')}}>Next 7 days</div>
-                        <div className={scheduleType === 'workweek' ? Style.selected : null} onClick={() => {setLoading(true) ;setScheduleType('workweek')}}>Work Week</div>
-                        <div className={scheduleType === 'month' ? Style.selected : null} onClick={() => {setLoading(true) ;setScheduleType('month')}}>Month</div>
-                        <div className={scheduleType === 'schedule' ? Style.selected : null} onClick={() => {setLoading(true) ;setScheduleType('schedule')}}>Schedule</div>
-                        <div className={scheduleType === 'board' ? Style.selected : null} onClick={() => {setLoading(true) ;setScheduleType('board')}}>Board</div>
+                        <div className={scheduleType === 'week' ? Style.selected : null} onClick={() => { setLoading(true); setScheduleType('week') }}>Week</div>
+                        <div className={scheduleType === 'next7' ? Style.selected : null} onClick={() => { setLoading(true); setScheduleType('next7') }}>Next 7 days</div>
+                        <div className={scheduleType === 'workweek' ? Style.selected : null} onClick={() => { setLoading(true); setScheduleType('workweek') }}>Work Week</div>
+                        <div className={scheduleType === 'month' ? Style.selected : null} onClick={() => { setLoading(true); setScheduleType('month') }}>Month</div>
+                        <div className={scheduleType === 'schedule' ? Style.selected : null} onClick={() => { setLoading(true); setScheduleType('schedule') }}>Schedule</div>
+                        <div className={scheduleType === 'board' ? Style.selected : null} onClick={() => { setLoading(true); setScheduleType('board') }}>Board</div>
                     </div>
                 </div>
             </div>

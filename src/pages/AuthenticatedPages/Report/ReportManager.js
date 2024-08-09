@@ -6,6 +6,7 @@ import { Calendar, TreeSelect, Table } from 'antd';
 import useGet from 'hooks/useGet';
 import { useDispatch, useSelector } from 'react-redux';
 import './Components/style.css';
+import * as moment from "moment";
 const getCurrentDate = () => {
     const date = new Date();
     const year = date.getFullYear();
@@ -99,7 +100,7 @@ const columns = [
 ];
 
 export default function TaskManager() {
-    const currentTime = new Date().getTime() / 1000;
+    const currentTime = moment().valueOf() / 1000;
     const { mutateAsync: TaskListGet } = useGet();
     const companyId = localStorage.getItem('companyId');
     const [tree, setTree] = useState([]);
@@ -113,8 +114,8 @@ export default function TaskManager() {
     const [scheduleType, setScheduleType] = useState('week');
 
     const fetchData = () => {
-        const currentTime7 = new Date(date + 'T07:00:00.000Z').getTime() / 1000;
-        const currentTime18 = new Date(date + 'T19:00:00.000Z').getTime() / 1000;
+        const currentTime7 =  moment(date).startOf('day').valueOf() / 1000;
+        const currentTime18 = moment(date).endOf('day').valueOf() / 1000;
         TaskListGet({
             url: 'task/' + companyId,
             type: 'details',
@@ -183,17 +184,14 @@ export default function TaskManager() {
         return returnData;
     }
     useEffect(() => {
-        const element = document.getElementById('timer');
-        const currentTime7 = new Date(date + 'T07:00:00.000Z').getTime() / 1000;
-        const currentTime18 = new Date(date + 'T19:00:00.000Z').getTime() / 1000;
-        if (element) {
-            let val = 0;
-            if (currentTime > currentTime7 && currentTime <= currentTime18) {
-                val = ((currentTime - currentTime7) / 60)
-            }
-            const { left } = element.getBoundingClientRect();
-            setLeft(left + val)
+        const currentTime7 =  moment(date).startOf('day').valueOf() / 1000;
+        const currentTime18 = moment(date).endOf('day').valueOf() / 1000;
+        let val = 0;
+        if (currentTime > currentTime7 && currentTime <= currentTime18) {
+            val = ((currentTime - currentTime7) / 60)
         }
+        setLeft(val)
+
         fetchData();
     }, [date, scheduleType]);
 
@@ -259,7 +257,7 @@ export default function TaskManager() {
                         </div>
                     </div>
                     {(view === 'Intraday' || view === 'EndOfDay') && <div className={Style.TaskManager}>
-                        {!loading && <Report value={value} date={date} task={task} type={scheduleType}></Report>}
+                        {!loading && <Report left={left} value={value} date={date} task={task} type={scheduleType}></Report>}
                     </div>}
                     {view === 'List' && <div className={Style.TaskManager}>
                         {value.map((data, index) => <Table dataSource={task[data]} columns={columns} className="table" />)}

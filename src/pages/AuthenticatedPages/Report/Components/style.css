@@ -20,8 +20,12 @@
 }
 
 .line {
-    height: calc(100vh - 60px);
-    border: 1px solid;
+  height: calc(99vh)!important;
+  z-index: 99;
+  width: 2px!important;
+  overflow: visible;
+  background: black;
+  position: absolute;
 }
 
 .heading-type {
