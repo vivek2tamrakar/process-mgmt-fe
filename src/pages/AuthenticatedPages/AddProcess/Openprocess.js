@@ -114,7 +114,29 @@ const Openprocess = () => {
 
   const reviewProcess = () => {
     setMoreOpt((val) => !val)
-    toast.success('Review Process Completed!');
+    CommonPatch({
+      url: 'step',
+      type: 'details',
+      payload: {
+        id: stepIds,
+        isCompleted: stepIds.map((id) => true),
+        isReview: true,
+        processId: id
+      },
+      token: true,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+      .then((res) => {
+        toast.success('Review Process Completed!');
+        setCheckList(false)
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  
+    
   }
 
   const copy = async (id, type) => {
@@ -244,7 +266,8 @@ const Openprocess = () => {
             <div style={{ position: 'relative', width: '100%' }}>
               <Button style={{ width: '100%' }} onClick={() => {setMoreOpt((val) => !val)}}>More Options</Button>
               {moreOpt && <MoreOptionList style={{ position: 'absolute' }}>
-                <MoreOptionListItem className={`${reviewedStep.length !== sortedSteps.length ? Styles.disable : ''}`}
+              {/* className={`${reviewedStep.length !== sortedSteps.length ? Styles.disable : ''}`} */}
+                <MoreOptionListItem 
                   onClick={reviewProcess}>Review Process</MoreOptionListItem>
                 <MoreOptionListItem onClick={() => {
                   handlePrint(null, () => contentToPrint.current);

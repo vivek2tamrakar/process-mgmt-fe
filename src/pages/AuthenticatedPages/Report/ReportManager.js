@@ -202,12 +202,12 @@ export default function TaskManager() {
     }, [groupList]);
 
     const wrapperStyle = {
-        width: 250,
+        width: 288,
         border: `1px solid`,
         borderRadius: 10,
         position: 'fixed',
         bottom: 10,
-        left: 20
+        left: 0
     };
 
     function viewSelection(type) {
