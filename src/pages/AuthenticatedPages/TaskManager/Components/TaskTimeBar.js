@@ -3,6 +3,13 @@ import Style from './Style.module.css';
 import { Button, Popover } from 'antd';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 
+const status = {
+    '3' : '#ff7c7c',
+    '2' : '#fbcf69',
+    '1' : 'red',
+    '4' : '#5afc5f',
+}
+
 export default function TaskTimeBar({ data, date, id, left }) {
 
     const time = [
@@ -63,7 +70,7 @@ export default function TaskTimeBar({ data, date, id, left }) {
                     {time.map((val, index) => (<div className="placeholderbg" onMouseOver={()=> setStart(val)}></div>))}
                 </div>
                 {data ? data.filter(val => val.width).map(res => <div className={Style.Body}>
-                    <span className={Style.Task} style={{ width: res.width / 60, left: res.left / 60 }}>{res.name} </span>
+                    <span className={Style.Task} style={{ width: res.width / 60, left: res.left / 60, backgroundColor:  status[res.status] }}>{res.name} </span>
                 </div>) : <div className={Style.Body}>
                 </div>}
             </div>
