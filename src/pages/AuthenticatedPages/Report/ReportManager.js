@@ -6,6 +6,7 @@ import { Calendar, TreeSelect, Table } from 'antd';
 import useGet from 'hooks/useGet';
 import { useDispatch, useSelector } from 'react-redux';
 import './Components/style.css';
+import * as moment from "moment";
 const getCurrentDate = () => {
     const date = new Date();
     const year = date.getFullYear();
@@ -17,96 +18,58 @@ const getCurrentDate = () => {
 const onPanelChange = (value, mode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
 };
-
-const dataSource = [
-    {
-        key: '1',
-        group: 'Group01',
-        process: 'Process1',
-        date: '01-Aug-2020',
-        update: '01-Aug-2020',
-        review: '01-Aug-2020',
-        age: 45,
-        status: 'Review Overdue',
-    },
-    {
-        key: '1',
-        group: 'Group01',
-        process: 'Process2',
-        date: '01-Aug-2020',
-        update: '01-Aug-2020',
-        review: '01-Aug-2020',
-        age: 45,
-        status: 'Review Overdue',
-    },
-    {
-        key: '1',
-        group: 'Group01',
-        process: 'Process3',
-        date: '01-Aug-2020',
-        update: '01-Aug-2020',
-        review: '01-Aug-2020',
-        age: 29,
-        status: 'Review required',
-    },
-];
-
-const dataSource2 = [
-    {
-        key: '1',
-        group: 'Group02',
-        process: 'Process3',
-        date: '01-Aug-2020',
-        update: '01-Aug-2020',
-        review: '01-Aug-2020',
-        age: 45,
-        status: 'Review required',
-    },
-    {
-        key: '1',
-        group: 'Group02',
-        process: 'Process4',
-        date: '01-Aug-2020',
-        update: '01-Aug-2020',
-        review: '01-Aug-2020',
-        age: 45,
-        status: 'Review required',
+function calculateAge(timestamp) {
+    if (!timestamp) {
+        return ""
     }
-];
-const dataSource3 = [
-    {
-        key: '1',
-        group: 'Group03',
-        process: 'Process7',
-        date: '01-Aug-2020',
-        update: '01-Aug-2020',
-        review: '01-Aug-2020',
-        age: 45,
-        status: 'Review Overdue',
-    }
-];
+    // Convert the timestamp to a Date object
+    const old = new Date(timestamp * 1000);
+    const now = new Date();
+
+    // Calculate the difference in milliseconds
+    const diffInMilliseconds = now - old;
+
+    // Calculate the difference in days, hours, and minutes
+    const days = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diffInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diffInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+
+    return `${days} days, ${hours} hours, and ${minutes} minutes`
+}
+function getStatus(status) {
+    if (status === 1)
+        return <div className='st-overdue'>Review Overdue</div>
+    if (status === 2)
+        return <div className='st-inprogress'>Review Inprogress</div>
+    if (status === 3)
+        return <div className='st-open'>Review Open</div>
+    if (status === 4)
+        return <div className='st-completed'>Review Complete</div>
+}
 
 const columns = [
     {
         title: 'Group',
-        dataIndex: 'group',
-        key: 'group',
+        dataIndex: 'groupName',
+        key: 'groupName',
     },
     {
         title: 'Process Name',
-        dataIndex: 'process',
-        key: 'process',
+        dataIndex: 'processName',
+        key: 'processName',
         render: (text) => <a style={{ textDecoration: 'underline' }}>{text}</a>,
     },
     {
         title: 'Date Created',
-        dataIndex: 'date',
-        key: 'date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (text) => <span>{text.split('T')[0]} {text.split('T')[1].substring(0, 8)}</span>,
     },
     {
         title: 'Last Update',
-        dataIndex: 'update',
-        key: 'update',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (text) => <span>{text.split('T')[0]} {text.split('T')[1].substring(0, 8)}</span>,
     },
     {
         title: 'Last Review',
@@ -115,8 +78,11 @@ const columns = [
     },
     {
         title: 'Age (days)',
-        dataIndex: 'age',
-        key: 'age',
+        dataIndex: 'startTimestamp',
+        key: 'startTimestamp',
+        render: (text) => {
+            return <span>{calculateAge(text)}</span>
+        },
     },
     {
         title: 'Status',
@@ -124,7 +90,9 @@ const columns = [
         key: 'status',
         render: (_, { status }) => (
             <>
-                {status === 'Review Overdue' ? <div style={{ color: 'red' }}>{status}</div> : <div style={{ color: 'orange' }}>{status}</div>}
+                {
+                    getStatus(status)
+                }
             </>
         ),
         // render: (text) => <div style={{color: 'red'}}>{text}</div>,
@@ -132,7 +100,7 @@ const columns = [
 ];
 
 export default function TaskManager() {
-    const currentTime = new Date().getTime() / 1000;
+    const currentTime = moment().valueOf() / 1000;
     const { mutateAsync: TaskListGet } = useGet();
     const companyId = localStorage.getItem('companyId');
     const [tree, setTree] = useState([]);
@@ -146,8 +114,8 @@ export default function TaskManager() {
     const [scheduleType, setScheduleType] = useState('week');
 
     const fetchData = () => {
-        const currentTime7 = new Date(date + 'T07:00:00.000Z').getTime() / 1000;
-        const currentTime18 = new Date(date + 'T19:00:00.000Z').getTime() / 1000;
+        const currentTime7 =  moment(date).startOf('day').valueOf() / 1000;
+        const currentTime18 = moment(date).endOf('day').valueOf() / 1000;
         TaskListGet({
             url: 'task/' + companyId,
             type: 'details',
@@ -177,10 +145,10 @@ export default function TaskManager() {
                     }
                     if (startTimestamp < currentTime18 && width != 0) {
                         if (!acc[key]) {
-                            acc[key] = [{ ...item, startTimestamp, endTimestamp, width, currentTime7, currentTime18, currentTime, left, startTime, endTime }]
+                            acc[key] = [{ ...item, groupName: item?.group?.name, processName: item?.process?.name, startTimestamp, endTimestamp, width, currentTime7, currentTime18, currentTime, left, startTime, endTime }]
                         }
                         else {
-                            acc[key].push({ ...item, startTimestamp, endTimestamp, width, currentTime7, currentTime18, currentTime, left, startTime, endTime })
+                            acc[key].push({ ...item, groupName: item?.group?.name, processName: item?.process?.name, startTimestamp, endTimestamp, width, currentTime7, currentTime18, currentTime, left, startTime, endTime })
                         }
                     }
                     return acc;
@@ -216,17 +184,14 @@ export default function TaskManager() {
         return returnData;
     }
     useEffect(() => {
-        const element = document.getElementById('timer');
-        const currentTime7 = new Date(date + 'T07:00:00.000Z').getTime() / 1000;
-        const currentTime18 = new Date(date + 'T19:00:00.000Z').getTime() / 1000;
-        if (element) {
-            let val = 0;
-            if (currentTime > currentTime7 && currentTime <= currentTime18) {
-                val = ((currentTime - currentTime7) / 60)
-            }
-            const { left } = element.getBoundingClientRect();
-            setLeft(left + val)
+        const currentTime7 =  moment(date).startOf('day').valueOf() / 1000;
+        const currentTime18 = moment(date).endOf('day').valueOf() / 1000;
+        let val = 0;
+        if (currentTime > currentTime7 && currentTime <= currentTime18) {
+            val = ((currentTime - currentTime7) / 60)
         }
+        setLeft(val)
+
         fetchData();
     }, [date, scheduleType]);
 
@@ -235,12 +200,12 @@ export default function TaskManager() {
     }, [groupList]);
 
     const wrapperStyle = {
-        width: 250,
+        width: 288,
         border: `1px solid`,
         borderRadius: 10,
         position: 'fixed',
         bottom: 10,
-        left: 20
+        left: 0
     };
 
     function viewSelection(type) {
@@ -256,7 +221,7 @@ export default function TaskManager() {
                 <strong>End of Day Time - 18:00</strong>
             </div>
         }
-        else  if (type === 'List') {
+        else if (type === 'List') {
             return <h2>Task Manager Report</h2>
         }
     }
@@ -292,12 +257,10 @@ export default function TaskManager() {
                         </div>
                     </div>
                     {(view === 'Intraday' || view === 'EndOfDay') && <div className={Style.TaskManager}>
-                        {!loading && <Report value={value} date={date} task={task} type={scheduleType}></Report>}
+                        {!loading && <Report left={left} value={value} date={date} task={task} type={scheduleType}></Report>}
                     </div>}
                     {view === 'List' && <div className={Style.TaskManager}>
-                        <Table dataSource={dataSource} columns={columns} className="table" />;
-                        <Table dataSource={dataSource2} columns={columns} className="table" />;
-                        <Table dataSource={dataSource3} columns={columns} className="table" />;
+                        {value.map((data, index) => <Table dataSource={task[data]} columns={columns} className="table" />)}
                     </div>}
                 </div>
             </div>

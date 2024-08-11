@@ -7,7 +7,28 @@ import { getFolderList, getGroupList, getProcessList } from '../../../features/G
 import useGet from 'hooks/useGet';
 import { DatePicker, Select } from 'antd';
 import './TaskForm.css';  // Import the CSS file
+import * as moment from 'moment';
+// Convert Local Time to UTC
+function localToUTC(localDateString) {
+    // Parse the local time string with moment
+    const localTime = moment(localDateString).local();
+    
+    // Convert to UTC
+    const utcTime = localTime.utc().format('YYYY-MM-DDTHH:mm:ss');
+    
+    return utcTime;
+}
 
+// Convert UTC to Local Time
+function utcToLocal(utcDateString) {
+    // Parse the UTC time string with moment
+    const utcTime = moment.utc(utcDateString);
+    
+    // Convert to local time
+    const localTime = utcTime.local().format('YYYY-MM-DDTHH:mm:ss');
+    
+    return localTime;
+}
 const TaskForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -21,7 +42,6 @@ const TaskForm = () => {
   const id = searchParams.get("id") || "";
   const startTime = searchParams.get("startTime") || "";
   const endTime = searchParams.get("endTime") || "";
-
   const [taskData, setTaskData] = useState({
     groupId: id,
     name: '',
@@ -30,8 +50,8 @@ const TaskForm = () => {
     createdId: companyId,
     processId: undefined,
     checklistRequired: false,
-    startDate: startTime,
-    endDate: endTime,
+    startDate: startTime ? localToUTC(startTime) : "",
+    endDate: endTime ? localToUTC(endTime) : "",
     duration: '',
     isProcess: false,
     isDayTask: false,
@@ -167,7 +187,7 @@ const TaskForm = () => {
           <DatePicker
             showTime
             onChange={(value, dateString) => {
-              handleChange({ target: { name: 'startDate', value: dateString, type: 'date' } })
+              handleChange({ target: { name: 'startDate', value: localToUTC(dateString), type: 'date' } })
             }}
           />
           {/* <input type="datetime-local" name="startTime" value={taskData.startDate} onChange={handleChange} /> */}
@@ -177,7 +197,7 @@ const TaskForm = () => {
           <DatePicker
             showTime
             onChange={(value, dateString) => {
-              handleChange({ target: { name: 'endDate', value: dateString, type: 'date' } })
+              handleChange({ target: { name: 'endDate', value: localToUTC(dateString), type: 'date' } })
             }}
           />
           {/* <input type="datetime-local" name="endTime" value={taskData.endDate} onChange={handleChange} /> */}

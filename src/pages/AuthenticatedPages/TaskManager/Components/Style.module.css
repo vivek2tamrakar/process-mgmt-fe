@@ -1,6 +1,6 @@
 .TaskManager {
   height: calc(100vh - 59px);
-  width: calc(100vw - 286px);
+  width: calc(100vw - 290px);
   /* background: #fff; */
   overflow: auto;
 }
@@ -11,6 +11,7 @@
 
 .Timer {
   display: flex;
+  position: relative;
   /* flex-direction: column; */
   /* border: 1px solid; */
 }

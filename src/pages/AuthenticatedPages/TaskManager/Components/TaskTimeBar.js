@@ -2,45 +2,41 @@ import React, {useState} from 'react';
 import Style from './Style.module.css';
 import { Button, Popover } from 'antd';
 import { useNavigate, createSearchParams } from 'react-router-dom';
-export default function TaskTimeBar({ data, date, id }) {
+
+const status = {
+    '3' : '#ff7c7c',
+    '2' : '#fbcf69',
+    '1' : 'red',
+    '4' : '#5afc5f',
+}
+
+export default function TaskTimeBar({ data, date, id, left }) {
 
     const time = [
-        {
-            time: '07:00'
-        },
-        {
-            time: '08:00'
-        },
-        {
-            time: '09:00'
-        },
-        {
-            time: '10:00'
-        },
-        {
-            time: '11:00'
-        },
-        {
-            time: '12:00'
-        },
-        {
-            time: '13:00',
-        },
-        {
-            time: '14:00'
-        },
-        {
-            time: '15:00'
-        },
-        {
-            time: '16:00'
-        },
-        {
-            time: '17:00'
-        },
-        {
-            time: '18:00'
-        }
+        '00:00',
+        '01:00',
+        '02:00',
+        '03:00',
+        '04:00',
+        '05:00',
+        '06:00',
+        '07:00',
+        '08:00',
+        '09:00',
+        '10:00',
+        '11:00',
+        '12:00',
+        '13:00',
+        '14:00',
+        '15:00',
+        '16:00',
+        '17:00',
+        '18:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
     ];
     const navigate = useNavigate();
     const [popoverVisible, setPopoverVisible] = useState(false);
@@ -51,8 +47,8 @@ export default function TaskTimeBar({ data, date, id }) {
         navigate({
             pathname: "/create-task",
             search: `?${createSearchParams({
-                startTime: date+'T'+startTime.toString().padStart(2, '0')+':00:00.000Z',
-                endTime: date+'T'+(startTime+1).toString().padStart(2, '0')+':00:00.000Z',
+                startTime: date+'T'+startTime.toString().padStart(2, '0')+':00:00',
+                endTime: date+'T'+(startTime+1).toString().padStart(2, '0')+':00:00',
                 id
             })}`
         })
@@ -64,16 +60,17 @@ export default function TaskTimeBar({ data, date, id }) {
         setPopoverVisible(true);
       };
     return (
-        <div id='timer' style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }} onContextMenu={handleDashboardRightClick}>
+        <div id='timer' style={{ display: 'flex', flexDirection: 'column' }} onContextMenu={handleDashboardRightClick}>
             <div className={Style.Timer}>
-                {time.map((val) => (<div className={Style.Header}>{val.time}</div>))}
+                {!!left && <div className='line' style={{ left }}></div>}
+                {time.map((val) => (<div className={Style.Header}>{val}</div>))}
             </div>
             <div className='timeentry'>
                 <div style={{ position: 'absolute', width: '100%', height: data ? (data.filter(val => val.width).length * 36 || 36) : 36, display: 'flex' }}>
-                    {time.map((val, index) => (<div className="placeholderbg" onMouseOver={()=> setStart(val.time)}></div>))}
+                    {time.map((val, index) => (<div className="placeholderbg" onMouseOver={()=> setStart(val)}></div>))}
                 </div>
                 {data ? data.filter(val => val.width).map(res => <div className={Style.Body}>
-                    <span className={Style.Task} style={{ width: res.width / 60, left: res.left / 60 }}>{res.name} </span>
+                    <span className={Style.Task} style={{ width: res.width / 60, left: res.left / 60, backgroundColor:  status[res.status] }}>{res.name} </span>
                 </div>) : <div className={Style.Body}>
                 </div>}
             </div>
