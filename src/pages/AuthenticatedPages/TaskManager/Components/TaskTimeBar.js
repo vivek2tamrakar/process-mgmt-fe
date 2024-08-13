@@ -77,7 +77,16 @@ export default function TaskTimeBar({ data, date, id, left }) {
             <Popover
                 content={
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                        <Button onClick={() => createTask()}>Add Task</Button>
+                        <Button onClick={() => createTask()}>View Task Description</Button>
+                        <Button onClick={() => createTask()}>Complete Task</Button>
+                        <Button onClick={() => createTask()}>Run Checklist</Button>
+                        <Button onClick={() => createTask()}>View/Open Process</Button>
+                        <Button onClick={() => createTask()}>Assign to me</Button>
+                        <Button onClick={() => createTask()}>Reassign</Button>
+                        <Button onClick={() => createTask()}>Edit Task</Button>
+                        {/* <Button onClick={() => createTask()}>Add Task</Button> */}
+                        <Button onClick={() => createTask()}>Delete Task</Button>
+                        <Button onClick={() => createTask()}>Disable Task</Button>
                     </div>
                 }
                 open={popoverVisible}

@@ -29,6 +29,7 @@ import { toast } from 'react-hot-toast';
 import logo from '../../assets/images/logo.34ac6a4edb0bef53937e.jpg';
 import usePost from 'hooks/usePost';
 import usePatch from 'hooks/usePatch';
+import { useNavigate } from "react-router-dom";
 const truncateName = (name) => {
   if (name.length > 10) {
     return name.substring(0, 10) + '...';
@@ -55,6 +56,7 @@ const LeftMenuBar = () => {
   const [allFolders, setGetAllFolders] = useState(folderList);
   const [allProcess, setGetAllProcess] = useState(processList);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState(null);
@@ -294,7 +296,7 @@ const LeftMenuBar = () => {
                       <PopoverContainer className="okokokok">
                         <Button onClick={() => showModal('EditMember')}>Edit Members</Button>
                         <Button onClick={() => showModal('Rename')}>Rename</Button>
-                        <Button onClick={() => showModal('TaskManager')}>Task Manager</Button>
+                        <Button onClick={() => navigate('/task-manager')}>Task Manager</Button>
                         <Button onClick={() => showModal('Folder')}>New Folder</Button>
                         <Button onClick={() => showModal('Process')}>New Process</Button>
                         <Button onClick={() => showModal('DeleteGroup')}>Delete</Button>

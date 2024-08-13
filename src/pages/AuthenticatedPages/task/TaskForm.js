@@ -64,12 +64,21 @@ const TaskForm = () => {
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+   const { name, value, type, checked } = e.target;
     setTaskData({
       ...taskData,
       [name]: type === 'checkbox' ? checked : value,
     });
   };
+
+  useEffect(()=> {
+    console.log(taskData)
+    const startDate = taskData.startDate;
+    const endDate =taskData.endDate;
+    const duration =( (moment(endDate).valueOf() - moment(startDate).valueOf()) / (1000*60));
+    console.log(startDate,endDate, moment(startDate).valueOf(), moment(endDate).valueOf())
+    handleChange({ target: { name: 'duration', value: duration, type: 'number' }})
+  }, [taskData.startDate, taskData.endDate])
 
   const fetchUserData = () => {
     UserListGet({
@@ -205,7 +214,7 @@ const TaskForm = () => {
       </div>
       <div>
         <label>Duration</label>
-        <input type="text" name="duration" value={taskData.duration} onChange={handleChange} />
+        <input type="number" name="duration" value={taskData.duration} onChange={handleChange}  readOnly />
       </div>
       <div>
         <label>
@@ -215,7 +224,7 @@ const TaskForm = () => {
       </div>
       <div>
         <label>Reminder</label>
-        <input type="text" name="remainder" value={taskData.remainder} onChange={handleChange} />
+        <input type="number" name="remainder" value={taskData.remainder} onChange={handleChange} />
       </div>
       <div>
         <label>Recurrence Pattern</label>
