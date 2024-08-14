@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTask } from '../../../features/task/taskSlice';
 import { getUserList } from '../../../features/User/userslice';
 import { getFolderList, getGroupList, getProcessList } from '../../../features/Group/groupslice';
 import useGet from 'hooks/useGet';
+import usePatch from 'hooks/usePatch';
 import { DatePicker, Select } from 'antd';
 import './TaskForm.css';  // Import the CSS file
 import * as moment from 'moment';
+import { toast } from 'react-hot-toast';
 // Convert Local Time to UTC
 function localToUTC(localDateString) {
     // Parse the local time string with moment
@@ -32,6 +34,8 @@ function utcToLocal(utcDateString) {
 const TaskForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { mutateAsync: TaskPatch } = usePatch();
+  const params = useParams();
   const { mutateAsync: UserListGet } = useGet();
   const { mutateAsync: GroupListGet } = useGet();
   const { userList } = useSelector((state) => state.user);
@@ -48,7 +52,7 @@ const TaskForm = () => {
     description: '',
     userId: [],
     createdId: companyId,
-    processId: undefined,
+    processId: 42,
     checklistRequired: false,
     startDate: startTime ? localToUTC(startTime) : "",
     endDate: endTime ? localToUTC(endTime) : "",
@@ -70,6 +74,16 @@ const TaskForm = () => {
       [name]: type === 'checkbox' ? checked : value,
     });
   };
+
+  const fetchProcessData = () => {
+
+  }
+
+  useEffect(() => {
+    if(params.id) {
+      fetchProcessData();
+    }
+  }, [])
 
   useEffect(()=> {
     console.log(taskData)
@@ -97,8 +111,32 @@ const TaskForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addTask(taskData));
+    if(params.id) {
+      updateTask();
+    } else {
+      dispatch(addTask(taskData));
+    }
     navigate('/task-manager')
+  };
+
+  function updateTask() {
+    TaskPatch({
+        url: `task`,
+        type: 'details',
+        payload: {
+            "id":params.id,
+            ...taskData
+        },
+          token: true,
+    })
+        .then((res) => {
+            toast.success('Task Updated successfully!');
+
+        })
+        .catch((err) => {
+            toast.error('Server Error!');
+            console.error(err);
+        });
   };
 
   const fetchData = () => {

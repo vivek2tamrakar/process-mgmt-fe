@@ -69,6 +69,7 @@ function App() {
               <Route path="task-manager" element={<TaskManager />} />
               <Route path="report-manager" element={<ReportManager />} />
               <Route path="create-task" element={<TaskForm />} />
+              <Route path="update-task/:id" element={<TaskForm />} />
               <Route path="*" element={<Dashboard />} />
             </Route>
           ) : (
