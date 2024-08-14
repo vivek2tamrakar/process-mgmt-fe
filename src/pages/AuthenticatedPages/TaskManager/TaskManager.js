@@ -186,7 +186,7 @@ export default function TaskManager() {
                 <div style={{ position: 'relative' }}>
 
                     <div className={Style.TaskManager}>
-                        {!loading && <TaskScheduler value={value} date={date} task={task} type={scheduleType} left={left}></TaskScheduler>}
+                        {!loading && <TaskScheduler value={value} date={date} task={task} type={scheduleType} left={left} fetchData={fetchData}></TaskScheduler>}
                     </div>
                     <div className={Style.TaskScheduleType}>
                         <div className={scheduleType === 'week' ? Style.selected : null} onClick={() => { setLoading(true); setScheduleType('week') }}>Week</div>

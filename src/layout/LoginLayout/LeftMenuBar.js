@@ -303,7 +303,6 @@ const LeftMenuBar = () => {
                       </PopoverContainer>
                        )}
                     </>
-                   
                   }
                   trigger="contextMenu"
                   visible={!popoverVisibleFolder && popoverVisible && selectedGroup?.id === i.id}

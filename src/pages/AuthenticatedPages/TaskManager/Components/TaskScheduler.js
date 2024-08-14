@@ -5,7 +5,7 @@ import { useNavigate, createSearchParams } from 'react-router-dom';
 import ScheduleView from './ScheduleView';
 import MonthView from './MonthView';
 import BoardView from './Board';
-const TaskScheduler = ({ value, date, task, type, left }) => {
+const TaskScheduler = ({ value, date, task, type, left, fetchData }) => {
     const navigate = useNavigate();
     function createTask(id) {
         navigate({
@@ -23,7 +23,7 @@ const TaskScheduler = ({ value, date, task, type, left }) => {
                     <div className={Style.GroupName}>{data.split('$$')[1]}</div>
                     <div className={Style.AddTask} onClick={() => createTask(data.split('$$')[0])} >Add Task</div>
                 </div>
-                {type === 'week' && <TaskTimeBar data={task[data]} left={left} date={date} id={data.split('$$')[0]}></TaskTimeBar>}
+                {type === 'week' && <TaskTimeBar data={task[data]} left={left} date={date} id={data.split('$$')[0]} fetchData={fetchData}></TaskTimeBar>}
                 {type === 'schedule' && <ScheduleView data={task[data]} date={date} id={data.split('$$')[0]}></ScheduleView>}
                 {type === 'board' && <BoardView data={task[data]} date={date} index={index} id={data.split('$$')[0]}></BoardView>}
                 {type === 'month' && <MonthView data={task[data]} info={'dayGridMonth'}></MonthView>}
