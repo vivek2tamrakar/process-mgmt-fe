@@ -6,7 +6,7 @@ import { getUserList } from '../../../features/User/userslice';
 import { getFolderList, getGroupList, getProcessList } from '../../../features/Group/groupslice';
 import useGet from 'hooks/useGet';
 import usePatch from 'hooks/usePatch';
-import { DatePicker, Select } from 'antd';
+import { DatePicker, Select, Button } from 'antd';
 import './TaskForm.css';  // Import the CSS file
 import * as moment from 'moment';
 import { toast } from 'react-hot-toast';
@@ -303,6 +303,7 @@ const TaskForm = () => {
           <label>occurrences</label>
         </div>
       )}
+      <Button onClick={()=> navigate('/task-manager')} className="cancel">Cancel</Button>
       <button type="submit">OK</button>
     </form>
   );
