@@ -6,30 +6,31 @@ import { getUserList } from '../../../features/User/userslice';
 import { getFolderList, getGroupList, getProcessList } from '../../../features/Group/groupslice';
 import useGet from 'hooks/useGet';
 import usePatch from 'hooks/usePatch';
-import { DatePicker, Select } from 'antd';
+import { DatePicker, Select, Button } from 'antd';
+import dayjs from 'dayjs';
 import './TaskForm.css';  // Import the CSS file
 import * as moment from 'moment';
 import { toast } from 'react-hot-toast';
 // Convert Local Time to UTC
 function localToUTC(localDateString) {
-    // Parse the local time string with moment
-    const localTime = moment(localDateString).local();
-    
-    // Convert to UTC
-    const utcTime = localTime.utc().format('YYYY-MM-DDTHH:mm:ss');
-    
-    return utcTime;
+  // Parse the local time string with moment
+  const localTime = moment(localDateString).local();
+
+  // Convert to UTC
+  const utcTime = localTime.utc().format('YYYY-MM-DDTHH:mm:ss');
+
+  return utcTime;
 }
 
 // Convert UTC to Local Time
 function utcToLocal(utcDateString) {
-    // Parse the UTC time string with moment
-    const utcTime = moment.utc(utcDateString);
-    
-    // Convert to local time
-    const localTime = utcTime.local().format('YYYY-MM-DDTHH:mm:ss');
-    
-    return localTime;
+  // Parse the UTC time string with moment
+  const utcTime = moment.utc(utcDateString);
+
+  // Convert to local time
+  const localTime = utcTime.local().format('YYYY-MM-DDTHH:mm:ss');
+
+  return localTime;
 }
 const TaskForm = () => {
   const navigate = useNavigate();
@@ -37,9 +38,10 @@ const TaskForm = () => {
   const { mutateAsync: TaskPatch } = usePatch();
   const params = useParams();
   const { mutateAsync: UserListGet } = useGet();
+  const { mutateAsync: TaskByIdGet } = useGet();
   const { mutateAsync: GroupListGet } = useGet();
   const { userList } = useSelector((state) => state.user);
-  const [allUsers, setAllUsers] = useState(userList.map(val => ({value: val?.id, label: val?.email})));
+  const [allUsers, setAllUsers] = useState(userList.map(val => ({ value: val?.id, label: val?.email })));
   const { groupList, processList } = useSelector((state) => state.group);
   const companyId = localStorage.getItem('companyId');
   const [searchParams, setSearchParams] = useSearchParams();
@@ -68,30 +70,45 @@ const TaskForm = () => {
   });
 
   const handleChange = (e) => {
-   const { name, value, type, checked } = e.target;
+    const { name, value, type, checked } = e.target;
+    let changedData = {};
+    if (name === 'groupId') {
+      changedData = {
+        userId: []
+      }
+    }
     setTaskData({
       ...taskData,
       [name]: type === 'checkbox' ? checked : value,
+      ...changedData
     });
   };
 
-  const fetchProcessData = () => {
-
-  }
+  function fetchProcessData() {
+    TaskByIdGet({
+      url: `task/id/${params.id}`,
+      type: 'details',
+      token: true
+    })
+      .then((res) => {
+        setTaskData({...res, startDate: res?.startDate ? utcToLocal(res?.startDate) : undefined, endDate: res?.endDate ? utcToLocal(res?.endDate) : undefined });
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  };
 
   useEffect(() => {
-    if(params.id) {
+    if (params.id) {
       fetchProcessData();
     }
   }, [])
 
-  useEffect(()=> {
-    console.log(taskData)
+  useEffect(() => {
     const startDate = taskData.startDate;
-    const endDate =taskData.endDate;
-    const duration =( (moment(endDate).valueOf() - moment(startDate).valueOf()) / (1000*60));
-    console.log(startDate,endDate, moment(startDate).valueOf(), moment(endDate).valueOf())
-    handleChange({ target: { name: 'duration', value: duration, type: 'number' }})
+    const endDate = taskData.endDate;
+    const duration = ((moment(endDate).valueOf() - moment(startDate).valueOf()) / (1000 * 60));
+    handleChange({ target: { name: 'duration', value: duration, type: 'number' } })
   }, [taskData.startDate, taskData.endDate])
 
   const fetchUserData = () => {
@@ -111,32 +128,37 @@ const TaskForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(params.id) {
+    if (params.id) {
       updateTask();
     } else {
-      dispatch(addTask(taskData));
+      dispatch(addTask({
+        ...taskData, startDate: taskData?.startDate ? localToUTC(taskData?.startDate) : undefined,
+        endDate: taskData?.endDate ? localToUTC(taskData?.endDate) : undefined,
+      }));
     }
     navigate('/task-manager')
   };
 
   function updateTask() {
     TaskPatch({
-        url: `task`,
-        type: 'details',
-        payload: {
-            "id":params.id,
-            ...taskData
-        },
-          token: true,
+      url: `task`,
+      type: 'details',
+      payload: {
+        "id": params.id,
+        ...taskData,
+        startDate: taskData?.startDate ? localToUTC(taskData?.startDate) : undefined,
+        endDate: taskData?.endDate ? localToUTC(taskData?.endDate) : undefined,
+      },
+      token: true,
     })
-        .then((res) => {
-            toast.success('Task Updated successfully!');
+      .then((res) => {
+        toast.success('Task Updated successfully!');
 
-        })
-        .catch((err) => {
-            toast.error('Server Error!');
-            console.error(err);
-        });
+      })
+      .catch((err) => {
+        toast.error('Server Error!');
+        console.error(err);
+      });
   };
 
   const fetchData = () => {
@@ -169,14 +191,14 @@ const TaskForm = () => {
 
   useEffect(() => {
     console.log(userList)
-    setAllUsers(userList.map(val => ({value: val?.id, label: val?.email})));
+    setAllUsers(userList.map(val => ({ value: val?.id, label: val?.email })));
   }, [userList]);
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
         <label>Group</label>
-        <select name="groupId" value={taskData.groupId} onChange={handleChange} disabled={id!=""}>
+        <select name="groupId" value={taskData.groupId} onChange={handleChange} disabled={id != ""}>
           <option value="">Select Group</option>
           {groupList.map((group) => (
             <option key={group.id} value={group.id}>
@@ -203,6 +225,7 @@ const TaskForm = () => {
           style={{
             width: '100%',
           }}
+          value={taskData.userId}
           placeholder="Please select"
           defaultValue={[]}
           onChange={(value) => {
@@ -229,22 +252,24 @@ const TaskForm = () => {
         </label>
       </div>
       <div style={{ display: 'flex' }}>
-        <div style={{ width: '100%', display : startTime=="" ? 'block': 'none' }} >
+        <div style={{ width: '100%', display: startTime == "" ? 'block' : 'none' }} >
           <label>Start Time</label>
           <DatePicker
             showTime
+            value={dayjs(taskData?.startDate, 'YYYY-MM-DD HH:mm:ss')}
             onChange={(value, dateString) => {
-              handleChange({ target: { name: 'startDate', value: localToUTC(dateString), type: 'date' } })
+              handleChange({ target: { name: 'startDate', value: dateString, type: 'date' } })
             }}
           />
           {/* <input type="datetime-local" name="startTime" value={taskData.startDate} onChange={handleChange} /> */}
         </div>
-        <div style={{ width: '100%',display : endTime=="" ? 'block': 'none' }}>
+        <div style={{ width: '100%', display: endTime == "" ? 'block' : 'none' }}>
           <label>End Time</label>
           <DatePicker
             showTime
+            value={dayjs(taskData?.endDate, 'YYYY-MM-DD HH:mm:ss')}
             onChange={(value, dateString) => {
-              handleChange({ target: { name: 'endDate', value: localToUTC(dateString), type: 'date' } })
+              handleChange({ target: { name: 'endDate', value: dateString, type: 'date' } })
             }}
           />
           {/* <input type="datetime-local" name="endTime" value={taskData.endDate} onChange={handleChange} /> */}
@@ -252,7 +277,7 @@ const TaskForm = () => {
       </div>
       <div>
         <label>Duration</label>
-        <input type="number" name="duration" value={taskData.duration} onChange={handleChange}  readOnly />
+        <input type="number" name="duration" value={taskData.duration} onChange={handleChange} readOnly />
       </div>
       <div>
         <label>
@@ -303,6 +328,7 @@ const TaskForm = () => {
           <label>occurrences</label>
         </div>
       )}
+      <Button onClick={() => navigate('/task-manager')} className="cancel">Cancel</Button>
       <button type="submit">OK</button>
     </form>
   );

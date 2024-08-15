@@ -154,14 +154,14 @@ export default function TaskTimeBar({ data, date, id, left, fetchData }) {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                         <Button onClick={() => taskDescription()}>View Task Description</Button>
                         <Button onClick={() => updateTask({status: 4, isActive: true})}>Complete Task</Button>
-                        <Button onClick={() => processById()}>Run Checklist</Button>
-                        <Button onClick={() => processById()}>View/Open Process</Button>
+                        <Button disabled={!res?.processId} onClick={() => processById()}>Run Checklist</Button>
+                        <Button disabled={!res?.processId} onClick={() => processById()}>View/Open Process</Button>
                         <Button onClick={() => navigate('/update-task/'+res.id)}>Assign to me</Button>
                         <Button onClick={() => navigate('/update-task/'+res.id)}>Reassign</Button>
                         <Button onClick={() => navigate('/update-task/'+res.id)}>Edit Task</Button>
                         {/* <Button onClick={() => createTask()}>Add Task</Button> */}
                         <Button onClick={() => deleteTask()}>Delete Task</Button>
-                        <Button onClick={() => updateTask({status: res.status, isActive: false})}>Disable Task</Button>
+                        <Button disabled={res?.status==4} onClick={() => updateTask({status: res.status, isActive: false})}>Disable Task</Button>
                     </div>
                 }
                 open={popoverVisible}
