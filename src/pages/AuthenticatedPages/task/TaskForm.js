@@ -201,7 +201,6 @@ const TaskForm = () => {
   }
 
   useEffect(() => {
-    console.log("kml==>", taskData.groupId)
     if (taskData.groupId) {
       fetchUserData();
       getProcessByGroup(taskData.groupId)
