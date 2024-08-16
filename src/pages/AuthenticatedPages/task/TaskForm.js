@@ -3,7 +3,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTask } from '../../../features/task/taskSlice';
 import { getUserList } from '../../../features/User/userslice';
-import { getFolderList, getGroupList, getProcessList } from '../../../features/Group/groupslice';
+import { getFolderList, getGroupList } from '../../../features/Group/groupslice';
 import useGet from 'hooks/useGet';
 import usePatch from 'hooks/usePatch';
 import { DatePicker, Select, Button } from 'antd';
@@ -37,12 +37,14 @@ const TaskForm = () => {
   const dispatch = useDispatch();
   const { mutateAsync: TaskPatch } = usePatch();
   const params = useParams();
+  const [processList, setProcessList] = useState([])
   const { mutateAsync: UserListGet } = useGet();
   const { mutateAsync: TaskByIdGet } = useGet();
   const { mutateAsync: GroupListGet } = useGet();
+  const { mutateAsync: ProcessListGet } = useGet();
   const { userList } = useSelector((state) => state.user);
   const [allUsers, setAllUsers] = useState(userList.map(val => ({ value: val?.id, label: val?.email })));
-  const { groupList, processList } = useSelector((state) => state.group);
+  const { groupList } = useSelector((state) => state.group);
   const companyId = localStorage.getItem('companyId');
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id") || "";
@@ -54,11 +56,11 @@ const TaskForm = () => {
     description: '',
     userId: [],
     createdId: companyId,
-    processId: 42,
+    processId: undefined,
     checklistRequired: false,
-    startDate: startTime ? localToUTC(startTime) : "",
-    endDate: endTime ? localToUTC(endTime) : "",
-    duration: '',
+    startDate: moment().format('YYYY-MM-DD HH:mm:ss'),
+    endDate: moment().format('YYYY-MM-DD HH:mm:ss'),
+    duration: 0,
     isProcess: false,
     isDayTask: false,
     remainder: '',
@@ -74,7 +76,8 @@ const TaskForm = () => {
     let changedData = {};
     if (name === 'groupId') {
       changedData = {
-        userId: []
+        userId: [],
+        processList: []
       }
     }
     setTaskData({
@@ -171,7 +174,6 @@ const TaskForm = () => {
         const allGroups = [...(res?.group || []), ...(res?.assignGroup || [])];
         const allFolder = [...(res?.folder || []), ...(res?.assignFolder || [])];
         const allProcesses = [...(res?.process || []), ...(res?.assignProcess || [])];
-        dispatch(getProcessList({ processList: allProcesses }));
         dispatch(getGroupList({ groupList: allGroups }));
         dispatch(getFolderList({ folderList: allFolder }));
       })
@@ -184,9 +186,25 @@ const TaskForm = () => {
     fetchData();
   }, []);
 
+  function getProcessByGroup(id) {
+    ProcessListGet({
+      url: 'process/groups/'+id,
+      type: 'details',
+      token: true,
+    }).then((res) => {
+      console.log(res)
+      setProcessList(res)
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+  }
+
   useEffect(() => {
-    if (taskData.groupId)
+    if (taskData.groupId) {
       fetchUserData();
+      getProcessByGroup(taskData.groupId)
+    }
   }, [taskData.groupId]);
 
   useEffect(() => {
